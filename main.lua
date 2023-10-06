@@ -1,0 +1,316 @@
+settingsDB = settingsDB or {}
+
+local defaultSettings = {
+    version = GetAddOnMetadata("Gigancement", "Version"),
+    enableNameplateModule = true,
+    enableShorterKeybinds = true,
+    enableHideKeybindText = false,
+    enableHideMacroText = false,
+    enableLinksInChat = true,
+    colorLinkRed = 1,
+    colorLinkGreen = 0.5,
+    colorLinkBlue = 1,
+    enableRolesInChat = true,
+    enableShorterChannelNames = true,
+    enableInspectLFG = true,
+    enableDoubleClickLFG = true,
+    enableMuteApplicantSound = true,
+    enableUpgradedCastbar = true,
+    enableClassColorsUnitFrames = true,
+    enableUpgradedRaidFrames = true,
+}
+local roleTex = {
+    DAMAGER = "|A:UI-LFG-RoleIcon-DPS-Micro:15:15|a",
+    HEALER  = "|A:UI-LFG-RoleIcon-Healer-Micro:15:15|a",
+    TANK    = "|A:UI-LFG-RoleIcon-Tank-Micro:15:15|a",
+    NONE    = ""
+}
+function getRoleTex(role)
+    local str = roleTex[role]
+    if str == nil or not str then
+        return roleTex["NONE"]
+    end
+    return str
+end
+local settingsInterface = CreateFrame("Frame") -- options panel for tweaking the addon
+
+--Color Picker
+local function ShowColorPicker(red, green, blue, alpha, objectColor, changedCallback)
+    ColorPickerFrame:SetColorRGB(red, green, blue)
+    ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (alpha ~= nil), alpha
+    ColorPickerFrame.previousValues = {red, green, blue, alpha}
+    ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc =  changedCallback, changedCallback, changedCallback
+    ColorPickerFrame.objectColor = objectColor
+    ColorPickerFrame:Hide()
+    ColorPickerFrame:Show()
+end
+
+function ColorCallback(restore)
+    local newR, newG, newB, newA
+    if restore then
+     newR, newG, newB, newA = unpack(restore)
+    else
+     newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB()
+    end 
+    if ColorPickerFrame.objectColor == settingsInterface.linkColor then
+        settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue = newR, newG, newB
+    end
+    ColorPickerFrame.objectColor.color:SetVertexColor(newR, newG, newB)
+end
+
+local function HandlePlatesHook()
+    if settingsDB.enableNameplateModule then
+        hooksecurefunc("CompactUnitFrame_UpdateHealth", HPTextNameplate)
+    end
+end
+
+local function HandleLFGTooltipHook(tooltip, resultID, autoAcceptOption)
+    if settingsDB.enableInspectLFG then
+        SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
+    end
+end
+
+local function HandleUnitFramePortraitClassColorsUpdate()
+    if settingsDB.enableClassColorsUnitFrames then
+        hooksecurefunc("UnitFramePortrait_Update", UnitFramesClassColors)
+    end
+end
+
+function InitVariables()
+    if not settingsDB then
+        settingsDB = {}
+    end
+
+    for key, defaultValue in pairs(defaultSettings) do
+        if settingsDB[key] == nil then
+            settingsDB[key] = defaultValue
+        end
+    end
+end
+
+function CreateCheckbox(option, label, parent, tooltip, cvarName)
+    local checkBox = CreateFrame("CheckButton", nil, parent, "SettingsCheckBoxTemplate")
+    checkBox.Text = checkBox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+    checkBox.Text:SetText(label)
+    checkBox.Text:SetPoint("LEFT", checkBox, "LEFT", -200, 0)
+    if(tooltip) then
+        checkBox.TooltipText = tooltip
+        checkBox:SetScript("OnEnter", function(self, motion)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(self.TooltipText, nil, nil, nil, nil, true)
+            GameTooltip:Show()
+        end)
+        checkBox:SetScript("OnLeave", GameTooltip_Hide)
+        checkBox.Text:SetScript("OnEnter", function(self, motion)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(checkBox.TooltipText, nil, nil, nil, nil, true)
+            GameTooltip:Show()
+        end)
+        checkBox.Text:SetScript("OnLeave", GameTooltip_Hide)
+    end
+
+    -- update things when clicked
+    local function UpdateOption(value, clicked)
+        local modValue = value
+        settingsDB[option] = modValue
+        checkBox:SetChecked(value)
+        -- realtime changes (without need to reload)
+        if clicked == 1 and (option == "enableNameplateModule" or option == "enableShorterKeybinds" or option == "enableUpgradedCastbar" or option == "enableClassColorsUnitFrames") then
+            settingsInterface.reloadButton:Show()
+        end
+        if option == "enableHideKeybindText" or option == "enableHideMacroText" then
+            ShouldHideActionbarButtonsText()
+            return
+        end
+        if option == "enableLinksInChat" and settingsDB.enableLinksInChat and settingsInterface.linkColor ~= nil then
+            settingsInterface.linkColor:Enable()
+            settingsInterface.linkColor.color:SetVertexColor(settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue, 1)
+            return
+        elseif option == "enableLinksInChat" and not settingsDB.enableLinksInChat and settingsInterface.linkColor ~= nil then
+            settingsInterface.linkColor:Disable()
+            settingsInterface.linkColor.color:SetVertexColor(settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue, 0.3)
+            return
+        end
+        if option == "enableMuteApplicantSound" then
+            MuteApplicationSignupSound()
+            return
+        end
+        if option == "enableUpgradedRaidFrames" then
+            UpgradeRaidFrames()
+            return
+        end
+    end    
+
+    local initValue = settingsDB[option]
+    UpdateOption(initValue, 0)
+     
+    checkBox:HookScript("OnClick", function(_, btn, down)
+        UpdateOption(checkBox:GetChecked(), 1)
+    end)
+
+    return checkBox
+end
+
+function CreateColorSwatch(ored, ogreen, oblue, oalpha, label, parent, tooltip)
+    local colorSwatch = CreateFrame("CheckButton", nil, parent, BackdropTemplateMixin and "SettingsCheckBoxTemplate,BackdropTemplate" or "SettingsCheckBoxTemplate")
+    colorSwatch.Text = colorSwatch:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+    if(label) then
+        colorSwatch.Text:SetText(label)
+        colorSwatch.Text:SetPoint("RIGHT", colorSwatch, "LEFT", 3, 0)
+    end
+    if(tooltip) then
+        colorSwatch.TooltipText = tooltip
+        colorSwatch:SetScript("OnEnter", function(self, motion)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(self.TooltipText, nil, nil, nil, nil, true)
+            GameTooltip:Show()
+        end)
+        colorSwatch:SetScript("OnLeave", GameTooltip_Hide)
+        colorSwatch.Text:SetScript("OnEnter", function(self, motion)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(colorSwatch.TooltipText, nil, nil, nil, nil, true)
+            GameTooltip:Show()
+        end)
+        colorSwatch.Text:SetScript("OnLeave", GameTooltip_Hide)
+    end
+    colorSwatch.color = colorSwatch:CreateTexture()
+	colorSwatch.color:SetWidth(15)
+	colorSwatch.color:SetHeight(15)
+	colorSwatch.color:SetPoint("CENTER")
+	colorSwatch.color:SetTexture("Interface/ChatFrame/ChatFrameColorSwatch")
+	colorSwatch:SetBackdrop({bgFile="Interface/ChatFrame/ChatFrameColorSwatch",insets={left=3,right=3,top=3,bottom=3}})
+	colorSwatch:SetPushedTexture(colorSwatch.color)
+	colorSwatch:SetNormalTexture(colorSwatch.color)
+    colorSwatch:SetBackdropColor(0.3, 0.3, 0.3)
+    colorSwatch.color:SetVertexColor(ored, ogreen, oblue)
+
+    return colorSwatch
+end
+
+function settingsInterface:Initialize()
+    -- header
+    local name = "Gigancement"
+    self.name = name
+    self.bigTitle = self:CreateFontString(nil, "ARTWORK", "GameFontHighlightHuge")
+    self.bigTitle:SetJustifyH("LEFT")
+    self.bigTitle:SetText(name .. " v" .. settingsDB.version)
+	self.bigTitle:SetPoint("TOPLEFT", 7, -22)
+	
+    self.HorizontalDivider = self:CreateTexture()
+    self.HorizontalDivider:SetAtlas("Options_HorizontalDivider", true)
+    self.HorizontalDivider:SetPoint("TOPLEFT", self.bigTitle, "TOPLEFT", 7, -28)
+    -- TODO: default and reload button
+    self.reloadButton = CreateFrame("Button", nil, self, "UIPanelButtonTemplate")
+    self.reloadButton:SetText("RELOAD")
+    self.reloadButton:SetWidth(96)
+    self.reloadButton:SetPoint("TOPRIGHT", -36, -16)
+    self.reloadButton:SetScript("OnClick", function()
+        ReloadUI()
+    end)
+    self.reloadButton:Hide()
+
+    self.scrollFrame = CreateFrame("ScrollFrame", nil, self, "ScrollFrameTemplate")
+    self.scrollFrame:SetPoint("TOPLEFT", self.HorizontalDivider, "TOPLEFT", 0, -8)
+	self.scrollFrame:SetPoint("BOTTOMRIGHT", -26, 0)
+
+	self.scrollChild = CreateFrame("Frame")
+	self.scrollFrame:SetScrollChild(self.scrollChild)
+	self.scrollChild:SetWidth(1)
+	self.scrollChild:SetHeight(1)
+    
+    -- nameplate module
+    self.nameplateModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
+    self.nameplateModuleTitle:SetText("Nameplate")
+    self.nameplateModuleTitle:SetPoint("TOPLEFT", self.scrollChild, "BOTTOMLEFT", 3.5, -19)
+    self.nameplateModule = CreateCheckbox("enableNameplateModule", "Health % on Nameplates", self.scrollChild, "Show health and health % on enemy nameplates. |cffFF0000Reload|r is required.")
+    self.nameplateModule:SetPoint("TOPLEFT",  self.nameplateModuleTitle, "BOTTOMLEFT", 230, -20)
+    -- actionbar module
+    self.actionbarModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
+    self.actionbarModuleTitle:SetText("Action Bar")
+    self.actionbarModuleTitle:SetPoint("TOPLEFT", self.nameplateModule, "BOTTOMLEFT", -230, -20)
+    self.shorterKeybinds = CreateCheckbox("enableShorterKeybinds", "Shorter keybind names", self.scrollChild, "Show keybinds as S1, A1, M1 instead of s-1, a-1, Mouse... |cffFF0000Reload|r is required.")
+    self.shorterKeybinds:SetPoint("TOPLEFT",  self.actionbarModuleTitle, "BOTTOMLEFT", 230, -20)
+    self.hideKeybindText = CreateCheckbox("enableHideKeybindText", "Hide keybind text", self.scrollChild, "Hide keybind text from all action bar buttons.")
+    self.hideKeybindText:SetPoint("TOPLEFT",  self.shorterKeybinds, "BOTTOMLEFT", 0, -10)
+    self.hideMacroText = CreateCheckbox("enableHideMacroText", "Hide macro text", self.scrollChild, "Hide macro text from all action bar buttons.")
+    self.hideMacroText:SetPoint("TOPLEFT",  self.hideKeybindText, "BOTTOMLEFT", 0, -10)
+    -- chat module
+    self.chatModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
+    self.chatModuleTitle:SetText("Chat")
+    self.chatModuleTitle:SetPoint("TOPLEFT", self.hideMacroText, "BOTTOMLEFT", -230, -20)
+    self.linksInChat = CreateCheckbox("enableLinksInChat", "Links in chat", self.scrollChild, "Recognize a link in chat and allow clicking on it to open a popup from where it can be copied.")
+    self.linksInChat:SetPoint("TOPLEFT", self.chatModuleTitle, "BOTTOMLEFT", 230, -20)
+    self.linkColor = CreateColorSwatch(settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue, nil, "Link color: ", self.scrollChild, "Choose the link color.")
+    if(settingsDB.enableLinksInChat) then 
+        self.linkColor:Enable() 
+        self.linkColor.color:SetVertexColor(settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue, 1)
+    else 
+        self.linkColor:Disable()
+        self.linkColor.color:SetVertexColor(settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue, 0.3)
+    end
+    self.linkColor:HookScript("OnClick", function()
+        self.linkColor:SetChecked(false)
+        ShowColorPicker(settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue, nil, self.linkColor, ColorCallback)
+    end)
+    self.linkColor:SetPoint("LEFT", self.linksInChat, "RIGHT", 80, 0)
+    self.rolesInChat = CreateCheckbox("enableRolesInChat", "Roles in chat", self.scrollChild, "Show |A:UI-LFG-RoleIcon-Tank-Micro:15:15|a, |A:UI-LFG-RoleIcon-Healer-Micro:15:15|a or |A:UI-LFG-RoleIcon-DPS-Micro:15:15|a role in chat next to player's names.")
+    self.rolesInChat:SetPoint("TOPLEFT", self.linksInChat, "BOTTOMLEFT", 0, -10)
+    self.shorterChannelNames = CreateCheckbox("enableShorterChannelNames", "Shorter default channel names", self.scrollChild, "[R] for [Raid], [P] for [Party], etc.")
+    self.shorterChannelNames:SetPoint("TOPLEFT", self.rolesInChat, "BOTTOMLEFT", 0, -10)
+    -- lfg module
+    self.lfgModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
+    self.lfgModuleTitle:SetText("LFG")
+    self.lfgModuleTitle:SetPoint("TOPLEFT", self.shorterChannelNames, "BOTTOMLEFT", -230, -20)
+    self.inspectLFG = CreateCheckbox("enableInspectLFG", "Inspect groups in tooltip", self.scrollChild, "On mouseover inspect any premade group and show the leader, all specs and roles in the tooltip.")
+    self.inspectLFG:SetPoint("TOPLEFT", self.lfgModuleTitle, "BOTTOMLEFT", 230, -20)
+    self.doubleClickLFG = CreateCheckbox("enableDoubleClickLFG", "Double click sign up", self.scrollChild, "Double left click to sign up for premade groups, automatically skipping the note popup. If you want to sign up with a note, hold |cff00FF00Shift|r when double-clicking.")
+    self.doubleClickLFG:SetPoint("TOPLEFT", self.inspectLFG, "BOTTOMLEFT", 0, -10)
+    self.muteApplicantSound = CreateCheckbox("enableMuteApplicantSound", "Silence Application sound", self.scrollChild, "Mute the annoying application sign up sound when you are creating a group.")
+    self.muteApplicantSound:SetPoint("TOPLEFT", self.doubleClickLFG, "BOTTOMLEFT", 0, -10)
+    -- UI
+    self.uiModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
+    self.uiModuleTitle:SetText("UI")
+    self.uiModuleTitle:SetPoint("TOPLEFT", self.muteApplicantSound, "BOTTOMLEFT", -230, -20)
+    self.upgradedCastbar = CreateCheckbox("enableUpgradedCastbar", "Upgraded default castbar", self.scrollChild, "Show the spell icon, remaining and total cast time on the Player, Target and Focus casting bars. |cffFF0000Reload|r is required.")
+    self.upgradedCastbar:SetPoint("TOPLEFT", self.uiModuleTitle, "BOTTOMLEFT", 230, -20)
+    self.upgradedRaidFrames = CreateCheckbox("enableUpgradedRaidFrames", "Upgraded default raid frames", self.scrollChild, "Show raid marks, leader and co-leader icons on the default Blizzard Raid Plates.")
+    self.upgradedRaidFrames:SetPoint("TOPLEFT", self.upgradedCastbar, "BOTTOMLEFT", 0, -10)
+    self.classColorsUnitFrames = CreateCheckbox("enableClassColorsUnitFrames", "Class color unit frames", self.scrollChild, "Use class colors on default Blizzard unit frames such as Player, Target and Focus frames. |cffFF0000Reload|r is required.")
+    self.classColorsUnitFrames:SetPoint("TOPLEFT", self.upgradedRaidFrames, "BOTTOMLEFT", 0, -10)
+
+    InterfaceOptions_AddCategory(self)
+end
+
+settingsInterface:RegisterEvent("ADDON_LOADED")
+settingsInterface:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
+settingsInterface:RegisterEvent("DISPLAY_SIZE_CHANGED")
+settingsInterface:RegisterEvent("UI_SCALE_CHANGED")
+settingsInterface:RegisterEvent("GROUP_ROSTER_UPDATE")
+settingsInterface:RegisterEvent("UPDATE_ACTIVE_BATTLEFIELD")
+settingsInterface:RegisterEvent("UNIT_FLAGS")
+settingsInterface:RegisterEvent("PLAYER_FLAGS_CHANGED")
+settingsInterface:RegisterEvent("PLAYER_ENTERING_WORLD")
+settingsInterface:RegisterEvent("PARTY_LEADER_CHANGED") 
+settingsInterface:RegisterEvent("RAID_TARGET_UPDATE")
+settingsInterface:SetScript("OnEvent", function(self, event, name)
+    if (event == "ADDON_LOADED" and name == "Gigancement") then
+        -- Init
+        InitVariables()
+        settingsInterface:Initialize()
+        -- Enable modules
+        ShouldHideActionbarButtonsText()
+        HandleShortenKeybinds()
+        LinksInChat()
+        ShortChannelNames()
+        MuteApplicationSignupSound()
+        UpgradeDefaultCastbar()
+        HandlePlatesHook()
+        HandleUnitFramePortraitClassColorsUpdate()
+    elseif (event == "LFG_LIST_SEARCH_RESULTS_RECEIVED") then
+        LFGDoubleClick()
+    else
+        UpgradeRaidFrames()
+    end
+
+end)
+hooksecurefunc('LFGListUtil_SetSearchEntryTooltip', HandleLFGTooltipHook)
