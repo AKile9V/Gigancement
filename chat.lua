@@ -12,8 +12,14 @@ local chatEvents = {
     CHAT_MSG_SYSTEM = 2, CHAT_MSG_TARGETICONS = 2, CHAT_MSG_EMOTE = 2,
 }
 
+-- Open addon settings
+SLASH_GSETTINGS1 = "/giga"
+SlashCmdList["GSETTINGS"] = function()
+    InterfaceOptionsFrame_OpenToCategory("Gigancement")
+end
+
 -- Clear chat windows
-SLASH_CHATCLEAR1= "/clear"
+SLASH_CHATCLEAR1 = "/clear"
 SlashCmdList["CHATCLEAR"] = function()
     ChatFrame1:Clear()
     ChatFrame3:Clear()
@@ -27,7 +33,7 @@ SlashCmdList["CHATCLEAR"] = function()
 end
 
 --Leave Group
-SLASH_LEAVEGROUP1 = '/lg'
+SLASH_LEAVEGROUP1 = "/lg"
 SlashCmdList["LEAVEGROUP"] = function()
     SendChatMessage("Thanks for the group","SAY")
     C_PartyInfo.LeaveParty()
