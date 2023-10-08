@@ -32,6 +32,7 @@ function getRoleTex(role)
     end
     return str
 end
+
 local settingsInterface = CreateFrame("Frame") -- options panel for tweaking the addon
 
 --Color Picker
@@ -80,7 +81,6 @@ function InitVariables()
     if not settingsDB then
         settingsDB = {}
     end
-
     for key, defaultValue in pairs(defaultSettings) do
         if settingsDB[key] == nil then
             settingsDB[key] = defaultValue
