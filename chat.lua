@@ -52,7 +52,7 @@ local function GetStatsDistrib()
     local verValue = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE)
     local statTotal = critValue + hasteValue + masteryValue + verValue
     
-    print("---- Secondary Stat Distribution -----")
+    print("---- Secondary Stats Distribution -----")
     print("## Total: ".. statTotal    .. " → 100%")
     print("|cff00FF00Crit:|r ".. critValue    .." → ".. ssdround(((critValue / statTotal) * 100),2) .."%")
     print("|cffFFFF00Haste|r: ".. hasteValue   .." → ".. ssdround(((hasteValue / statTotal) * 100),2) .."%")

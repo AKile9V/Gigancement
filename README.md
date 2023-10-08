@@ -11,6 +11,7 @@ Some of them require reloading, others are applied right away!
 <img src="https://media.forgecdn.net/attachments/739/808/ss1.png" width="49%"/>
 
 ## Slash commands
+`/giga` - Open options <br/>
 `/clear` - Clear all chat tabs <br/>
 `/lg` - Leave your current raid/party group with a goodbye message <br/>
 `/ssd` - Print your current character Secondary Stat Distribution in the chat <br/>
