@@ -3,12 +3,12 @@
 ### World of Warcraft addon (retail only)
 Lightweight enhancements and modifications to the Blizzard default UI. <br/>
 All of them are pretty simple implemented, so they aren't memory heavy and most of them are using 0 or close to 0 CPU time. <br/>
-With that in mind, please don't expect anything huge in additional, those things are just my personal tweaks to enhance default blizzard ui experience.
+With that in mind, please don't expect anything huge in additional, those things are just my personal tweaks to enhance the Blizzard default UI experience.
 
 ## Setup options from default addon interface
 Some of them require reloading, others are applied right away!
 
-<img src="https://lh3.googleusercontent.com/pw/ADCreHdZXrzzYskxa0dZUxBwfKNs5DxX-gxT6AU3oibDO7UDZj1JSR-NziogjxCpF61Zfjn11v4nueAespgGSvZ6w77UFqkj3J7wgwO-wn1fpk0n9iw-6i40s0D2OlKrlWbVFIbrZudU8J8eCrYa44RTNzk6p7-Zkf4wasF8I3nM74hR04sNBSnYYoeu2BNRb54j4upQVXS_OSmoVkNBdBqEeknl626kPkZJ4kNNZ-yoGFCP3qsnNfUX5msaU7IAGcxcKx5zuutjCRpLi_c_tlpy5r7i-uYvlII0_rkoH0p1SOO1rOcBWLygDTKySva0zlD9V6tenOYemy0ozSahVjqNbmqPjILNCSC1fhushllQEbaR32YcEzKnPQiySQ_3luW-WwWu53Oo0qlqPfKxCwcnAXN-5bDT_49lZKLf5tKpmLsUV-AdwfTgsFpZDYlyurzMB99amLRK-ZsegFBQqSxOm8bQluNesCI65bAwhSjj1FNyon9434LnrX0-0QZCTohIrdvKBcyrydHQ1klzRsT8Pcy-1KpAnMfL6GBx_v7lDWYqEjH0rh9VdJnCppTJSaiK_PP7fLDRCg0m6nu-GCJV9IAVQ43NH49WrLQiqB5sW9nhAuZK7duSBwE2vK8u1ygg3yCDCJZc_HcroRzC45rXZOBC48xZWjyZ5BzVnUihyHt77hqtaI3c2Fys4sk8XHwX21J-9q7kSyc5PZz4ptfz4RnH3nzdTF5PO51d3EtGgZ-Ju27Vj5LgCUk0Ab4PaD5S2dw6ksdevdmkXNkoQ55JH7fgbTkW_29bN0WyFqWQ59o0ZF77MDDxjqEAimqTk8A9ELXXG66iYw_sbTNHaTXWOouRALCudgJDaBjq7oeEmXnRVCcruDIiBFr4B2z3e1OPOwSERqZP9UhUCh5Pvt8IQuZFuQ=w835-h659-s-no?authuser=0" width="49%"/>
+<img src="https://media.forgecdn.net/attachments/739/808/ss1.png" width="49%"/>
 
 ## Slash commands
 `/clear` - Clear all chat tabs <br/>
