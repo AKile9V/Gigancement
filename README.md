@@ -1,6 +1,6 @@
 # Gigancement
 
-### World of Warcraft addon (retail only)
+### [World of Warcraft addon](https://www.curseforge.com/wow/addons/gigancement) (retail only)
 Lightweight enhancements and modifications to the Blizzard default UI. <br/>
 All of them are pretty simple implemented, so they aren't memory heavy and most of them are using 0 or close to 0 CPU time. <br/>
 With that in mind, please don't expect anything huge in additional, those things are just my personal tweaks to enhance the Blizzard default UI experience.
