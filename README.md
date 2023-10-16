@@ -8,7 +8,7 @@ With that in mind, please don't expect anything huge in additional, those things
 ## Setup options from default addon interface
 Some of them require reloading, others are applied right away!
 
-<img src="https://media.forgecdn.net/attachments/739/808/ss1.png" width="49%"/>
+<img src="https://imgur.com/ATMLOjJ.png" width="49%"/>
 
 ## Slash commands
 `/giga` - Open options <br/>
@@ -21,44 +21,44 @@ Some of them require reloading, others are applied right away!
 
 #### Health % on Nameplates
 
-<img src="https://media.forgecdn.net/attachments/739/810/ss2.png"/>
+<img src="https://imgur.com/h9ZoDRk.png"/>
 
 #### Shorter keybind names
 
-<img src="https://media.forgecdn.net/attachments/739/812/ss3.png"/>
+<img src="https://imgur.com/U7xLlqR.png"/>
 
 #### Hide keybind/macro text
 
-<img src="https://media.forgecdn.net/attachments/739/817/ss4.png"/>
+<img src="https://imgur.com/LCRrIX6.png"/>
 
 #### Links in chat
 
-<img src="https://media.forgecdn.net/attachments/739/819/ss5.png"/> <br/>
-<img src="https://media.forgecdn.net/attachments/739/820/ss6.png"/>
+<img src="https://imgur.com/cbPOVyj.png"/> <br/>
+<img src="https://imgur.com/l8imi0H.png"/>
 
 #### Roles in chat
 
-<img src="https://media.forgecdn.net/attachments/739/822/ss7.png"/>
+<img src="https://imgur.com/3KVCbp8.png"/>
 
 #### Shorter default channel names
 
-<img src="https://media.forgecdn.net/attachments/739/823/ss8.png"/>
+<img src="https://imgur.com/IyVRBqY.png"/>
 
 #### Upgraded default castbar
 
-<img src="https://media.forgecdn.net/attachments/739/825/ss10.png"/>
+<img src="https://imgur.com/ovYuo0J.png"/>
 
 #### Upgraded default raid frames
 
-<img src="https://media.forgecdn.net/attachments/739/826/ss11.png"/>
+<img src="https://imgur.com/abZgCpd.png"/>
 
 #### Class color unit frames
 
-<img src="https://media.forgecdn.net/attachments/739/828/ss12.png"/>
+<img src="https://imgur.com/hQbS7Xz.png"/>
 
 #### Inspect groups in tooltip
 
-<img src="https://media.forgecdn.net/attachments/739/824/ss9.png"/>
+<img src="https://imgur.com/E2MjrUo.png"/>
 
 - Double click sign up - Double left click to sign up for premade groups, automatically skipping the note popup. If you want to sign up with a note, hold Shift when double-clicking.
 - Silence Application sound - Mute the annoying application sign up sound when you are creating a group.
