@@ -1,8 +1,11 @@
 settingsDB = settingsDB or {}
 
+local GetNameplateByID = C_NamePlate.GetNamePlateForUnit
+
 local defaultSettings = {
     version = GetAddOnMetadata("Gigancement", "Version"),
-    enableNameplateModule = true,
+    enableHPTextNameplate = false,
+    enableCastTimerNameplate = false,
     enableShorterKeybinds = true,
     enableHideKeybindText = false,
     enableHideMacroText = false,
@@ -60,7 +63,7 @@ function ColorCallback(restore)
 end
 
 local function HandlePlatesHook()
-    if settingsDB.enableNameplateModule then
+    if settingsDB.enableHPTextNameplate then
         hooksecurefunc("CompactUnitFrame_UpdateHealth", HPTextNameplate)
     end
 end
@@ -88,7 +91,7 @@ function InitVariables()
     end
 end
 
-function CreateCheckbox(option, label, parent, tooltip, cvarName)
+function CreateCheckbox(option, label, parent, tooltip, new)
     local checkBox = CreateFrame("CheckButton", nil, parent, "SettingsCheckBoxTemplate")
     checkBox.Text = checkBox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
     checkBox.Text:SetText(label)
@@ -108,6 +111,12 @@ function CreateCheckbox(option, label, parent, tooltip, cvarName)
         end)
         checkBox.Text:SetScript("OnLeave", GameTooltip_Hide)
     end
+    if(new == 1) then
+        local NewFeature = CreateFrame("Frame", nil, checkBox, "NewFeatureLabelTemplate")
+        NewFeature:SetScale(0.8)
+        NewFeature:SetPoint("RIGHT", checkBox.Text, "LEFT", -37, 0)
+        NewFeature:Show()
+    end
 
     -- update things when clicked
     local function UpdateOption(value, clicked)
@@ -115,7 +124,7 @@ function CreateCheckbox(option, label, parent, tooltip, cvarName)
         settingsDB[option] = modValue
         checkBox:SetChecked(value)
         -- realtime changes (without need to reload)
-        if clicked == 1 and (option == "enableNameplateModule" or option == "enableShorterKeybinds" or option == "enableUpgradedCastbar" or option == "enableClassColorsUnitFrames") then
+        if clicked == 1 and (option == "enableHPTextNameplate" or option == "enableShorterKeybinds" or option == "enableUpgradedCastbar" or option == "enableClassColorsUnitFrames" or option == "enableCastTimerNameplate") then
             settingsInterface.reloadButton:Show()
         end
         if option == "enableHideKeybindText" or option == "enableHideMacroText" then
@@ -210,7 +219,7 @@ function settingsInterface:Initialize()
     self.reloadButton:Hide()
 
     self.scrollFrame = CreateFrame("ScrollFrame", nil, self, "ScrollFrameTemplate")
-    self.scrollFrame:SetPoint("TOPLEFT", self.HorizontalDivider, "TOPLEFT", 0, -8)
+    self.scrollFrame:SetPoint("TOPLEFT", self.HorizontalDivider, "TOPLEFT", -20, -8)
 	self.scrollFrame:SetPoint("BOTTOMRIGHT", -26, 0)
 
 	self.scrollChild = CreateFrame("Frame")
@@ -221,13 +230,16 @@ function settingsInterface:Initialize()
     -- nameplate module
     self.nameplateModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.nameplateModuleTitle:SetText("Nameplate")
-    self.nameplateModuleTitle:SetPoint("TOPLEFT", self.scrollChild, "BOTTOMLEFT", 3.5, -19)
-    self.nameplateModule = CreateCheckbox("enableNameplateModule", "Health % on Nameplates", self.scrollChild, "Show health and health % on enemy nameplates. |cffFF0000Reload|r is required.")
-    self.nameplateModule:SetPoint("TOPLEFT",  self.nameplateModuleTitle, "BOTTOMLEFT", 230, -20)
+    self.nameplateModuleTitle:SetPoint("TOPLEFT", self.scrollChild, "BOTTOMLEFT", 23.5, -19)
+    self.hpTextNameplate = CreateCheckbox("enableHPTextNameplate", "Health % on Nameplates", self.scrollChild, "Show health and health % on all nameplates. |cffFF0000Reload|r is required.")
+    self.hpTextNameplate:SetPoint("TOPLEFT",  self.nameplateModuleTitle, "BOTTOMLEFT", 230, -20)
+    self.castTimerNameplate = CreateCheckbox("enableCastTimerNameplate", "Cast time on Nameplates", self.scrollChild, "Show cast bar timer on all nameplates. |cffFF0000Reload|r is required.", 1)
+    self.castTimerNameplate:SetPoint("TOPLEFT",  self.hpTextNameplate, "BOTTOMLEFT", 0, -10)
+    
     -- actionbar module
     self.actionbarModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.actionbarModuleTitle:SetText("Action Bar")
-    self.actionbarModuleTitle:SetPoint("TOPLEFT", self.nameplateModule, "BOTTOMLEFT", -230, -20)
+    self.actionbarModuleTitle:SetPoint("TOPLEFT", self.castTimerNameplate, "BOTTOMLEFT", -230, -20)
     self.shorterKeybinds = CreateCheckbox("enableShorterKeybinds", "Shorter keybind names", self.scrollChild, "Show keybinds as S1, A1, M1 instead of s-1, a-1, Mouse... |cffFF0000Reload|r is required.")
     self.shorterKeybinds:SetPoint("TOPLEFT",  self.actionbarModuleTitle, "BOTTOMLEFT", 230, -20)
     self.hideKeybindText = CreateCheckbox("enableHideKeybindText", "Hide keybind text", self.scrollChild, "Hide keybind text from all action bar buttons.")
@@ -292,8 +304,10 @@ settingsInterface:RegisterEvent("PLAYER_FLAGS_CHANGED")
 settingsInterface:RegisterEvent("PLAYER_ENTERING_WORLD")
 settingsInterface:RegisterEvent("PARTY_LEADER_CHANGED") 
 settingsInterface:RegisterEvent("RAID_TARGET_UPDATE")
-settingsInterface:SetScript("OnEvent", function(self, event, name)
-    if (event == "ADDON_LOADED" and name == "Gigancement") then
+settingsInterface:RegisterEvent("UNIT_SPELLCAST_START")
+settingsInterface:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+settingsInterface:SetScript("OnEvent", function(self, event, arg1)
+    if event == "ADDON_LOADED" and arg1 == "Gigancement" then
         -- Init
         InitVariables()
         settingsInterface:Initialize()
@@ -306,8 +320,12 @@ settingsInterface:SetScript("OnEvent", function(self, event, name)
         UpgradeDefaultCastbar()
         HandlePlatesHook()
         HandleUnitFramePortraitClassColorsUpdate()
-    elseif (event == "LFG_LIST_SEARCH_RESULTS_RECEIVED") then
+    elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
         LFGDoubleClick()
+    elseif settingsDB.enableCastTimerNameplate and (event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START") then
+        local nameplate = GetNameplateByID(arg1)
+        if not nameplate then return end
+        CastTimerNameplate(nameplate)
     else
         UpgradeRaidFrames()
     end

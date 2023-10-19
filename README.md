@@ -19,9 +19,18 @@ Some of them require reloading, others are applied right away!
 
 ## Features
 
+### **\*NEW\***
+
+#### Cast time on Nameplates
+
+<img src="https://imgur.com/3h384Sr.png"/>
+
+<hr>
+
 #### Health % on Nameplates
 
 <img src="https://imgur.com/h9ZoDRk.png"/>
+
 
 #### Shorter keybind names
 

@@ -1,9 +1,13 @@
-# **1.0.0**
+# **1.1**
 
-### INFO
+### \*NEW\*
 
-- `/giga` - Open options </br>
-- `/clear` - Clear all chat tabs
-- `/lg` - Leave your current raid/party group with a goodbye message
-- `/ssd` - Print your current character Secondary Stat Distribution in the chat
-- `/rcme` - Show MRT ready check popup (MRT addon required)
+#### Cast time on Nameplates
+
+<img src="https://imgur.com/3h384Sr.png"/>
+
+<hr>
+
+### FIX
+* Fixed and optimized hp nameplates code
+* Changed some variables in DB, please recheck addon settings
