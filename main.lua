@@ -197,9 +197,10 @@ end
 
 function settingsInterface:Initialize()
     -- header
+    self.name = "Gigancement"
     self.bigTitle = self:CreateFontString(nil, "ARTWORK", "GameFontHighlightHuge")
     self.bigTitle:SetJustifyH("LEFT")
-    self.bigTitle:SetText("Gigancement" .. " v" .. GetAddOnMetadata("Gigancement", "Version"))
+    self.bigTitle:SetText(self.name .. " v" .. GetAddOnMetadata("Gigancement", "Version"))
 	self.bigTitle:SetPoint("TOPLEFT", 7, -22)
 	
     self.HorizontalDivider = self:CreateTexture()
