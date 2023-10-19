@@ -3,7 +3,6 @@ settingsDB = settingsDB or {}
 local GetNameplateByID = C_NamePlate.GetNamePlateForUnit
 
 local defaultSettings = {
-    version = GetAddOnMetadata("Gigancement", "Version"),
     enableHPTextNameplate = false,
     enableCastTimerNameplate = false,
     enableShorterKeybinds = true,
@@ -198,11 +197,9 @@ end
 
 function settingsInterface:Initialize()
     -- header
-    local name = "Gigancement"
-    self.name = name
     self.bigTitle = self:CreateFontString(nil, "ARTWORK", "GameFontHighlightHuge")
     self.bigTitle:SetJustifyH("LEFT")
-    self.bigTitle:SetText(name .. " v" .. settingsDB.version)
+    self.bigTitle:SetText("Gigancement" .. " v" .. GetAddOnMetadata("Gigancement", "Version"))
 	self.bigTitle:SetPoint("TOPLEFT", 7, -22)
 	
     self.HorizontalDivider = self:CreateTexture()
