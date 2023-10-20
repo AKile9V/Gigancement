@@ -6,7 +6,7 @@ local C_Timer = C_Timer
 -- Health percent text
 -- TODO: split into multiple options for only %, hptext or all
 function HPTextNameplate(frame)
-  if not frame.health then
+  if not frame:IsForbidden() and not frame.health then
     frame.health = CreateFrame("Frame", nil, frame)
     frame.health:SetSize(170, 16)
     frame.health.text = frame.health.text or frame.health:CreateFontString(nil, "OVERLAY")

@@ -1,4 +1,4 @@
-# **1.1.2**
+# **1.1.3**
 
 ### \*NEW\*
 
@@ -9,6 +9,7 @@
 <hr>
 
 ### FIX
+* Fixed in instance lua error
 * Fixed no-name UI option bug
 * Fixed new version number update
 * Fixed and optimized hp nameplates code
