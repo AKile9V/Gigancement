@@ -1,3 +1,8 @@
+# **1.1.4**
+
+### FIX
+* Slightly reduced CPU usage by improving the logic behind castbar timers
+
 # **1.1.3**
 
 ### \*NEW\*

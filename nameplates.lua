@@ -41,7 +41,7 @@ function CastTimerNameplate(nameplate)
     nameplate.UnitFrame.castBar.timer:SetFont(STANDARD_TEXT_FONT,8,"OUTLINE")
     nameplate.UnitFrame.castBar.timer:SetPoint("LEFT", nameplate.UnitFrame.castBar, "RIGHT", -10, 0)
     nameplate.UnitFrame.castBar.timer:SetText("")
-    nameplate.UnitFrame.castBar:HookScript("OnUpdate", function(self)
+    nameplate.UnitFrame.castBar:HookScript("OnValueChanged", function(self)
       if self.casting then
         self.timer:SetText(format("%.1f", max(nameplate.UnitFrame.castBar.maxValue - nameplate.UnitFrame.castBar.value, 0)))
       elseif self.channeling then

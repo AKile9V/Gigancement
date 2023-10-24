@@ -5,11 +5,11 @@ local mapKeybinds = {
 	["Middle Mouse"] = "M3",
 	["Mouse Wheel Down"] = "DWN",
 	["Mouse Wheel Up"] = "UP",
-    ["Home"] = "Hm",
-    ["Insert"] = "Ins",
-    ["Page Down"] = "PD",
-    ["Page Up"] = "PU",
-    ["Spacebar"] = "SB",
+	["Home"] = "Hm",
+	["Insert"] = "Ins",
+	["Page Down"] = "PD",
+	["Page Up"] = "PU",
+	["Spacebar"] = "SB",
 }
 
 local modPatterns = {
@@ -18,7 +18,7 @@ local modPatterns = {
 	["a%-"] = "A", -- alt
 	["c%-"] = "C", -- ctrl
 	["s%-"] = "S", -- shift
-    ["Mouse Wheel Down"] = "MD",
+	["Mouse Wheel Down"] = "MD",
 	["Mouse Wheel Up"] = "MU",
 }
 
