@@ -1,3 +1,9 @@
+# **1.1.5**
+
+### FIX
+* Shorter keybinds for PetActionBar
+* Updated .toc version to 10.2
+
 # **1.1.4**
 
 ### FIX

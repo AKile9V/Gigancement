@@ -44,6 +44,7 @@ function HandleShortenKeybinds()
 		hooksecurefunc(_G["MultiBar5Button"..i], "UpdateHotkeys", ShortenKeybinds)
 		hooksecurefunc(_G["MultiBar6Button"..i], "UpdateHotkeys", ShortenKeybinds)
 		hooksecurefunc(_G["MultiBar7Button"..i], "UpdateHotkeys", ShortenKeybinds)
+		hooksecurefunc(_G["PetActionButton"..((i <= 10) and i or 2)], "SetHotkeys", ShortenKeybinds)
 	end
 end
 
@@ -54,18 +55,20 @@ function ShouldHideActionbarButtonsText()
 		_G["MultiBarBottomRightButton"..i.."HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
 		_G["MultiBarLeftButton"..i.."HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
 		_G["MultiBarRightButton"..i.."HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
-		_G["MultiBar5Button" .. i .. "HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
-		_G["MultiBar6Button" .. i .. "HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
-		_G["MultiBar7Button" .. i .. "HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
+		_G["MultiBar5Button"..i.."HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
+		_G["MultiBar6Button"..i.."HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
+		_G["MultiBar7Button"..i.."HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
+		_G["PetActionButton"..((i <= 10) and i or 2).."HotKey"]:SetAlpha(settingsDB.enableHideKeybindText and 0 or 1)
 
 		_G["ActionButton"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
 		_G["MultiBarBottomLeftButton"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
 		_G["MultiBarBottomRightButton"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
 		_G["MultiBarLeftButton"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
 		_G["MultiBarRightButton"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
-		_G["MultiBar5Button" .. i .. "Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
-		_G["MultiBar6Button" .. i .. "Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
-		_G["MultiBar7Button" .. i .. "Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
+		_G["MultiBar5Button"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
+		_G["MultiBar6Button"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
+		_G["MultiBar7Button"..i.."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1)
+		-- _G["PetActionButton"..((i <= 10) and i or 2).."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1) -- cannot macro petactionbar
 	end
 end
 -- // Actionbar button texts
