@@ -71,4 +71,4 @@ function ShouldHideActionbarButtonsText()
 		-- _G["PetActionButton"..((i <= 10) and i or 2).."Name"]:SetAlpha(settingsDB.enableHideMacroText and 0 or 1) -- cannot macro petactionbar
 	end
 end
--- // Actionbar button texts
+-- Actionbar button texts // END

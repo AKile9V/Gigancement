@@ -1,27 +1,8 @@
-# **1.1.5**
-
-### FIX
-* Shorter keybinds for PetActionBar
-* Updated .toc version to 10.2
-
-# **1.1.4**
-
-### FIX
-* Slightly reduced CPU usage by improving the logic behind castbar timers
-
-# **1.1.3**
+# **1.2.0**
 
 ### \*NEW\*
+#### Character Panel upgrades
+* Equipped/Max item level
+* Class color item level
 
-#### Cast time on Nameplates
-
-<img src="https://imgur.com/3h384Sr.png"/>
-
-<hr>
-
-### FIX
-* Fixed in instance lua error
-* Fixed no-name UI option bug
-* Fixed new version number update
-* Fixed and optimized hp nameplates code
-* Changed some variables in DB, please recheck addon settings
+<img src="https://imgur.com/8l41vXX.png"/>

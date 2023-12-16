@@ -20,6 +20,8 @@ local defaultSettings = {
     enableUpgradedCastbar = true,
     enableClassColorsUnitFrames = true,
     enableUpgradedRaidFrames = true,
+    enableDecimalILVL = true,
+    enableClassColorILVL = true,
 }
 local roleTex = {
     DAMAGER = "|A:UI-LFG-RoleIcon-DPS-Micro:15:15|a",
@@ -76,6 +78,12 @@ end
 local function HandleUnitFramePortraitClassColorsUpdate()
     if settingsDB.enableClassColorsUnitFrames then
         hooksecurefunc("UnitFramePortrait_Update", UnitFramesClassColors)
+    end
+end
+
+local function HandleCharacterInfoILVLHook(statFrame, unit)
+    if settingsDB.enableDecimalILVL then
+        DecimalILVL(statFrame, unit)
     end
 end
 
@@ -206,7 +214,6 @@ function settingsInterface:Initialize()
     self.HorizontalDivider = self:CreateTexture()
     self.HorizontalDivider:SetAtlas("Options_HorizontalDivider", true)
     self.HorizontalDivider:SetPoint("TOPLEFT", self.bigTitle, "TOPLEFT", 7, -28)
-    -- TODO: default and reload button
     self.reloadButton = CreateFrame("Button", nil, self, "UIPanelButtonTemplate")
     self.reloadButton:SetText("RELOAD")
     self.reloadButton:SetWidth(96)
@@ -231,9 +238,8 @@ function settingsInterface:Initialize()
     self.nameplateModuleTitle:SetPoint("TOPLEFT", self.scrollChild, "BOTTOMLEFT", 23.5, -19)
     self.hpTextNameplate = CreateCheckbox("enableHPTextNameplate", "Health % on Nameplates", self.scrollChild, "Show health and health % on all nameplates. |cffFF0000Reload|r is required.")
     self.hpTextNameplate:SetPoint("TOPLEFT",  self.nameplateModuleTitle, "BOTTOMLEFT", 230, -20)
-    self.castTimerNameplate = CreateCheckbox("enableCastTimerNameplate", "Cast time on Nameplates", self.scrollChild, "Show cast bar timer on all nameplates. |cffFF0000Reload|r is required.", 1)
+    self.castTimerNameplate = CreateCheckbox("enableCastTimerNameplate", "Cast time on Nameplates", self.scrollChild, "Show cast bar timer on all nameplates. |cffFF0000Reload|r is required.")
     self.castTimerNameplate:SetPoint("TOPLEFT",  self.hpTextNameplate, "BOTTOMLEFT", 0, -10)
-    
     -- actionbar module
     self.actionbarModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.actionbarModuleTitle:SetText("Action Bar")
@@ -287,6 +293,14 @@ function settingsInterface:Initialize()
     self.upgradedRaidFrames:SetPoint("TOPLEFT", self.upgradedCastbar, "BOTTOMLEFT", 0, -10)
     self.classColorsUnitFrames = CreateCheckbox("enableClassColorsUnitFrames", "Class color unit frames", self.scrollChild, "Use class colors on default Blizzard unit frames such as Player, Target and Focus frames. |cffFF0000Reload|r is required.")
     self.classColorsUnitFrames:SetPoint("TOPLEFT", self.upgradedRaidFrames, "BOTTOMLEFT", 0, -10)
+    -- PaperDoll-CharacterInfo
+    self.characterInfoTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
+    self.characterInfoTitle:SetText("Character Info")
+    self.characterInfoTitle:SetPoint("TOPLEFT", self.classColorsUnitFrames, "BOTTOMLEFT", -230, -20)
+    self.decimalILVL = CreateCheckbox("enableDecimalILVL", "Equipped/Max item level", self.scrollChild, "Show |cffa335eeequipped/maximum|r item level with an accuracy of two decimal places.", 1)
+    self.decimalILVL:SetPoint("TOPLEFT", self.characterInfoTitle, "BOTTOMLEFT", 230, -20)
+    self.classColorILVL = CreateCheckbox("enableClassColorILVL", "Class color item level", self.scrollChild, "Show |c"..RAID_CLASS_COLORS[select(2, UnitClass("player"))].colorStr.."equipped/maximum|r item level in class color.", 1)
+    self.classColorILVL:SetPoint("TOPLEFT", self.decimalILVL, "BOTTOMLEFT", 0, -10)
 
     InterfaceOptions_AddCategory(self)
 end
@@ -330,3 +344,4 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1)
 
 end)
 hooksecurefunc('LFGListUtil_SetSearchEntryTooltip', HandleLFGTooltipHook)
+hooksecurefunc("PaperDollFrame_SetItemLevel", HandleCharacterInfoILVLHook)
