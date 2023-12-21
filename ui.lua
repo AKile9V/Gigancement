@@ -171,7 +171,7 @@ end
 function UpgradeRaidFrames()
   if (CompactRaidFrameContainer:IsShown() and not CompactRaidFrameContainer:IsForbidden()) or (CompactPartyFrame:IsShown() and not CompactPartyFrame:IsForbidden()) then
 		CompactRaidFrameContainer:ApplyToFrames("all", function(frame)
-      UpdateIcons(frame)
+      C_Timer.After(0, function() UpdateIcons(frame) end)
     end)
 	end
 end
