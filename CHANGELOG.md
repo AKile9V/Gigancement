@@ -1,5 +1,12 @@
 # **1.2.1**
 
+### UPDATE
+* ToC update for 10.2.5 patch
+
+
+
+# **1.2.1**
+
 ### FIX
 * Leader, Assist and Raid markers bug fix: Now, when you pass the leader or give somebody an assist and then change the roster, everything should work as intended
 
