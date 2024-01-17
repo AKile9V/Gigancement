@@ -1,4 +1,4 @@
-# **1.2.1**
+# **1.2.2**
 
 ### UPDATE
 * ToC update for 10.2.5 patch
