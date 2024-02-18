@@ -14,6 +14,7 @@ local defaultSettings = {
     colorLinkBlue = 1,
     enableRolesInChat = true,
     enableShorterChannelNames = true,
+    enableChatMouseoverItemTooltip = false,
     enableInspectLFG = true,
     enableDoubleClickLFG = true,
     enableMuteApplicantSound = true,
@@ -41,10 +42,10 @@ local settingsInterface = CreateFrame("Frame") -- options panel for tweaking the
 
 --Color Picker
 local function ShowColorPicker(red, green, blue, alpha, objectColor, changedCallback)
-    ColorPickerFrame:SetColorRGB(red, green, blue)
+    ColorPickerFrame.Content.ColorPicker:SetColorRGB(red, green, blue)
     ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (alpha ~= nil), alpha
     ColorPickerFrame.previousValues = {red, green, blue, alpha}
-    ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc =  changedCallback, changedCallback, changedCallback
+    ColorPickerFrame.func, ColorPickerFrame.swatchFunc, ColorPickerFrame.cancelFunc =  changedCallback, changedCallback, changedCallback
     ColorPickerFrame.objectColor = objectColor
     ColorPickerFrame:Hide()
     ColorPickerFrame:Show()
@@ -55,7 +56,7 @@ function ColorCallback(restore)
     if restore then
      newR, newG, newB, newA = unpack(restore)
     else
-     newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB()
+     newA, newR, newG, newB = ColorPickerFrame:GetColorAlpha(), ColorPickerFrame:GetColorRGB()
     end 
     if ColorPickerFrame.objectColor == settingsInterface.linkColor then
         settingsDB.colorLinkRed, settingsDB.colorLinkGreen, settingsDB.colorLinkBlue = newR, newG, newB
@@ -273,10 +274,12 @@ function settingsInterface:Initialize()
     self.rolesInChat:SetPoint("TOPLEFT", self.linksInChat, "BOTTOMLEFT", 0, -10)
     self.shorterChannelNames = CreateCheckbox("enableShorterChannelNames", "Shorter default channel names", self.scrollChild, "[R] for [Raid], [P] for [Party], etc.")
     self.shorterChannelNames:SetPoint("TOPLEFT", self.rolesInChat, "BOTTOMLEFT", 0, -10)
+    self.chatMouseoverItemTooltip = CreateCheckbox("enableChatMouseoverItemTooltip", "Chat Mouseover tooltips", self.scrollChild, "Show the mouse tooltip when mouseover an item/mount/pet/achievement (or anything else that requires a click on it to show a tooltip) in chat.", 1)
+    self.chatMouseoverItemTooltip:SetPoint("TOPLEFT", self.shorterChannelNames, "BOTTOMLEFT", 0, -10)
     -- lfg module
     self.lfgModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.lfgModuleTitle:SetText("LFG")
-    self.lfgModuleTitle:SetPoint("TOPLEFT", self.shorterChannelNames, "BOTTOMLEFT", -230, -20)
+    self.lfgModuleTitle:SetPoint("TOPLEFT", self.chatMouseoverItemTooltip, "BOTTOMLEFT", -230, -20)
     self.inspectLFG = CreateCheckbox("enableInspectLFG", "Inspect groups in tooltip", self.scrollChild, "On mouseover inspect any premade group and show the leader, all specs and roles in the tooltip.")
     self.inspectLFG:SetPoint("TOPLEFT", self.lfgModuleTitle, "BOTTOMLEFT", 230, -20)
     self.doubleClickLFG = CreateCheckbox("enableDoubleClickLFG", "Double click sign up", self.scrollChild, "Double left click to sign up for premade groups, automatically skipping the note popup. If you want to sign up with a note, hold |cff00FF00Shift|r when double-clicking.")
@@ -297,9 +300,9 @@ function settingsInterface:Initialize()
     self.characterInfoTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.characterInfoTitle:SetText("Character Info")
     self.characterInfoTitle:SetPoint("TOPLEFT", self.classColorsUnitFrames, "BOTTOMLEFT", -230, -20)
-    self.decimalILVL = CreateCheckbox("enableDecimalILVL", "Equipped/Max item level", self.scrollChild, "Show |cffa335eeequipped/maximum|r item level with an accuracy of two decimal places.", 1)
+    self.decimalILVL = CreateCheckbox("enableDecimalILVL", "Equipped/Max item level", self.scrollChild, "Show |cffa335eeequipped/maximum|r item level with an accuracy of two decimal places.")
     self.decimalILVL:SetPoint("TOPLEFT", self.characterInfoTitle, "BOTTOMLEFT", 230, -20)
-    self.classColorILVL = CreateCheckbox("enableClassColorILVL", "Class color item level", self.scrollChild, "Show |c"..RAID_CLASS_COLORS[select(2, UnitClass("player"))].colorStr.."equipped/maximum|r item level in class color.", 1)
+    self.classColorILVL = CreateCheckbox("enableClassColorILVL", "Class color item level", self.scrollChild, "Show |c"..RAID_CLASS_COLORS[select(2, UnitClass("player"))].colorStr.."equipped/maximum|r item level in class color.")
     self.classColorILVL:SetPoint("TOPLEFT", self.decimalILVL, "BOTTOMLEFT", 0, -10)
 
     InterfaceOptions_AddCategory(self)
@@ -318,6 +321,11 @@ settingsInterface:RegisterEvent("PARTY_LEADER_CHANGED")
 settingsInterface:RegisterEvent("RAID_TARGET_UPDATE")
 settingsInterface:RegisterEvent("UNIT_SPELLCAST_START")
 settingsInterface:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+settingsInterface:RegisterEvent("CHAT_MSG_WHISPER")
+settingsInterface:RegisterEvent("CHAT_MSG_WHISPER_INFORM")
+settingsInterface:RegisterEvent("CHAT_MSG_BN_WHISPER")
+settingsInterface:RegisterEvent("CHAT_MSG_BN_WHISPER_INFORM")
+
 settingsInterface:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "Gigancement" then
         -- Init
@@ -327,7 +335,7 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1)
         ShouldHideActionbarButtonsText()
         HandleShortenKeybinds()
         LinksInChat()
-        ShortChannelNames()
+        ChatFramesModifications() -- ShortChannelNames & MouseoverItemTooltip
         MuteApplicationSignupSound()
         UpgradeDefaultCastbar()
         HandlePlatesHook()
@@ -338,6 +346,8 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1)
         local nameplate = GetNameplateByID(arg1)
         if not nameplate then return end
         CastTimerNameplate(nameplate)
+    elseif event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_WHISPER_INFORM" or event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
+        ChatWhispersMouseoverItemTooltip()
     else
         UpgradeRaidFrames()
     end

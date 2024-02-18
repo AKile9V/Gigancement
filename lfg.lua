@@ -71,19 +71,20 @@ end
 
 -- Double click to queue + Auto role check
 local function OnDoubleClick(button, buttonName)
-  if (settingsDB.enableDoubleClickLFG and buttonName == "LeftButton" and (IsInGroup() ~= true or UnitIsGroupLeader("player") == true)) then
-    LFGListSearchPanel_SignUp(button:GetParent():GetParent():GetParent())
+  local resultExists = not LFGListFrame.SearchPanel.SignUpButton.tooltip 
+  if (settingsDB.enableDoubleClickLFG and resultExists and buttonName == "LeftButton" and (IsInGroup() ~= true or UnitIsGroupLeader("player") == true)) then
+      LFGListSearchPanel_SignUp(button:GetParent():GetParent():GetParent())
   end
 end
 
-local function AddDoubleClickHook(frame)
-  frame:SetScript("OnDoubleClick", OnDoubleClick)
+local function AddDoubleClickHook(scrollTarget)
+  local buttons = {scrollTarget:GetChildren()}
+  for _, button in ipairs(buttons) do
+    button:SetScript("OnDoubleClick", OnDoubleClick)
+  end
 end
 
-local function LogError(msg)
-	  error("Failed to set double click script")
-end
-
+-- TODO: add as addon option?
 LFGListApplicationDialog:HookScript("OnShow", function() 
   if LFGListApplicationDialog.SignUpButton:IsEnabled() and not IsShiftKeyDown() then 
     LFGListApplicationDialog.SignUpButton:Click() 
@@ -91,20 +92,18 @@ LFGListApplicationDialog:HookScript("OnShow", function()
 end)
 
 function LFGDoubleClick()
-  local frames = LFGListFrame.SearchPanel.ScrollBox:GetView():GetFrames()
-  for _, frame in ipairs(frames) do
-    xpcall(AddDoubleClickHook, LogError, frame)
-  end
+  local scrollTarget = LFGListFrame.SearchPanel.ScrollBox:GetScrollTarget()
+  AddDoubleClickHook(scrollTarget)
 end
+-- Double click to queue + Auto role check // END
 
+-- Silence application sound
 local function DefaultApplicationSound()
   if ( not settingsDB.enableMuteApplicantSound and QueueStatusButton:OnGlowPulse(QueueStatusButton.EyeHighlightAnim) ) then
     PlaySound(SOUNDKIT.UI_GROUP_FINDER_RECEIVE_APPLICATION)
   end
 end
--- Double click to queue + Auto role check // END
 
--- Silence application sound
 function MuteApplicationSignupSound()
   local button = QueueStatusButton
   if button and button.EyeHighlightAnim then

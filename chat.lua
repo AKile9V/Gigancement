@@ -21,15 +21,24 @@ end
 -- Clear chat windows
 SLASH_CHATCLEAR1 = "/clear"
 SlashCmdList["CHATCLEAR"] = function()
-    ChatFrame1:Clear()
-    ChatFrame3:Clear()
-    ChatFrame4:Clear()
-    ChatFrame5:Clear()
-    ChatFrame6:Clear()
-    ChatFrame7:Clear()
-    ChatFrame8:Clear()
-    ChatFrame9:Clear()
-    ChatFrame10:Clear()
+    -- ChatFrame1
+    local chatFrameName
+    local cF = _G["ChatFrame1"]
+    cF:Clear()
+    -- ChatFrame3,4,5,6...10 skipping ChatFrame2(combatlog)
+    for i=3, NUM_CHAT_WINDOWS do
+        chatFrameName = ("%s%d"):format("ChatFrame", i)
+        cF = _G[chatFrameName]
+        cF:Clear()
+    end
+    -- Any other Whisper ChatFrame (don't expect more then 15 whispers opened at the same time)
+    for i=11, 25 do
+        chatFrameName = ("%s%d"):format("ChatFrame", i)
+        cF = _G[chatFrameName]
+        if(cF) then
+            cF:Clear()
+        end
+    end
 end
 
 --Leave Group
@@ -223,6 +232,7 @@ end
 
 local EditMessage = function(self)
     if not settingsDB.enableShorterChannelNames then return end
+
 	local num = self.headIndex
 	if num == 0 then
 		num = self.maxElements
@@ -235,15 +245,66 @@ local EditMessage = function(self)
 	end
 end
 
-function ShortChannelNames()
-    -- ChatFrame1
-    local n = ("%s%d"):format("ChatFrame", 1)
-    local cF = _G[n]
-    hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
-    -- ChatFrame3,4,5,6...10 skipping ChatFrame2(combatlog)
-    for i=3, 10 do
-        n = ("%s%d"):format("ChatFrame", i)
-        cF = _G[n]
-        hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
+local function ChatMouseoverItemTooltip(chatFrame, link, text)
+    if not settingsDB.enableChatMouseoverItemTooltip then return end
+
+    local linkType = LinkUtil.SplitLinkData(link)
+    if linkType == "battlepet" then
+        GameTooltip:SetOwner(chatFrame, "ANCHOR_CURSOR_RIGHT", 4, 2)
+        BattlePetToolTip_ShowLink(text)
+    elseif linkType ~= "trade" then
+        GameTooltip:SetOwner(chatFrame, "ANCHOR_CURSOR_RIGHT", 4, 2)
+        local retOK = pcall(GameTooltip.SetHyperlink, GameTooltip, link)
+        if not retOK then
+            GameTooltip:Hide()
+        else
+            GameTooltip:Show()
+        end
     end
+end
+  
+local function ChatCloseMouseoverItemTooltip()
+    if not settingsDB.enableChatMouseoverItemTooltip then return end
+    
+    BattlePetTooltip:Hide()
+    GameTooltip:Hide()
+end
+
+function ChatWhispersMouseoverItemTooltip()
+    if not settingsDB.enableChatMouseoverItemTooltip then return end
+    
+    local chatFrameName
+    local cF
+    -- 15 whisper chatframes
+    for i=11, 25 do
+        chatFrameName = ("%s%d"):format("ChatFrame", i)
+        cF = _G[chatFrameName]
+        if(cF) then
+            cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
+            cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
+        end
+    end
+end
+
+function ChatFramesModifications()
+    -- ChatFrame1
+    local chatFrameName
+    local cF = _G["ChatFrame1"]
+
+    hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
+
+    cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
+    cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
+    -- ChatFrame3,4,5,6...10 skipping ChatFrame2(combatlog)
+    for i=3, NUM_CHAT_WINDOWS do
+        chatFrameName = ("%s%d"):format("ChatFrame", i)
+        cF = _G[chatFrameName]
+
+        hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
+        
+        cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
+        cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
+    end
+    -- Any other Whisper ChatFrame (don't expect more then 15 whispers opened at the same time)
+    ChatWhispersMouseoverItemTooltip()
 end
