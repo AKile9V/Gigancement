@@ -1,3 +1,10 @@
+# **1.3.1**
+
+### UPDATE
+* ToC update for 10.2.6 patch
+
+
+
 # **1.3.0**
 
 ### \*NEW\*
