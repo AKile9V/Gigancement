@@ -3,6 +3,7 @@ settingsDB = settingsDB or {}
 local GetNameplateByID = C_NamePlate.GetNamePlateForUnit
 
 local defaultSettings = {
+    m_currentInspec = nil,
     enableHPTextNameplate = false,
     enableCastTimerNameplate = false,
     enableShorterKeybinds = true,
@@ -23,6 +24,7 @@ local defaultSettings = {
     enableUpgradedRaidFrames = true,
     enableDecimalILVL = true,
     enableClassColorILVL = true,
+    enableCharacterILVLInfo = true,
 }
 local roleTex = {
     DAMAGER = "|A:UI-LFG-RoleIcon-DPS-Micro:15:15|a",
@@ -99,6 +101,15 @@ function InitVariables()
     end
 end
 
+local needToReloadOptions = {
+    ["enableHPTextNameplate"] = true,
+    ["enableShorterKeybinds"] = true,
+    ["enableUpgradedCastbar"] = true,
+    ["enableClassColorsUnitFrames"] = true,
+    ["enableCastTimerNameplate"] = true,
+    ["enableCharacterILVLInfo"] = true,
+}
+
 function CreateCheckbox(option, label, parent, tooltip, new)
     local checkBox = CreateFrame("CheckButton", nil, parent, "SettingsCheckBoxTemplate")
     checkBox.Text = checkBox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -131,10 +142,10 @@ function CreateCheckbox(option, label, parent, tooltip, new)
         local modValue = value
         settingsDB[option] = modValue
         checkBox:SetChecked(value)
-        -- realtime changes (without need to reload)
-        if clicked == 1 and (option == "enableHPTextNameplate" or option == "enableShorterKeybinds" or option == "enableUpgradedCastbar" or option == "enableClassColorsUnitFrames" or option == "enableCastTimerNameplate") then
+        if clicked == 1 and (needToReloadOptions[option]) then
             settingsInterface.reloadButton:Show()
         end
+        -- realtime changes (without need to reload)
         if option == "enableHideKeybindText" or option == "enableHideMacroText" then
             ShouldHideActionbarButtonsText()
             return
@@ -237,15 +248,15 @@ function settingsInterface:Initialize()
     self.nameplateModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.nameplateModuleTitle:SetText("Nameplate")
     self.nameplateModuleTitle:SetPoint("TOPLEFT", self.scrollChild, "BOTTOMLEFT", 23.5, -19)
-    self.hpTextNameplate = CreateCheckbox("enableHPTextNameplate", "Health % on Nameplates", self.scrollChild, "Show health and health % on all nameplates. |cffFF0000Reload|r is required.")
+    self.hpTextNameplate = CreateCheckbox("enableHPTextNameplate", "Health % on Nameplates", self.scrollChild, "Show health and health % on all nameplates.\n|cffFF0000Reload|r is required.")
     self.hpTextNameplate:SetPoint("TOPLEFT",  self.nameplateModuleTitle, "BOTTOMLEFT", 230, -20)
-    self.castTimerNameplate = CreateCheckbox("enableCastTimerNameplate", "Cast time on Nameplates", self.scrollChild, "Show cast bar timer on all nameplates. |cffFF0000Reload|r is required.")
+    self.castTimerNameplate = CreateCheckbox("enableCastTimerNameplate", "Cast time on Nameplates", self.scrollChild, "Show cast bar timer on all nameplates.\n|cffFF0000Reload|r is required.")
     self.castTimerNameplate:SetPoint("TOPLEFT",  self.hpTextNameplate, "BOTTOMLEFT", 0, -10)
     -- actionbar module
     self.actionbarModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.actionbarModuleTitle:SetText("Action Bar")
     self.actionbarModuleTitle:SetPoint("TOPLEFT", self.castTimerNameplate, "BOTTOMLEFT", -230, -20)
-    self.shorterKeybinds = CreateCheckbox("enableShorterKeybinds", "Shorter keybind names", self.scrollChild, "Show keybinds as S1, A1, M1 instead of s-1, a-1, Mouse... |cffFF0000Reload|r is required.")
+    self.shorterKeybinds = CreateCheckbox("enableShorterKeybinds", "Shorter keybind names", self.scrollChild, "Show keybinds as S1, A1, M1 instead of s-1, a-1, Mouse...\n|cffFF0000Reload|r is required.")
     self.shorterKeybinds:SetPoint("TOPLEFT",  self.actionbarModuleTitle, "BOTTOMLEFT", 230, -20)
     self.hideKeybindText = CreateCheckbox("enableHideKeybindText", "Hide keybind text", self.scrollChild, "Hide keybind text from all action bar buttons.")
     self.hideKeybindText:SetPoint("TOPLEFT",  self.shorterKeybinds, "BOTTOMLEFT", 0, -10)
@@ -274,7 +285,7 @@ function settingsInterface:Initialize()
     self.rolesInChat:SetPoint("TOPLEFT", self.linksInChat, "BOTTOMLEFT", 0, -10)
     self.shorterChannelNames = CreateCheckbox("enableShorterChannelNames", "Shorter default channel names", self.scrollChild, "[R] for [Raid], [P] for [Party], etc.")
     self.shorterChannelNames:SetPoint("TOPLEFT", self.rolesInChat, "BOTTOMLEFT", 0, -10)
-    self.chatMouseoverItemTooltip = CreateCheckbox("enableChatMouseoverItemTooltip", "Chat Mouseover tooltips", self.scrollChild, "Show the mouse tooltip when mouseover an item/mount/pet/achievement (or anything else that requires a click on it to show a tooltip) in chat.", 1)
+    self.chatMouseoverItemTooltip = CreateCheckbox("enableChatMouseoverItemTooltip", "Chat Mouseover tooltips", self.scrollChild, "Show the mouse tooltip when mouseover an item/mount/pet/achievement (or anything else that requires a click on it to show a tooltip) in chat.")
     self.chatMouseoverItemTooltip:SetPoint("TOPLEFT", self.shorterChannelNames, "BOTTOMLEFT", 0, -10)
     -- lfg module
     self.lfgModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
@@ -290,11 +301,11 @@ function settingsInterface:Initialize()
     self.uiModuleTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     self.uiModuleTitle:SetText("UI")
     self.uiModuleTitle:SetPoint("TOPLEFT", self.muteApplicantSound, "BOTTOMLEFT", -230, -20)
-    self.upgradedCastbar = CreateCheckbox("enableUpgradedCastbar", "Upgraded default castbar", self.scrollChild, "Show the spell icon, remaining and total cast time on the Player, Target and Focus casting bars. |cffFF0000Reload|r is required.")
+    self.upgradedCastbar = CreateCheckbox("enableUpgradedCastbar", "Upgraded default castbar", self.scrollChild, "Show the spell icon, remaining and total cast time on the Player, Target and Focus casting bars.\n|cffFF0000Reload|r is required.")
     self.upgradedCastbar:SetPoint("TOPLEFT", self.uiModuleTitle, "BOTTOMLEFT", 230, -20)
     self.upgradedRaidFrames = CreateCheckbox("enableUpgradedRaidFrames", "Upgraded default raid frames", self.scrollChild, "Show raid marks, leader and co-leader icons on the default Blizzard Raid Plates.")
     self.upgradedRaidFrames:SetPoint("TOPLEFT", self.upgradedCastbar, "BOTTOMLEFT", 0, -10)
-    self.classColorsUnitFrames = CreateCheckbox("enableClassColorsUnitFrames", "Class color unit frames", self.scrollChild, "Use class colors on default Blizzard unit frames such as Player, Target and Focus frames. |cffFF0000Reload|r is required.")
+    self.classColorsUnitFrames = CreateCheckbox("enableClassColorsUnitFrames", "Class color unit frames", self.scrollChild, "Use class colors on default Blizzard unit frames such as Player, Target and Focus frames.\n|cffFF0000Reload|r is required.")
     self.classColorsUnitFrames:SetPoint("TOPLEFT", self.upgradedRaidFrames, "BOTTOMLEFT", 0, -10)
     -- PaperDoll-CharacterInfo
     self.characterInfoTitle = self.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
@@ -304,6 +315,8 @@ function settingsInterface:Initialize()
     self.decimalILVL:SetPoint("TOPLEFT", self.characterInfoTitle, "BOTTOMLEFT", 230, -20)
     self.classColorILVL = CreateCheckbox("enableClassColorILVL", "Class color item level", self.scrollChild, "Show |c"..RAID_CLASS_COLORS[select(2, UnitClass("player"))].colorStr.."equipped/maximum|r item level in class color.")
     self.classColorILVL:SetPoint("TOPLEFT", self.decimalILVL, "BOTTOMLEFT", 0, -10)
+    self.characterILVLInfo = CreateCheckbox("enableCharacterILVLInfo", "Item level on Player and\nInspect frame", self.scrollChild, "Show ilvl, enchants and gems on the Character and Inspect frames for each equipment slot.\n|cffFF0000Reload|r is required.", 1)
+    self.characterILVLInfo:SetPoint("TOPLEFT", self.classColorILVL, "BOTTOMLEFT", 0, -10)
 
     InterfaceOptions_AddCategory(self)
 end
@@ -325,6 +338,9 @@ settingsInterface:RegisterEvent("CHAT_MSG_WHISPER")
 settingsInterface:RegisterEvent("CHAT_MSG_WHISPER_INFORM")
 settingsInterface:RegisterEvent("CHAT_MSG_BN_WHISPER")
 settingsInterface:RegisterEvent("CHAT_MSG_BN_WHISPER_INFORM")
+settingsInterface:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+settingsInterface:RegisterEvent("INSPECT_READY")
+settingsInterface:RegisterEvent("UNIT_INVENTORY_CHANGED")
 
 settingsInterface:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "Gigancement" then
@@ -348,6 +364,23 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1)
         CastTimerNameplate(nameplate)
     elseif event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_WHISPER_INFORM" or event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
         ChatWhispersMouseoverItemTooltip()
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        C_Timer.After(0, function() UpdateAllEquipmentSlots("player") end)
+    elseif event == "PLAYER_EQUIPMENT_CHANGED" and arg1 ~= nil then
+        UpdateEquipmentSlot("player", arg1)
+    elseif event == "UNIT_INVENTORY_CHANGED" and arg1 ~= nil then
+        if (UnitGUID(arg1) ~= UnitGUID("player") and settingsDB.m_currentInspec~= nil and settingsDB.m_currentInspec == UnitGUID(arg1)) or arg1 == "player" then
+            UpdateAllEquipmentSlots(arg1)
+        end
+    elseif event == "INSPECT_READY" then
+        local unit = nil
+        if(_G.InspectFrame) then
+            unit = _G.InspectFrame.unit
+        else
+            unit = "target"
+        end
+        settingsDB.m_currentInspec = UnitGUID(unit)
+        UpdateAllEquipmentSlots(unit)
     else
         UpgradeRaidFrames()
     end

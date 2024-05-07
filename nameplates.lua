@@ -19,6 +19,10 @@ function HPTextNameplate(frame)
   end
   
   if not frame:IsForbidden() and frame.optionTable.colorNameBySelection then
+    if(UnitIsFriend("player", frame.unit)) then
+      frame.health.text:SetText(" ")
+      return
+    end
     local healthPercentage = ("%.02f"):format(((UnitHealth(frame.displayedUnit) / UnitHealthMax(frame.displayedUnit) * 100)))
     local hpHealth = UnitHealth(frame.displayedUnit)
     if hpHealth >= 1e9 then

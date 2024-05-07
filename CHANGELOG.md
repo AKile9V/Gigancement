@@ -1,3 +1,16 @@
+# **1.4.0**
+
+### \*NEW\*
+### Character info
+* Item level on Player character frame and Inspect frame
+* Gems and enchants for each equipment slot (***TODO:** I will add checkbox to toggle these. For now it will be always enabled*)
+<img src="https://imgur.com/8ukM6o0.png"/>
+
+### FIX
+* Disabled HP text on friendly nameplates
+
+
+
 # **1.3.1**
 
 ### UPDATE
