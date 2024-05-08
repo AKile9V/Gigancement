@@ -170,7 +170,7 @@ function UpdateEquipmentSlot(unitId, slotId)
     if not settingsDB.enableCharacterILVLInfo then
 		return
 	end
-    if unitId == nil or slotId == nil then
+    if unitId == nil or UnitGUID(unitId) == nil or slotId == nil then
         return
     end
     

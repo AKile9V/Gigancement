@@ -373,14 +373,9 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1)
             UpdateAllEquipmentSlots(arg1)
         end
     elseif event == "INSPECT_READY" then
-        local unit = nil
-        if(_G.InspectFrame) then
-            unit = _G.InspectFrame.unit
-        else
-            unit = "target"
-        end
-        settingsDB.m_currentInspec = UnitGUID(unit)
-        UpdateAllEquipmentSlots(unit)
+        local unit = (_G.InspectFrame and _G.InspectFrame.unit)
+        settingsDB.m_currentInspec = UnitGUID(unit or "target")
+        UpdateAllEquipmentSlots(unit or "target")
     else
         UpgradeRaidFrames()
     end

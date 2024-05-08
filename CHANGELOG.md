@@ -1,3 +1,11 @@
+# **1.4.1**
+
+### UPDATE
+* ToC update for 10.2.7 patch
+* Fixed some mouseover/inspect lua errors
+
+
+
 # **1.4.0**
 
 ### \*NEW\*
