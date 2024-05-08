@@ -49,8 +49,9 @@ end
 function SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
   local searchResultInfo = C_LFGList.GetSearchResultInfo(resultID)
   local activityInfo = C_LFGList.GetActivityInfoTable(searchResultInfo.activityID, nil, searchResultInfo.isWarMode)
+  if activityInfo.isMythicPlusActivity == true or activityInfo.isMythicActivity == true then return end
   if activityInfo.displayType ~= Enum.LFGListDisplayType.ClassEnumerate then
-    local found = CheckIfTooltipContains(tooltip, {LFG_LIST_ENTRY_DELISTED, LFG_LIST_TOOLTIP_FRIENDS_IN_GROUP, LFG_LIST_TOOLTIP_AUTO_ACCEPT, LFG_LIST_BOSSES_DEFEATED})
+    local found = CheckIfTooltipContains(tooltip, {LFG_LIST_TOOLTIP_MEMBERS, LFG_LIST_TOOLTIP_MEMBERS_SIMPLE})
     if (found) then
       tooltip:AddLine(" ")
       tooltip:AddLine(NORMAL_FONT_COLOR_CODE .. "Members Specialization:" .. FONT_COLOR_CODE_CLOSE)
@@ -61,8 +62,8 @@ function SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
       local player = sortedMaps[i]
       local classColor = RAID_CLASS_COLORS[player.class] or NORMAL_FONT_COLOR
       local leaderArt = ""
-      if player.isLeader then leaderArt = "|TInterface\\GroupFrame\\UI-Group-LeaderIcon:0|t" end
-      tooltip:AddLine(getRoleTex(player.role)..leaderArt.."|c"..classColor.colorStr..player.specLocalized.."|r")
+      if player.isLeader then leaderArt = "|A:groupfinder-icon-leader:9:14|a" end
+      tooltip:AddLine(getRoleTex(player.role) .. " |c".. classColor.colorStr .. player.classLocalized .. " - " .. player.specLocalized .."|r " .. leaderArt)
     end
   end
   tooltip:Show()

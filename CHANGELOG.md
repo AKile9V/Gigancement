@@ -1,3 +1,11 @@
+# **1.4.3**
+
+### UPDATE
+* New Blizzard role icons in chat and LFG Tooltip
+* Removed LFG group inspect for dungeons/m+ (Blizzard implemented this in 10.2.7)
+
+
+
 # **1.4.2**
 
 ### UPDATE
@@ -7,7 +15,7 @@
 
 # **1.4.1**
 
-### UPDATE
+### FIX
 * Fixed some mouseover/inspect lua errors
 
 

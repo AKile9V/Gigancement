@@ -27,9 +27,9 @@ local defaultSettings = {
     enableCharacterILVLInfo = true,
 }
 local roleTex = {
-    DAMAGER = "|A:UI-LFG-RoleIcon-DPS-Micro:15:15|a",
-    HEALER  = "|A:UI-LFG-RoleIcon-Healer-Micro:15:15|a",
-    TANK    = "|A:UI-LFG-RoleIcon-Tank-Micro:15:15|a",
+    DAMAGER = "|A:groupfinder-icon-role-micro-dps:14:14|a",
+    HEALER  = "|A:groupfinder-icon-role-micro-heal:14:14|a",
+    TANK    = "|A:groupfinder-icon-role-micro-tank:14:14|a",
     NONE    = ""
 }
 function getRoleTex(role)

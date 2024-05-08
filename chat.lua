@@ -192,13 +192,13 @@ local shortChnNames = {
     "[LFG]", --LookingForGroup
     "[G]", --Guild
     "[I]", --Instance
-    "[IL]", --Instance Leader
+    "[IL|A:groupfinder-icon-leader:8:13|a]", --Instance Leader
     "[P]", --Party
-    "[PL|TInterface\\GroupFrame\\UI-Group-LeaderIcon:0|t]", --Party Leader
-    "[PG|TInterface\\GroupFrame\\UI-Group-LeaderIcon:0|t]", --Party Guide
+    "[PL|A:groupfinder-icon-leader:8:13|a]", --Party Leader
+    "[PG|A:groupfinder-icon-leader:8:13|a]", --Party Guide
     "[O]", --Officer
     "[R]", --Raid
-    "[RL|TInterface\\GroupFrame\\UI-Group-LeaderIcon:0|t]", --Raid Leader
+    "[RL|A:groupfinder-icon-leader:8:13|a]", --Raid Leader
     "[RW|TInterface\\GroupFrame\\UI-GROUP-MAINASSISTICON:0|t]", --Raid Warning
     "[%1]", --Custom Channels
 }
