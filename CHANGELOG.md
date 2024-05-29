@@ -1,3 +1,10 @@
+# **1.4.4**
+
+### FIX
+* Fixed wrong ilvl number for low level items (from old expansions) on Player/Inspect frame
+
+
+
 # **1.4.3**
 
 ### UPDATE

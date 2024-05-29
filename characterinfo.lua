@@ -222,7 +222,8 @@ function UpdateEquipmentSlot(unitId, slotId)
     local enchantPattern = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.*)');
     local enchantAtlasPattern = "(.*)|A:(.*):20:20|a";
     
-    local _, _, _, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
+    local itemEquipLoc =select(9,GetItemInfo(itemLink))
+    local itemLevel = select(1,GetDetailedItemLevelInfo(itemLink))
     if itemLevel == nil then
         parent.EquipmentSlotFrame.levelString:Hide()
         parent.EquipmentSlotFrame.maxLevelString:Hide()
