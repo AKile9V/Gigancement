@@ -15,7 +15,7 @@ local chatEvents = {
 -- Open addon settings
 SLASH_GSETTINGS1 = "/giga"
 SlashCmdList["GSETTINGS"] = function()
-    InterfaceOptionsFrame_OpenToCategory("Gigancement")
+    Settings.OpenToCategory("Gigancement")
 end
 
 -- Clear chat windows
@@ -44,11 +44,11 @@ end
 --Leave Group
 SLASH_LEAVEGROUP1 = "/lg"
 SlashCmdList["LEAVEGROUP"] = function()
-    SendChatMessage("Thanks for the group","SAY")
-    C_PartyInfo.LeaveParty()
+    SendChatMessage("Thanks for the group","PARTY")
+    C_Timer.After(1.7, function() C_PartyInfo.LeaveParty() end)
 end
 
---Secondary stats distribution
+--Secondary Stats Distribution
 local function ssdround(num, numDecimalPlaces)
     local mult = 10^(numDecimalPlaces or 0)
     return math.floor(num * mult + 0.5) / mult
@@ -62,24 +62,34 @@ local function GetStatsDistrib()
     local statTotal = critValue + hasteValue + masteryValue + verValue
     
     print("---- Secondary Stats Distribution -----")
-    print("## Total: ".. statTotal    .. " → 100%")
-    print("|cff00FF00Crit:|r ".. critValue    .." → ".. ssdround(((critValue / statTotal) * 100),2) .."%")
-    print("|cffFFFF00Haste|r: ".. hasteValue   .." → ".. ssdround(((hasteValue / statTotal) * 100),2) .."%")
-    print("|cff0000FFMastery:|r ".. masteryValue .." → ".. ssdround(((masteryValue / statTotal) * 100),2) .."%")
-    print("|cffFF0000Versatility:|r ".. verValue     .." → ".. ssdround(((verValue / statTotal) * 100),2) .."%")
+    print("## Total: ".. statTotal .. " → 100%")
+    print("|cff00FF00Crit:|r ".. critValue .." → " .. ssdround(((critValue / statTotal) * 100),2) .. "%")
+    print("|cffFFFF00Haste|r: ".. hasteValue .." → " .. ssdround(((hasteValue / statTotal) * 100),2) .. "%")
+    print("|cff0000FFMastery:|r ".. masteryValue .." → " .. ssdround(((masteryValue / statTotal) * 100),2) .. "%")
+    print("|cffFF0000Versatility:|r ".. verValue .." → " .. ssdround(((verValue / statTotal) * 100),2) .. "%")
     print("-------------------------------------------------")
 end
 SlashCmdList["SDP"] = GetStatsDistrib
 
---MRT ready check
-SLASH_READYCHECKME1 = '/rcme'
+--MRT Ready Check
+SLASH_READYCHECKME1 = "/rcme"
 SlashCmdList["READYCHECKME"] = function()
-    if not IsAddOnLoaded("MRT") then 
+    if not C_AddOns.IsAddOnLoaded("MRT") then 
         print("|cffFF0000MRT ISN'T ENABLED|r")
         return
     end
     MRTConsumables:Enable()
     MRTConsumables.Test(true)
+end
+
+-- Quick Keybind Mode
+SLASH_QUICKKEYBINDMODE1 = "/kb"
+SlashCmdList["QUICKKEYBINDMODE"] = function()
+    if UnitAffectingCombat("player") then 
+        print("|cffFF0000PLEASE LEAVE THE COMBAT TO OPEN THE QUICK KEYBIND MODE|r")
+        return
+    end
+    if QuickKeybindFrame then ShowUIPanel(QuickKeybindFrame) end
 end
 
 -- LinksInChat
@@ -88,7 +98,7 @@ local function doColor(url)
                                 math.floor(settingsDB.colorLinkRed*255),
                                 math.floor(settingsDB.colorLinkGreen*255),
                                 math.floor(settingsDB.colorLinkBlue*255))
-    url = "|cff"..color.."|Hurl:"..url.."|h"..url.."|h|r "
+    url = "|cff"..color.."|Hurl:"..url.."|h["..url.."|h]|r "
     return url
 end
 
@@ -123,7 +133,7 @@ function LinksInChat()
         timeout = 0,
         exclusive = 1,
         hideOnEscape = 1,
-        EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
+        EditBoxOnEscapePressed = StaticPopup_StandardEditBoxOnEscapePressed,
         whileDead = 1,
         maxLetters = 255,
     }
@@ -159,7 +169,6 @@ end
 -- LinksInChat // END
 
 -- Roles in chat
--- local role_tex_file = "Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp" -- Interface\GroupFrame\UI-LFG-RoleIcon-Tank-Micro <- old
 local GetColoredName_orig
 local function GetColoredName_hook(event, arg1, arg2, ...)
     local ret = GetColoredName_orig(event, arg1, arg2, ...) 
@@ -171,7 +180,7 @@ local function GetColoredName_hook(event, arg1, arg2, ...)
             return ret
         end
         if role and role ~= "NONE" then
-            ret = getRoleTex(role)..""..ret
+            ret = getRoleTex(role.."CHAT", 18, 18) .. ret
         end
     end
     return ret
@@ -192,13 +201,13 @@ local shortChnNames = {
     "[LFG]", --LookingForGroup
     "[G]", --Guild
     "[I]", --Instance
-    "[IL|A:groupfinder-icon-leader:8:13|a]", --Instance Leader
+    "[IL|A:UI-HUD-UnitFrame-Player-Group-LeaderIcon:14:14|a]", --Instance Leader
     "[P]", --Party
-    "[PL|A:groupfinder-icon-leader:8:13|a]", --Party Leader
-    "[PG|A:groupfinder-icon-leader:8:13|a]", --Party Guide
+    "[PL|A:UI-HUD-UnitFrame-Player-Group-LeaderIcon:14:14|a]", --Party Leader
+    "[PG|A:UI-HUD-UnitFrame-Player-Group-GuideIcon:14:14|a]", --Party Guide
     "[O]", --Officer
     "[R]", --Raid
-    "[RL|A:groupfinder-icon-leader:8:13|a]", --Raid Leader
+    "[RL|A:UI-HUD-UnitFrame-Player-Group-LeaderIcon:14:14|a]", --Raid Leader
     "[RW|TInterface\\GroupFrame\\UI-GROUP-MAINASSISTICON:0|t]", --Raid Warning
     "[%1]", --Custom Channels
 }
@@ -279,7 +288,7 @@ function ChatWhispersMouseoverItemTooltip()
     for i=11, 25 do
         chatFrameName = ("%s%d"):format("ChatFrame", i)
         cF = _G[chatFrameName]
-        if(cF) then
+        if(cF and cF:GetScript("OnHyperlinkEnter")==nil) then
             cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
             cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
         end

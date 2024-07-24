@@ -1,12 +1,18 @@
 settingsDB = settingsDB or {}
-
-local C_Timer = C_Timer
-
+local GetNameplateByID = C_NamePlate.GetNamePlateForUnit
 
 -- Health percent text
 -- TODO: split into multiple options for only %, hptext or all
-function HPTextNameplate(frame)
-  if not frame:IsForbidden() and not frame.health then
+function HPTextNameplate(unit)
+  local nameplate = GetNameplateByID(unit, issecure())
+  local frame = nil
+  if not nameplate or not nameplate.UnitFrame then
+      nameplate = nil
+      return
+  end
+  frame = nameplate.UnitFrame
+
+  if frame and not frame.health then
     frame.health = CreateFrame("Frame", nil, frame)
     frame.health:SetSize(170, 16)
     frame.health.text = frame.health.text or frame.health:CreateFontString(nil, "OVERLAY")
@@ -17,10 +23,11 @@ function HPTextNameplate(frame)
     frame.health.text:SetFont(STANDARD_TEXT_FONT, 6, "OUTLINE")
     frame.health.text:Show()
   end
-  
-  if not frame:IsForbidden() and frame.optionTable.colorNameBySelection then
-    if(UnitIsFriend("player", frame.unit)) then
+
+  if frame and frame.optionTable.colorNameBySelection then
+    if not settingsDB.enableHPTextFriendlyNameplate and UnitIsFriend("player", frame.unit) then
       frame.health.text:SetText(" ")
+      frame.health.text:Hide()
       return
     end
     local healthPercentage = ("%.02f"):format(((UnitHealth(frame.displayedUnit) / UnitHealthMax(frame.displayedUnit) * 100)))
@@ -34,11 +41,16 @@ function HPTextNameplate(frame)
     else
       hpHealth = UnitHealth(frame.displayedUnit)
     end
-    frame.health.text:SetText(hpHealth .." ("..healthPercentage .. "%)")
+    local hpText = (settingsDB.formatHPText[3].value and (hpHealth .." ("..healthPercentage .. "%)")) or
+                   (settingsDB.formatHPText[1].value and hpHealth) or
+                   (settingsDB.formatHPText[2].value and (healthPercentage.."%"))
+    frame.health.text:SetText(hpText)
+    frame.health.text:Show()
   end
 end
 -- Health percent text // END
 
+-- Cast time on Nameplate
 function CastTimerNameplate(nameplate)
   if not nameplate:IsForbidden() and not nameplate.UnitFrame.castBar.timer then
     nameplate.UnitFrame.castBar.timer = nameplate.UnitFrame.castBar:CreateFontString(nil, "OVERLAY")
@@ -56,3 +68,4 @@ function CastTimerNameplate(nameplate)
     end)
   end
 end
+-- Cast time on Nameplate // END
