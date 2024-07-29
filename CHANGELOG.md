@@ -1,3 +1,11 @@
+# **1.5.1**
+
+### \*NEW\*
+#### Chat
+* After copying the link from chat->popup, the popup automatically closes
+
+
+
 # **1.5.0**
 
 ### Overall
@@ -63,7 +71,7 @@
 # **1.4.0**
 
 ### \*NEW\*
-### Character info
+#### Character info
 * Item level on Player character frame and Inspect frame
 * Gems and enchants for each equipment slot (***TODO:** I will add checkbox to toggle these. For now it will be always enabled*)
 <img src="https://imgur.com/8ukM6o0.png"/>

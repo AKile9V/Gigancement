@@ -149,6 +149,15 @@ function LinksInChat()
             editbox:SetText(url)
             editbox:SetFocus()
             editbox:HighlightText()
+            editbox:SetScript("OnKeyDown", function(self, key)
+                if IsControlKeyDown() and (key == "C" or key == "X") then
+                    -- Have to delay popup closing, because that operation can be faster then copying to clipboard
+                    C_Timer.After(0, function()
+                        self:GetParent():Hide()
+                        ActionStatus:DisplayMessage(doColor(url) .. " copied to clipboard.")
+                    end)
+                end
+            end)
 
             local button = _G[dialog:GetName().."Button2"]
             button:ClearAllPoints()
