@@ -1,3 +1,10 @@
+# **1.5.2**
+
+### FIX
+* The event "UNIT_INVENTORY_CHANGED" is triggered when changing zones, which shouldn't happen (Blizzard bug). This caused calling the same function (which updates player character info) a lot, unnecessary. Implemented a workaround solution that uses "ENCHANT_SPELL_COMPLETED" and "SOCKET_INFO_UPDATE" events
+
+
+
 # **1.5.1**
 
 ### \*NEW\*

@@ -151,6 +151,8 @@ local function UntriggerDisabledEvents()
         settingsInterface:UnregisterEvent("INSPECT_READY")
         settingsInterface:UnregisterEvent("UNIT_INVENTORY_CHANGED")
         settingsInterface:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
+        settingsInterface:UnregisterEvent("ENCHANT_SPELL_COMPLETED")
+        settingsInterface:UnregisterEvent("SOCKET_INFO_UPDATE")
     end
 end
 
@@ -365,6 +367,8 @@ function CreateCheckbox(option, label, parent, tooltip, new, subCB)
             ToggleEventRegister("INSPECT_READY", flag)
             ToggleEventRegister("UNIT_INVENTORY_CHANGED", flag)
             ToggleEventRegister("PLAYER_EQUIPMENT_CHANGED", flag)
+            ToggleEventRegister("ENCHANT_SPELL_COMPLETED", flag)
+            ToggleEventRegister("SOCKET_INFO_UPDATE", flag)
 
             settingsDB.characterInfoFlag = settingsDB.characterInfoFlag or flag
             UpdateAllEquipmentSlots("player")
@@ -659,8 +663,10 @@ settingsInterface:RegisterEvent("PLAYER_TARGET_CHANGED")
 settingsInterface:RegisterEvent("PLAYER_FOCUS_CHANGED")
 settingsInterface:RegisterEvent("UNIT_HEALTH")
 settingsInterface:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+settingsInterface:RegisterEvent("ENCHANT_SPELL_COMPLETED")
+settingsInterface:RegisterEvent("SOCKET_INFO_UPDATE")
 
-settingsInterface:SetScript("OnEvent", function(self, event, arg1)
+settingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
     if event == "ADDON_LOADED" and arg1 == "Gigancement" then
         -- Init
         InitVariables()
@@ -682,7 +688,7 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1)
         CastTimerNameplate(nameplate)
     elseif event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_WHISPER_INFORM" or event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
         ChatWhispersMouseoverItemTooltip()
-    elseif event == "PLAYER_ENTERING_WORLD" then
+    elseif event == "PLAYER_ENTERING_WORLD" and arg1==true then
         if settingsDB.enableClassColorsUnitFrames then
             UnitFrameClassColor("player", PlayerFrame.PlayerFrameContent.PlayerFrameContentMain.HealthBarsContainer.HealthBar)
             UnitFrameClassColor("player", PetFrameHealthBar)
@@ -691,9 +697,18 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1)
     elseif event == "PLAYER_EQUIPMENT_CHANGED" and arg1 ~= nil then
         UpdateEquipmentSlot("player", arg1)
     elseif event == "UNIT_INVENTORY_CHANGED" and arg1 ~= nil then
-        if (UnitGUID(arg1) ~= UnitGUID("player") and settingsDB.m_currentInspec~= nil and settingsDB.m_currentInspec == UnitGUID(arg1)) or arg1 == "player" then
+        if (UnitGUID(arg1) ~= UnitGUID("player") and settingsDB.m_currentInspec~= nil and settingsDB.m_currentInspec == UnitGUID(arg1)) then
             UpdateAllEquipmentSlots(arg1)
         end
+    elseif event == "ENCHANT_SPELL_COMPLETED" and arg1==true and arg2 and arg2.equipmentSlotIndex then
+        C_Timer.After(0.5, function() UpdateEquipmentSlot("player", arg2.equipmentSlotIndex) end)
+    elseif event == "SOCKET_INFO_UPDATE" then
+        UpdateEquipmentSlot("player", 1)
+        UpdateEquipmentSlot("player", 2)
+        UpdateEquipmentSlot("player", 6)
+        UpdateEquipmentSlot("player", 9)
+        UpdateEquipmentSlot("player", 11)
+        UpdateEquipmentSlot("player", 12)
     elseif event == "INSPECT_READY" then
         local unit = (_G.InspectFrame and _G.InspectFrame.unit)
         settingsDB.m_currentInspec = UnitGUID(unit or "target")
