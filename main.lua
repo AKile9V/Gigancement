@@ -688,12 +688,14 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         CastTimerNameplate(nameplate)
     elseif event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_WHISPER_INFORM" or event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
         ChatWhispersMouseoverItemTooltip()
-    elseif event == "PLAYER_ENTERING_WORLD" and arg1==true then
+    elseif event == "PLAYER_ENTERING_WORLD" then
         if settingsDB.enableClassColorsUnitFrames then
             UnitFrameClassColor("player", PlayerFrame.PlayerFrameContent.PlayerFrameContentMain.HealthBarsContainer.HealthBar)
             UnitFrameClassColor("player", PetFrameHealthBar)
         end
-        C_Timer.After(0, function() UpdateAllEquipmentSlots("player") end)
+        if arg1==true then
+            C_Timer.After(0, function() UpdateAllEquipmentSlots("player") end)
+        end
     elseif event == "PLAYER_EQUIPMENT_CHANGED" and arg1 ~= nil then
         UpdateEquipmentSlot("player", arg1)
     elseif event == "UNIT_INVENTORY_CHANGED" and arg1 ~= nil then

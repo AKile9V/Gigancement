@@ -1,3 +1,10 @@
+# **1.5.3**
+
+### FIX
+* Class colored unit frames /relaod bug fixed
+
+
+
 # **1.5.2**
 
 ### FIX
