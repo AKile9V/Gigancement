@@ -1,7 +1,14 @@
+# **1.5.4**
+
+### UPDATE
+* ToC update for 11.0.2 patch
+
+
+
 # **1.5.3**
 
 ### FIX
-* Class colored unit frames /relaod bug fixed
+* Class colored unit frames /reload bug fixed
 
 
 
