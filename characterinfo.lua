@@ -77,25 +77,24 @@ local characterSlots = {
     [15] = {id = 15, side = "LEFT", name = "Back", canEnchant = true},
     [16] = {id = 16, side = "RIGHT", name = "MainHand", canEnchant = true},
     [17] = {id = 17, side = "LEFT", name = "SecondaryHand", canEnchant = true},
-    --    [18] = {id = 18, side = "LEFT", name = "Ranged", canEnchant = false},
+    -- [18] = {id = 18, side = "LEFT", name = "Ranged", canEnchant = false},
     [19] = {id = 19, side = "LEFT", name = "Tabard", canEnchant = false} -- using as an anchor for average ilvl
 }
 -- update these after each tier patch
-local maxUpgaradeLevel = 535
+local minUpgaradeLevel = 558
+local maxUpgaradeLevel = 639
 local maxUpgradeLevels = {
-    [476] = {10321, 10322, 10323, 10324, 10325, 10326, 10327, 10328}, -- Explorer
-    [489] = {10305, 10306, 10307, 10308, 10309, 10310, 10311, 10312}, -- Adventurer
-    [502] = {10341, 10342, 10343, 10344, 10345, 10346, 10347, 10348}, -- Veteran
-    [515] = {10313, 10314, 10315, 10316, 10317, 10318, 10319, 10320}, -- Champion
-    [522] = {10329, 10330, 10331, 10332, 10333, 10334}, -- Hero
-    [525] = {
-        9401,9402,9403,9404,9405, -- Qualities
-        8785,
-        8845,8846,
-    9373,9374,9375,9376}, -- Crafted
-    [528] = {10335, 10336, 10337, 10338, 10407, 10408, 10409, 10410, 10411, 10412, 10413, 10414, 10415, 10416, 10417, 10418}, -- Myth + Awakened
-    -- [528] = {10407, 10408, 10409, 10410, 10411, 10412, 10413, 10414, 10415, 10416, 10417, 10418}, -- Awakened
-    [535] = {10490, 10491, 10492, 10493, 10494, 10495, 10496, 10497, 10498, 10499, 10500, 10501, 10502, 10503} -- Awakened+
+    [580] = {10289, 10288, 10287, 10286, 10285, 10284, 10283, 10282}, -- Explorer
+    [593] = {10297, 10296, 10295, 10294, 10293, 10292, 10291, 10290}, -- Adventurer
+    [606] = {10281, 10280, 10279, 10278, 10277, 10276, 10275, 10274}, -- Veteran
+    [619] = {10273, 10272, 10271, 10270, 10269, 10268, 10267, 10266}, -- Champion
+    [626] = {10265, 10264, 10263, 10262, 10261, 10256}, -- Hero
+    [636] = {
+        10222, -- Omen Crafted
+        11142, -- Blue crafted weather rune
+        10841, -- Rank 5 blue gear
+        }, -- Crafted Gear
+    [639] = {10260, 10259, 10258, 10257, 10298, 10299}, -- Myth
 }
 
 local GetMaxUpgradeLevel = function(bonusId)
@@ -246,7 +245,7 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
         end
     end
     
-    if maxLevel == nil then
+    if maxLevel == nil or itemLevel < minUpgaradeLevel then
         parent.EquipmentSlotFrame.levelString:SetPoint("CENTER", parent.EquipmentSlotFrame, "CENTER", 0, 0)
         parent.EquipmentSlotFrame.maxLevelString:Hide()
     else
@@ -260,13 +259,11 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
         end
     end
     
-    if itemLevel ~= nil then
-        if itemLevel == maxLevel or itemLevel >= maxUpgaradeLevel then
-            local itemRarityRed = tonumber("0x"..itemRarityColorHex:sub(1,2))/255
-            local itemRarityGreen = tonumber("0x"..itemRarityColorHex:sub(3,4))/255
-            local itemRarityBlue = tonumber("0x"..itemRarityColorHex:sub(5,6))/255
-            parent.EquipmentSlotFrame.levelString:SetTextColor(itemRarityRed, itemRarityGreen, itemRarityBlue, 1)
-        end
+    if itemLevel ~= nil and (itemLevel == maxLevel or itemLevel >= maxUpgaradeLevel or itemLevel < minUpgaradeLevel) then
+        local itemRarityRed = tonumber("0x"..itemRarityColorHex:sub(1,2))/255
+        local itemRarityGreen = tonumber("0x"..itemRarityColorHex:sub(3,4))/255
+        local itemRarityBlue = tonumber("0x"..itemRarityColorHex:sub(5,6))/255
+        parent.EquipmentSlotFrame.levelString:SetTextColor(itemRarityRed, itemRarityGreen, itemRarityBlue, 1)
     end
 end
 
@@ -292,13 +289,14 @@ local function GetItemInfoData(unitId, slotId, itemSockets)
                     itemEnchantAtlas = nil
                 end
             end
-            
-            if line.gemIcon then
-                itemSocketCount = itemSocketCount + 1
-                itemSockets[itemSocketCount] = line.gemIcon
-            elseif line.socketType then
-                itemSocketCount = itemSocketCount + 1
-                itemSockets[itemSocketCount] = "character-emptysocket"
+            if line.type == Enum.TooltipDataLineType.GemSocket then
+                if line.gemIcon then
+                    itemSocketCount = itemSocketCount + 1
+                    itemSockets[itemSocketCount] = line.gemIcon
+                elseif line.socketType then
+                    itemSocketCount = itemSocketCount + 1
+                    itemSockets[itemSocketCount] = "character-emptysocket"
+                end
             end
         end
     end

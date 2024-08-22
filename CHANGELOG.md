@@ -1,3 +1,10 @@
+# **1.5.5**
+
+### UPDATE
+* Character info: added TWW ilvl bonuses
+
+
+
 # **1.5.4**
 
 ### UPDATE
