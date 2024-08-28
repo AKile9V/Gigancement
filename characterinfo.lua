@@ -226,6 +226,7 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
     if itemLevel == nil then
         parent.EquipmentSlotFrame.levelString:Hide()
         parent.EquipmentSlotFrame.maxLevelString:Hide()
+        return
     else
         parent.EquipmentSlotFrame.levelString:SetText(tostring(itemLevel))
         parent.EquipmentSlotFrame.levelString:Show()

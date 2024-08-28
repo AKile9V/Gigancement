@@ -371,7 +371,7 @@ function CreateCheckbox(option, label, parent, tooltip, new, subCB)
             ToggleEventRegister("SOCKET_INFO_UPDATE", flag)
 
             settingsDB.characterInfoFlag = settingsDB.characterInfoFlag or flag
-            UpdateAllEquipmentSlots("player")
+            C_Timer.After(0, function() UpdateAllEquipmentSlots("player") end)
             settingsDB.characterInfoFlag = flag
             if clicked == 1 and not settingsDB.characterInfoFlag then
                 settingsInterface.reloadButton:Show()
@@ -700,7 +700,7 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         UpdateEquipmentSlot("player", arg1)
     elseif event == "UNIT_INVENTORY_CHANGED" and arg1 ~= nil then
         if (UnitGUID(arg1) ~= UnitGUID("player") and settingsDB.m_currentInspec~= nil and settingsDB.m_currentInspec == UnitGUID(arg1)) then
-            UpdateAllEquipmentSlots(arg1)
+            C_Timer.After(0, function() UpdateAllEquipmentSlots(arg1) end)
         end
     elseif event == "ENCHANT_SPELL_COMPLETED" and arg1==true and arg2 and arg2.equipmentSlotIndex then
         C_Timer.After(0.5, function() UpdateEquipmentSlot("player", arg2.equipmentSlotIndex) end)
@@ -714,7 +714,7 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
     elseif event == "INSPECT_READY" then
         local unit = (_G.InspectFrame and _G.InspectFrame.unit)
         settingsDB.m_currentInspec = UnitGUID(unit or "target")
-        UpdateAllEquipmentSlots(unit or "target")
+        C_Timer.After(0, function() UpdateAllEquipmentSlots(unit or "target") end)
     elseif event == "PLAYER_TARGET_CHANGED" then
         UnitFrameClassColor("target", TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer.HealthBar)
     elseif event == "PLAYER_FOCUS_CHANGED" then

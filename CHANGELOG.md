@@ -1,3 +1,10 @@
+# **1.5.6**
+
+### FIX
+* Fixed some Character info lua errors
+
+
+
 # **1.5.5**
 
 ### UPDATE
