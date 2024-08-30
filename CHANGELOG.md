@@ -1,3 +1,11 @@
+# **1.5.7**
+
+### FIX
+* Fixed more rare lua errors and bugs
+* Added abbreviations for new TWW enchants
+
+
+
 # **1.5.6**
 
 ### FIX

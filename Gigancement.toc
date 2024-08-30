@@ -4,7 +4,7 @@
 ## IconTexture: Interface\GroupFrame\UI-Group-LeaderIcon
 ## Author: AKile
 ## SavedVariables: settingsDB
-## Version: 1.5.6
+## Version: 1.5.7
 
 main.lua
 nameplates.lua

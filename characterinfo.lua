@@ -39,23 +39,52 @@ local DKEnchants = {
     ["Stoneskin\nGargoyle"] = 237480,
     ["Unending\nThirst"] = 3163621,
 }
-local RetailEnchants = {
+local TWWEnchants = {
     -- Rank3
-    ["Cursed VersatilityProfessions-ChatIcon-Quality-Tier3"] = "+375 Versatility\n|cFFa335ee-110 Mastery|r",
-    ["Cursed MasteryProfessions-ChatIcon-Quality-Tier3"] = "+375 Mastery\n|cFFa335ee-110 Critical Strike|r",
-    ["Cursed HasteProfessions-ChatIcon-Quality-Tier3"] = "+375 Haste\n|cFFa335ee-110 Versatility|r",
-    ["Cursed Critical StrikeProfessions-ChatIcon-Quality-Tier3"] = "+375 Critical Strike\n      |cFFa335ee-110 Haste|r",
+    ["Cursed VersatilityProfessions-ChatIcon-Quality-Tier3"] = "+390 Versatility\n|cFFa335ee-115 Mastery|r",
+    ["Cursed MasteryProfessions-ChatIcon-Quality-Tier3"] = "+390 Mastery\n|cFFa335ee-115 Critical Strike|r",
+    ["Cursed HasteProfessions-ChatIcon-Quality-Tier3"] = "+390 Haste\n|cFFa335ee-115 Versatility|r",
+    ["Cursed Critical StrikeProfessions-ChatIcon-Quality-Tier3"] = "+390 Critical Strike\n      |cFFa335ee-115 Haste|r",
     ["Cavalry's MarchProfessions-ChatIcon-Quality-Tier3"] = "+10% Mount",
     ["Scout's MarchProfessions-ChatIcon-Quality-Tier3"] = "+250 Speed",
-    ["Defender's MarchProfessions-ChatIcon-Quality-Tier3"] = "+131 Stamina",
-    ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier3"] = "+111 Agility\n+250 Speed",
-    ["Council's IntellectProfessions-ChatIcon-Quality-Tier3"] = "+111 Intellect\n+5% Mana",
-    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier3"] = "+150 Strength",
-    ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier3"] = "+111 Strength\n+374 Stamina",
-    ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier3"] = "+125 Avoidance\n-20% Fall Damage",
-    ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier3"] = "+125 Leech\nHeal OOC",
-    ["Chant of Burrowing RapidityProfessions-ChatIcon-Quality-Tier3"] = "+125 Speed     \nHearthstone CD",
-    -- TODO: Rank2/1
+    ["Defender's MarchProfessions-ChatIcon-Quality-Tier3"] = "+895 Stamina",
+    ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier3"] = "+520 Agility\n+250 Speed",
+    ["Council's IntellectProfessions-ChatIcon-Quality-Tier3"] = "+520 Intellect\n+5% Mana",
+    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier3"] = "+745 Strength",
+    ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier3"] = "+520 Strength\n+265 Stamina",
+    ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier3"] = "+545 Avoidance\n-20% Fall Damage",
+    ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier3"] = "+1020 Leech\nHeal OOC",
+    ["Chant of Burrowing RapidityProfessions-ChatIcon-Quality-Tier3"] = "+250 Speed     \nHearthstone CD",
+    -- Rank2
+    ["Cursed HasteProfessions-ChatIcon-Quality-Tier2"] = "+335 Haste\n|cFFa335ee-100 Versatility|r",
+    ["Cursed Critical StrikeProfessions-ChatIcon-Quality-Tier2"] = "+335 Critical Strike\n      |cFFa335ee-100 Haste|r",
+    ["Cursed VersatilityProfessions-ChatIcon-Quality-Tier2"] = "+335 Versatility\n|cFFa335ee-100 Mastery|r",
+    ["Cursed MasteryProfessions-ChatIcon-Quality-Tier2"] = "+335 Mastery\n|cFFa335ee-100 Critical Strike|r",
+    ["Cavalry's MarchProfessions-ChatIcon-Quality-Tier2"] = "+8% Mount",
+    ["Scout's MarchProfessions-ChatIcon-Quality-Tier2"] = "+215 Speed",
+    ["Defender's MarchProfessions-ChatIcon-Quality-Tier2"] = "+760 Stamina",
+    ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier2"] = "+440 Agility\n+215 Speed",
+    ["Council's IntellectProfessions-ChatIcon-Quality-Tier2"] = "+440 Intellect\n+4% Mana",
+    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier2"] = "+630 Strength",
+    ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier2"] = "+440 Strength\n+225 Stamina",
+    ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier2"] = "+465 Avoidance\n-15% Fall Damage",
+    ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier2"] = "+865 Leech\nHeal OOC",
+    ["Chant of Burrowing RapidityProfessions-ChatIcon-Quality-Tier2"] = "+210 Speed     \nHearthstone CD",
+    -- Rank1
+    ["Cursed HasteProfessions-ChatIcon-Quality-Tier1"] = "+270 Haste\n|cFFa335ee-80 Versatility|r",
+    ["Cursed Critical StrikeProfessions-ChatIcon-Quality-Tier1"] = "+270 Critical Strike\n      |cFFa335ee-80 Haste|r",
+    ["Cursed VersatilityProfessions-ChatIcon-Quality-Tier1"] = "+270 Versatility\n|cFFa335ee-80 Mastery|r",
+    ["Cursed MasteryProfessions-ChatIcon-Quality-Tier1"] = "+270 Mastery\n|cFFa335ee-80 Critical Strike|r",
+    ["Cavalry's MarchProfessions-ChatIcon-Quality-Tier1"] = "+6% Mount",
+    ["Scout's MarchProfessions-ChatIcon-Quality-Tier1"] = "+175 Speed",
+    ["Defender's MarchProfessions-ChatIcon-Quality-Tier1"] = "+625 Stamina",
+    ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier1"] = "+360 Agility\n+180 Speed",
+    ["Council's IntellectProfessions-ChatIcon-Quality-Tier1"] = "+360 Intellect\n+3% Mana",
+    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier1"] = "+520 Strength",
+    ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier1"] = "+365 Strength\n+185 Stamina",
+    ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier1"] = "+380 Avoidance\n-10% Fall Damage",
+    ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier1"] = "+715 Leech\nHeal OOC",
+    ["Chant of Burrowing RapidityProfessions-ChatIcon-Quality-Tier1"] = "+175 Speed     \nHearthstone CD",
 }
 local sumILVL = 0
 local weaponLevel = 0
@@ -331,7 +360,9 @@ local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, ite
             itemEnchant = itemEnchant:gsub("of", "")
             itemEnchant = itemEnchant:gsub("Rune", "")
             itemEnchant = itemEnchant:gsub("^%s+", ""):gsub("%s+$", "")
-            itemEnchant = itemEnchant:gsub("% ", "\n",1)
+            itemEnchant = itemEnchant:gsub("% ", "\n", 1)
+            -- Range weapon
+            itemEnchant = itemEnchant:gsub("High\nIntensity Thermal Scanner", "High Intensity\nThermal Scanner")
         elseif slot.id == 7 then
             itemEnchant = itemEnchant:gsub(" & ", "\n       ")
         end
@@ -339,13 +370,13 @@ local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, ite
 
         parent.EquipmentSlotFrame.enchantString:SetTextColor(0, 1, 0, 1)
         if slot.side == "RIGHT" then
-            parent.EquipmentSlotFrame.enchantString:SetText((RetailEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant) .. " " ..
+            parent.EquipmentSlotFrame.enchantString:SetText((TWWEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant) .. " " ..
                                                             ((itemEnchantAtlas and ("|A:"..itemEnchantAtlas..":15:15|a")) or
                                                              (DKEnchants[itemEnchant] and ("|T"..DKEnchants[itemEnchant]..":15:15|t")) or ""))
         else
             parent.EquipmentSlotFrame.enchantString:SetText(((itemEnchantAtlas and ("|A:"..itemEnchantAtlas..":15:15|a")) or
                                                              (DKEnchants[itemEnchant] and ("|T"..DKEnchants[itemEnchant]..":15:15|t")) or "") ..
-                                                            (RetailEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant))
+                                                            (TWWEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant))
         end
         parent.EquipmentSlotFrame.enchantString:Show()
     end

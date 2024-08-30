@@ -680,6 +680,9 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         UpgradeDefaultCastbar(DropDownMenuGetSelected("castbarTextPosition"))
         HandleLFGHooks()
         UntriggerDisabledEvents()
+        EventRegistry:RegisterCallback("CharacterFrame.Show", function()
+            C_Timer.After(0, function() UpdateAllEquipmentSlots("player") end)
+        end)
     elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
         LFGDoubleClick()
     elseif event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START" then
