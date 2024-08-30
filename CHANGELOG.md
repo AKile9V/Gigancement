@@ -1,3 +1,10 @@
+# **1.5.8**
+
+### HOTFIX
+* Work around Blizzard INSPECT_READY event triggering 6+ times when inspecting somebody which leads to large memory usage
+
+
+
 # **1.5.7**
 
 ### FIX

@@ -716,6 +716,7 @@ settingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         UpdateEquipmentSlot("player", 12)
     elseif event == "INSPECT_READY" then
         local unit = (_G.InspectFrame and _G.InspectFrame.unit)
+        if settingsDB.m_currentInspec == UnitGUID(unit or "target") then return end
         settingsDB.m_currentInspec = UnitGUID(unit or "target")
         C_Timer.After(0, function() UpdateAllEquipmentSlots(unit or "target") end)
     elseif event == "PLAYER_TARGET_CHANGED" then
