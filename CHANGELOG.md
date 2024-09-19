@@ -1,7 +1,14 @@
+# **1.5.9**
+
+### FIX
+* Showing wrong primary stat for "Crystalline Radiance" chest enchant fixed
+
+
+
 # **1.5.8**
 
 ### HOTFIX
-* Work around Blizzard INSPECT_READY event triggering 6+ times when inspecting somebody which leads to large memory usage
+* Work around INSPECT_READY event triggering 6+ times when inspecting somebody which leads to large memory usage
 
 
 

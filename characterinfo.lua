@@ -50,7 +50,7 @@ local TWWEnchants = {
     ["Defender's MarchProfessions-ChatIcon-Quality-Tier3"] = "+895 Stamina",
     ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier3"] = "+520 Agility\n+250 Speed",
     ["Council's IntellectProfessions-ChatIcon-Quality-Tier3"] = "+520 Intellect\n+5% Mana",
-    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier3"] = "+745 Strength",
+    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier3"] = "+745 Primary Stat",
     ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier3"] = "+520 Strength\n+265 Stamina",
     ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier3"] = "+545 Avoidance\n-20% Fall Damage",
     ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier3"] = "+1020 Leech\nHeal OOC",
@@ -65,7 +65,7 @@ local TWWEnchants = {
     ["Defender's MarchProfessions-ChatIcon-Quality-Tier2"] = "+760 Stamina",
     ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier2"] = "+440 Agility\n+215 Speed",
     ["Council's IntellectProfessions-ChatIcon-Quality-Tier2"] = "+440 Intellect\n+4% Mana",
-    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier2"] = "+630 Strength",
+    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier2"] = "+630 Primary Stat",
     ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier2"] = "+440 Strength\n+225 Stamina",
     ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier2"] = "+465 Avoidance\n-15% Fall Damage",
     ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier2"] = "+865 Leech\nHeal OOC",
@@ -80,7 +80,7 @@ local TWWEnchants = {
     ["Defender's MarchProfessions-ChatIcon-Quality-Tier1"] = "+625 Stamina",
     ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier1"] = "+360 Agility\n+180 Speed",
     ["Council's IntellectProfessions-ChatIcon-Quality-Tier1"] = "+360 Intellect\n+3% Mana",
-    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier1"] = "+520 Strength",
+    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier1"] = "+520 Primary Stat",
     ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier1"] = "+365 Strength\n+185 Stamina",
     ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier1"] = "+380 Avoidance\n-10% Fall Damage",
     ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier1"] = "+715 Leech\nHeal OOC",
@@ -125,6 +125,57 @@ local maxUpgradeLevels = {
         }, -- Crafted Gear
     [639] = {10260, 10259, 10258, 10257, 10298, 10299}, -- Myth
 }
+
+local specIndex = {
+    [250] = 1,
+    [251] = 1,
+    [252] = 1,
+    [577] = 2,
+    [581] = 2,
+    [102] = 4,
+    [103] = 2,
+    [104] = 2,
+    [105] = 4,
+    [1467] = 4,
+    [1468] = 4,
+    [1473] = 4,
+    [62] = 4,
+    [63] = 4,
+    [64] = 4,
+    [268] = 2,
+    [270] = 4,
+    [269] = 2,
+    [65] = 4,
+    [66] = 1,
+    [70] = 1,
+    [253] = 2,
+    [254] = 2,
+    [255] = 2,
+    [256] = 4,
+    [257] = 4,
+    [258] = 4,
+    [259] = 2,
+    [260] = 2,
+    [261] = 2,
+    [262] = 4,
+    [263] = 2,
+    [264] = 4,
+    [265] = 4,
+    [266] = 4,
+    [267] = 4,
+    [71] = 1,
+    [72] = 1,
+    [73] = 1,
+}
+
+local function GetPrimaryStatName(unitId)
+    local id = unitId == "player" and select(6, GetSpecializationInfo(GetSpecialization())) or specIndex[GetInspectSpecialization(unitId)]
+    if id == 1 then return "Strength"
+    elseif id == 2 then return "Agility"
+    elseif id == 4 then return "Intellect"
+    else return "Primary Stat"
+    end
+end
 
 local GetMaxUpgradeLevel = function(bonusId)
     for level, ids in pairs(maxUpgradeLevels) do
@@ -334,7 +385,7 @@ local function GetItemInfoData(unitId, slotId, itemSockets)
     return itemEnchant, itemEnchantAtlas, itemSocketCount
 end
 
-local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, itemEquipLoc)
+local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, itemEquipLoc, unitId)
     if not settingsDB.enableCharacterEnchantsInfo then
         parent.EquipmentSlotFrame.enchantString:Hide()
         return
@@ -376,7 +427,7 @@ local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, ite
         else
             parent.EquipmentSlotFrame.enchantString:SetText(((itemEnchantAtlas and ("|A:"..itemEnchantAtlas..":15:15|a")) or
                                                              (DKEnchants[itemEnchant] and ("|T"..DKEnchants[itemEnchant]..":15:15|t")) or "") ..
-                                                            (TWWEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant))
+                                                            ((TWWEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant):gsub("Primary Stat", GetPrimaryStatName(unitId))))
         end
         parent.EquipmentSlotFrame.enchantString:Show()
     end
@@ -479,7 +530,7 @@ function UpdateEquipmentSlot(unitId, slotId)
 
     SetupItemLevel(parent, itemLevel, itemPayloadSplit, string.sub(itemLink, 5, 10):gsub("#",""))
     itemEnchant, itemEnchantAtlas, itemSocketCount = GetItemInfoData(unitId, slotId, itemSockets)
-    SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, itemEquipLoc)
+    SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, itemEquipLoc, unitId)
     SetupItemGems(parent, itemLink, itemSockets, itemSocketCount)
     
     parent.EquipmentSlotFrame:Show()
