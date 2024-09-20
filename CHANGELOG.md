@@ -1,3 +1,11 @@
+# **1.5.10**
+
+### FIX
+* Character Inspect now should show correct ilvl, enchants and gems
+* Fixed nan/inf hp values on nameplates with 0hp on interactive elements(those that can use "Interact Key"), like Herbs or Ores
+
+
+
 # **1.5.9**
 
 ### FIX

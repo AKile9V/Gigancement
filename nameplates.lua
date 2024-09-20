@@ -30,8 +30,14 @@ function HPTextNameplate(unit)
       frame.health.text:Hide()
       return
     end
-    local healthPercentage = ("%.02f"):format(((UnitHealth(frame.displayedUnit) / UnitHealthMax(frame.displayedUnit) * 100)))
-    local hpHealth = UnitHealth(frame.displayedUnit)
+
+    local hpHealth = UnitHealth(frame.displayedUnit) or nil
+    if hpHealth==nil or hpHealth <= 0 then
+      frame.health.text:SetText(" ")
+      frame.health.text:Hide()
+      return
+    end
+    local healthPercentage = ("%.02f"):format(((hpHealth / UnitHealthMax(frame.displayedUnit) * 100)))
     if hpHealth >= 1e9 then
       hpHealth = string.format("%.1fB", hpHealth / 1e9)
     elseif hpHealth >= 1e6 then
