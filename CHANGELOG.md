@@ -1,3 +1,11 @@
+# **1.5.11**
+
+### CHORE
+* Added chat option to toggle farewell message when leaving group with "/lg".
+* You can toggle this option with chat command: `/lg msg {on/off}`
+
+
+
 # **1.5.10**
 
 ### FIX

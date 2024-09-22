@@ -43,9 +43,19 @@ end
 
 --Leave Group
 SLASH_LEAVEGROUP1 = "/lg"
-SlashCmdList["LEAVEGROUP"] = function()
-    SendChatMessage("Thanks for the group","PARTY")
-    C_Timer.After(1.7, function() C_PartyInfo.LeaveParty() end)
+SlashCmdList["LEAVEGROUP"] = function(arg1)
+    if arg1~="" then
+        if arg1 == "msg off" then
+            settingsDB.c_disableLGMessage = true
+            print("|cffFF0000/lg FAREWELL MESSAGE DISABLED|r")
+        elseif arg1 == "msg on" then
+            settingsDB.c_disableLGMessage = false
+            print("|cff00FF00/lg FAREWELL MESSAGE ENABLED|r")
+        end
+        return
+    end
+    SendChatMessage(settingsDB.c_disableLGMessage and "" or "Thanks for the group", "PARTY")
+    C_Timer.After(settingsDB.c_disableLGMessage and 0 or 1.7, function() C_PartyInfo.LeaveParty() end)
 end
 
 --Secondary Stats Distribution

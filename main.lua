@@ -78,6 +78,7 @@ local defaultSettings = {
     enableCharacterEnchantsInfo = true,
     enableCharacterGemsInfo = true,
     characterInfoFlag = true,
+    c_disableLGMessage = false,
 }
 local roleTex = {
     ["DAMAGER"]     = "|A:groupfinder-icon-role-micro-dps:",
