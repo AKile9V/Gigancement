@@ -1,3 +1,10 @@
+# **1.5.12**
+
+### UPDATE
+* ToC update for 11.0.5 patch
+
+
+
 # **1.5.11**
 
 ### CHORE

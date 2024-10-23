@@ -108,7 +108,7 @@ local function doColor(url)
                                 math.floor(settingsDB.colorLinkRed*255),
                                 math.floor(settingsDB.colorLinkGreen*255),
                                 math.floor(settingsDB.colorLinkBlue*255))
-    url = "|cff"..color.."|Hurl:"..url.."|h["..url.."|h]|r "
+    url = "|cff"..color.."|Hurl:"..url.."|h{"..url.."|h}|r "
     return url
 end
 
