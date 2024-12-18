@@ -1,3 +1,13 @@
+# **1.5.13**
+
+### FIX
+* Fix LFG searchResultInfo LUA error caused by structure changes in patch 11.0.7
+
+### UPDATE
+* ToC update for 11.0.7 patch
+
+
+
 # **1.5.12**
 
 ### UPDATE

@@ -22,7 +22,7 @@ end
 
 function SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
   local searchResultInfo = C_LFGList.GetSearchResultInfo(resultID)
-  local activityInfo = C_LFGList.GetActivityInfoTable(searchResultInfo.activityID, nil, searchResultInfo.isWarMode)
+  local activityInfo = C_LFGList.GetActivityInfoTable(searchResultInfo.activityIDs[1], nil, searchResultInfo.isWarMode)
   if activityInfo.displayType ~= Enum.LFGListDisplayType.ClassEnumerate and activityInfo.displayType ~= Enum.LFGListDisplayType.RoleEnumerate then
     for i=1, tooltip:NumLines() do 
       local line = _G[tooltip:GetName().."TextLeft"..i]
