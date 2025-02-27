@@ -1,7 +1,20 @@
+# **1.5.14**
+
+### FIX
+* Fixed a rare bug that displayed the assist-leader icon when converting a raid to a party group
+* Fixed gear ilvl colors for items that aren't from the active season
+
+### UPDATE
+* Updated Season 2 gear track ilvls for the Character Player and Inspect Frame
+* ToC update for 11.1.0 patch
+* Removed the "NEW" label from several settings in the options
+
+
+
 # **1.5.13**
 
 ### FIX
-* Fix LFG searchResultInfo LUA error caused by structure changes in patch 11.0.7
+* Fixed LFG searchResultInfo LUA error caused by structure changes in patch 11.0.7
 
 ### UPDATE
 * ToC update for 11.0.7 patch

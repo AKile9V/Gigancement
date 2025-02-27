@@ -110,20 +110,20 @@ local characterSlots = {
     [19] = {id = 19, side = "LEFT", name = "Tabard", canEnchant = false} -- using as an anchor for average ilvl
 }
 -- update these after each tier patch
-local minUpgaradeLevel = 558
-local maxUpgaradeLevel = 639
+local minUpgaradeLevel = 597
+local maxUpgaradeLevel = 678
 local maxUpgradeLevels = {
-    [580] = {10289, 10288, 10287, 10286, 10285, 10284, 10283, 10282}, -- Explorer
-    [593] = {10297, 10296, 10295, 10294, 10293, 10292, 10291, 10290}, -- Adventurer
-    [606] = {10281, 10280, 10279, 10278, 10277, 10276, 10275, 10274}, -- Veteran
-    [619] = {10273, 10272, 10271, 10270, 10269, 10268, 10267, 10266}, -- Champion
-    [626] = {10265, 10264, 10263, 10262, 10261, 10256}, -- Hero
-    [636] = {
-        10222, -- Omen Crafted
+    [619] = {11942, 11943, 11944, 11945, 11946, 11947, 11948, 11949}, -- Explorer
+    [632] = {11951, 11952, 11953, 11954, 11955, 11956, 11957, 11950}, -- Adventurer
+    [645] = {11969, 11970, 11971, 11972, 11973, 11974, 11975, 11976}, -- Veteran
+    [658] = {11977, 11978, 11979, 11980, 11981, 11982, 11983, 11984}, -- Champion
+    [665] = {11985, 11986, 11987, 11988, 11989, 11990}, -- Hero
+    [675] = {
+        12040, -- Fortune Crafted
         11142, -- Blue crafted weather rune
         10841, -- Rank 5 blue gear
         }, -- Crafted Gear
-    [639] = {10260, 10259, 10258, 10257, 10298, 10299}, -- Myth
+    [678] = {11991, 11992, 11993, 11994, 11995, 11996}, -- Myth
 }
 
 local specIndex = {
@@ -340,7 +340,7 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
         end
     end
     
-    if itemLevel ~= nil and (itemLevel == maxLevel or itemLevel >= maxUpgaradeLevel or itemLevel < minUpgaradeLevel) then
+    if itemLevel ~= nil and (itemLevel == maxLevel or itemLevel >= maxUpgaradeLevel or itemLevel < minUpgaradeLevel) or maxLevel == nil then
         local itemRarityRed = tonumber("0x"..itemRarityColorHex:sub(1,2))/255
         local itemRarityGreen = tonumber("0x"..itemRarityColorHex:sub(3,4))/255
         local itemRarityBlue = tonumber("0x"..itemRarityColorHex:sub(5,6))/255
