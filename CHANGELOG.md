@@ -1,7 +1,14 @@
+# **1.5.15**
+
+### FIX
+* Fixed a rare bug that displayed the assist-leader icon when converting a raid to a party group (forgot to push the change)
+
+
+
 # **1.5.14**
 
 ### FIX
-* Fixed a rare bug that displayed the assist-leader icon when converting a raid to a party group
+* ~~Fixed a rare bug that displayed the assist-leader icon when converting a raid to a party group~~
 * Fixed gear ilvl colors for items that aren't from the active season
 
 ### UPDATE

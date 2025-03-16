@@ -132,7 +132,7 @@ local function SetupLeaderIcons(unit, frame)
     end
     frame.textureLeader:SetAtlas("GO-icon-Lead-Applied")
     frame.textureLeader:Show()
-  elseif UnitIsGroupAssistant(unit) then
+  elseif UnitIsGroupAssistant(unit) and CompactRaidFrameContainer:IsShown() then
     if frame.textureLeader == nil then
       PrepTextureLeader(frame)
     end

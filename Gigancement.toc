@@ -5,7 +5,7 @@
 ## Category: Misc
 ## Author: AKile
 ## SavedVariables: settingsDB
-## Version: 1.5.14
+## Version: 1.5.15
 
 main.lua
 nameplates.lua
