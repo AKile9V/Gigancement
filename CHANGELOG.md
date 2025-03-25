@@ -1,3 +1,11 @@
+# **1.5.16**
+
+### FIX
+* Fixed a "OnDoubleClick" error when using LFG to find a group for the world boss
+
+
+
+
 # **1.5.15**
 
 ### FIX

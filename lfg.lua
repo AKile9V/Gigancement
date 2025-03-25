@@ -57,7 +57,9 @@ end
 local function AddDoubleClickHook(scrollTarget)
   local buttons = {scrollTarget:GetChildren()}
   for _, button in ipairs(buttons) do
-    button:SetScript("OnDoubleClick", OnDoubleClick)
+    if button.resultID then
+      button:SetScript("OnDoubleClick", OnDoubleClick)
+    end
   end
 end
 
