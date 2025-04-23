@@ -1,7 +1,17 @@
+# **1.5.17**
+
+### FIX
+* Fixed Character Player and Inspect Frame LUA error
+
+### UPDATE
+* ToC update for 11.1.5 patch
+
+
+
 # **1.5.16**
 
 ### FIX
-* Fixed a "OnDoubleClick" error when using LFG to find a group for the world boss
+* Fixed "OnDoubleClick" error when using LFG to find a group for the world boss
 
 
 

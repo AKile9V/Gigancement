@@ -341,10 +341,7 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
     end
     
     if itemLevel ~= nil and (itemLevel == maxLevel or itemLevel >= maxUpgaradeLevel or itemLevel < minUpgaradeLevel) or maxLevel == nil then
-        local itemRarityRed = tonumber("0x"..itemRarityColorHex:sub(1,2))/255
-        local itemRarityGreen = tonumber("0x"..itemRarityColorHex:sub(3,4))/255
-        local itemRarityBlue = tonumber("0x"..itemRarityColorHex:sub(5,6))/255
-        parent.EquipmentSlotFrame.levelString:SetTextColor(itemRarityRed, itemRarityGreen, itemRarityBlue, 1)
+        parent.EquipmentSlotFrame.levelString:SetText(itemRarityColorHex..tostring(itemLevel).."|r")
     end
 end
 
@@ -528,7 +525,7 @@ function UpdateEquipmentSlot(unitId, slotId)
     local itemEquipLoc =select(9,C_Item.GetItemInfo(itemLink))
     local itemLevel = select(1,C_Item.GetDetailedItemLevelInfo(itemLink))
 
-    SetupItemLevel(parent, itemLevel, itemPayloadSplit, string.sub(itemLink, 5, 10):gsub("#",""))
+    SetupItemLevel(parent, itemLevel, itemPayloadSplit, string.sub(itemLink, 1, 7))
     itemEnchant, itemEnchantAtlas, itemSocketCount = GetItemInfoData(unitId, slotId, itemSockets)
     SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, itemEquipLoc, unitId)
     SetupItemGems(parent, itemLink, itemSockets, itemSocketCount)
