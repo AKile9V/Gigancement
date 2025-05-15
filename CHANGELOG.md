@@ -1,3 +1,11 @@
+# **1.5.18**
+
+### UPDATE
+* Turbo-Boost ILVL update
+* Added Head Enchants: mouseover it for a tooltip info
+
+<hr>
+
 # **1.5.17**
 
 ### FIX
@@ -6,22 +14,21 @@
 ### UPDATE
 * ToC update for 11.1.5 patch
 
-
+<hr>
 
 # **1.5.16**
 
 ### FIX
 * Fixed "OnDoubleClick" error when using LFG to find a group for the world boss
 
-
-
+<hr>
 
 # **1.5.15**
 
 ### FIX
 * Fixed a rare bug that displayed the assist-leader icon when converting a raid to a party group (forgot to push the change)
 
-
+<hr>
 
 # **1.5.14**
 
@@ -34,7 +41,7 @@
 * ToC update for 11.1.0 patch
 * Removed the "NEW" label from several settings in the options
 
-
+<hr>
 
 # **1.5.13**
 
@@ -44,14 +51,14 @@
 ### UPDATE
 * ToC update for 11.0.7 patch
 
-
+<hr>
 
 # **1.5.12**
 
 ### UPDATE
 * ToC update for 11.0.5 patch
 
-
+<hr>
 
 # **1.5.11**
 
@@ -59,7 +66,7 @@
 * Added chat option to toggle farewell message when leaving group with "/lg".
 * You can toggle this option with chat command: `/lg msg {on/off}`
 
-
+<hr>
 
 # **1.5.10**
 
@@ -67,21 +74,21 @@
 * Character Inspect now should show correct ilvl, enchants and gems
 * Fixed nan/inf hp values on nameplates with 0hp on interactive elements(those that can use "Interact Key"), like Herbs or Ores
 
-
+<hr>
 
 # **1.5.9**
 
 ### FIX
 * Showing wrong primary stat for "Crystalline Radiance" chest enchant fixed
 
-
+<hr>
 
 # **1.5.8**
 
 ### HOTFIX
 * Work around INSPECT_READY event triggering 6+ times when inspecting somebody which leads to large memory usage
 
-
+<hr>
 
 # **1.5.7**
 
@@ -89,42 +96,42 @@
 * Fixed more rare lua errors and bugs
 * Added abbreviations for new TWW enchants
 
-
+<hr>
 
 # **1.5.6**
 
 ### FIX
 * Fixed some Character info lua errors
 
-
+<hr>
 
 # **1.5.5**
 
 ### UPDATE
 * Character info: added TWW ilvl bonuses
 
-
+<hr>
 
 # **1.5.4**
 
 ### UPDATE
 * ToC update for 11.0.2 patch
 
-
+<hr>
 
 # **1.5.3**
 
 ### FIX
 * Class colored unit frames /reload bug fixed
 
-
+<hr>
 
 # **1.5.2**
 
 ### FIX
 * The event "UNIT_INVENTORY_CHANGED" is triggered when changing zones, which shouldn't happen (Blizzard bug). This caused calling the same function (which updates player character info) a lot, unnecessary. Implemented a workaround solution that uses "ENCHANT_SPELL_COMPLETED" and "SOCKET_INFO_UPDATE" events
 
-
+<hr>
 
 # **1.5.1**
 
@@ -132,7 +139,7 @@
 #### Chat
 * After copying the link from chat->popup, the popup automatically closes
 
-
+<hr>
 
 # **1.5.0**
 
@@ -165,14 +172,14 @@
 * Optimized the way of coloring Player/Target/Focus/Pet frames
 * Changed the leader/assist icons for Raid frames to the new Blizzard TWW textures
 
-
+<hr>
 
 # **1.4.4**
 
 ### FIX
 * Fixed wrong ilvl number for low level items (from old expansions) on Player/Inspect frame
 
-
+<hr>
 
 # **1.4.3**
 
@@ -180,21 +187,21 @@
 * New Blizzard role icons in chat and LFG Tooltip
 * Removed LFG group inspect for dungeons/m+ (Blizzard implemented this in 10.2.7)
 
-
+<hr>
 
 # **1.4.2**
 
 ### UPDATE
 * ToC update for 10.2.7 patch
 
-
+<hr>
 
 # **1.4.1**
 
 ### FIX
 * Fixed some mouseover/inspect lua errors
 
-
+<hr>
 
 # **1.4.0**
 
@@ -207,14 +214,14 @@
 ### FIX
 * Disabled HP text on friendly nameplates
 
-
+<hr>
 
 # **1.3.1**
 
 ### UPDATE
 * ToC update for 10.2.6 patch
 
-
+<hr>
 
 # **1.3.0**
 
@@ -228,21 +235,21 @@
 * Fixed chat link color picker bug caused by 10.2.5 patch changes
 * Fixed and improved lfg module logic
 
-
+<hr>
 
 # **1.2.2**
 
 ### UPDATE
 * ToC update for 10.2.5 patch
 
-
+<hr>
 
 # **1.2.1**
 
 ### FIX
 * Leader, Assist and Raid markers bug fix: Now, when you pass the leader or give somebody an assist and then change the roster, everything should work as intended
 
-
+<hr>
 
 # **1.2.0**
 

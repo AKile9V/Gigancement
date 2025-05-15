@@ -29,6 +29,20 @@ local TwoHanders = {
     ["INVTYPE_RANGEDRIGHT"] = true,
     ["INVTYPE_2HWEAPON"] = true
 }
+local TWWHeadEnchants = {
+    ["Lesser Void Ritual"] = {id = 239093, icon = 237131},
+    ["Lesser Twisted Appendage"] = {id = 239088, icon = 237125},
+    ["Lesser Gushing Wound"] = {id = 239084, icon = 237112},
+    ["Lesser Infinite Stars"] = {id = 239078, icon = 237114},
+    ["Lesser Echoing Void"] = {id = 238678, icon = 237113},
+    ["Lesser Twilight Devastation"] = {id = 238403, icon = 237123},
+    ["Greater Void Ritual"] = {id = 239095, icon = 237110},
+    ["Greater Twisted Appendage"] = {id = 239090, icon = 237104},
+    ["Greater Gushing Wound"] = {id = 239086, icon = 237091},
+    ["Greater Infinite Stars"] = {id = 239080, icon = 237093},
+    ["Greater Echoing Void"] = {id = 238680, icon = 237092},
+    ["Greater Twilight Devastation"] = {id = 238405, icon = 237102},
+}
 local DKEnchants = {
     ["Hysteria"] = 460688,
     ["Razorice"] = 135842,
@@ -89,7 +103,7 @@ local TWWEnchants = {
 local sumILVL = 0
 local weaponLevel = 0
 local characterSlots = {
-    [1] = {id = 1, side = "LEFT", name = "Head", canEnchant = false},
+    [1] = {id = 1, side = "LEFT", name = "Head", canEnchant = true},
     [2] = {id = 2, side = "LEFT", name = "Neck", canEnchant = false},
     [3] = {id = 3, side = "LEFT", name = "Shoulder", canEnchant = false},
     -- [4] = {id = 4, side = "LEFT", name = "Shirt", canEnchant = false},
@@ -111,19 +125,19 @@ local characterSlots = {
 }
 -- update these after each tier patch
 local minUpgaradeLevel = 597
-local maxUpgaradeLevel = 678
+local maxUpgaradeLevel = 684
 local maxUpgradeLevels = {
     [619] = {11942, 11943, 11944, 11945, 11946, 11947, 11948, 11949}, -- Explorer
     [632] = {11951, 11952, 11953, 11954, 11955, 11956, 11957, 11950}, -- Adventurer
     [645] = {11969, 11970, 11971, 11972, 11973, 11974, 11975, 11976}, -- Veteran
     [658] = {11977, 11978, 11979, 11980, 11981, 11982, 11983, 11984}, -- Champion
-    [665] = {11985, 11986, 11987, 11988, 11989, 11990}, -- Hero
-    [675] = {
+    [671] = {11985, 11986, 11987, 11988, 11989, 11990, 12371, 12372}, -- Hero
+    [681] = {
         12040, -- Fortune Crafted
         11142, -- Blue crafted weather rune
         10841, -- Rank 5 blue gear
         }, -- Crafted Gear
-    [678] = {11991, 11992, 11993, 11994, 11995, 11996}, -- Myth
+    [684] = {11991, 11992, 11993, 11994, 11995, 11996, 12375, 12376}, -- Myth
 }
 
 local specIndex = {
@@ -398,6 +412,9 @@ local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, ite
             else
                 parent.EquipmentSlotFrame.enchantString:Hide()
             end
+            parent.EquipmentSlotFrame.enchantString:SetScript("OnEnter", function()
+                return
+            end)
         else
             parent.EquipmentSlotFrame.enchantString:Hide()
         end
@@ -416,15 +433,31 @@ local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, ite
         end
         itemEnchant = itemEnchant:gsub("^%s+", ""):gsub("%s+$", "")
 
-        parent.EquipmentSlotFrame.enchantString:SetTextColor(0, 1, 0, 1)
+        parent.EquipmentSlotFrame.enchantString:SetTextColor(0.12, 1, 0, 1)
         if slot.side == "RIGHT" then
             parent.EquipmentSlotFrame.enchantString:SetText((TWWEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant) .. " " ..
                                                             ((itemEnchantAtlas and ("|A:"..itemEnchantAtlas..":15:15|a")) or
                                                              (DKEnchants[itemEnchant] and ("|T"..DKEnchants[itemEnchant]..":15:15|t")) or ""))
         else
             parent.EquipmentSlotFrame.enchantString:SetText(((itemEnchantAtlas and ("|A:"..itemEnchantAtlas..":15:15|a")) or
-                                                             (DKEnchants[itemEnchant] and ("|T"..DKEnchants[itemEnchant]..":15:15|t")) or "") ..
+                                                             (DKEnchants[itemEnchant] and ("|T"..DKEnchants[itemEnchant]..":15:15|t")) or
+                                                             (TWWHeadEnchants[itemEnchant] and ("|T"..TWWHeadEnchants[itemEnchant].icon..":15:15|t")) or "") ..
                                                             ((TWWEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant):gsub("Primary Stat", GetPrimaryStatName(unitId))))
+        end
+        if TWWHeadEnchants[itemEnchant] then
+            local GreaterEnchantQuality = string.match(itemEnchant, "Greater") and true or string.match(itemEnchant, "Lesser") and false or nil
+            parent.EquipmentSlotFrame.enchantString:SetTextColor(not GreaterEnchantQuality and 0 or GreaterEnchantQuality and 0.64 or 0,
+                                                                 not GreaterEnchantQuality and 0.44 or GreaterEnchantQuality and 0.21 or 1,
+                                                                 not GreaterEnchantQuality and 0.87 or GreaterEnchantQuality and 0.93 or 0, 1)
+            local _, enchantLink = C_Item.GetItemInfo(TWWHeadEnchants[itemEnchant].id)
+            parent.EquipmentSlotFrame.enchantString:SetScript("OnEnter", function()
+                    GameTooltip:SetOwner(parent.EquipmentSlotFrame.enchantString, "ANCHOR_CURSOR")
+                    GameTooltip:SetHyperlink(enchantLink)
+                    GameTooltip:Show()
+            end)
+            parent.EquipmentSlotFrame.enchantString:SetScript("OnLeave", function()
+                    GameTooltip:Hide()
+            end)
         end
         parent.EquipmentSlotFrame.enchantString:Show()
     end
