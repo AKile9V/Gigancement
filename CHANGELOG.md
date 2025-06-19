@@ -1,3 +1,10 @@
+# **1.5.19**
+
+### UPDATE
+* ToC update for 11.1.7 patch
+
+<hr>
+
 # **1.5.18**
 
 ### UPDATE
