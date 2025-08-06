@@ -1,3 +1,11 @@
+# **1.5.20**
+
+### UPDATE
+* Updated gear track ilvls for Season 3
+* ToC update for 11.2.0 patch
+
+<hr>
+
 # **1.5.19**
 
 ### UPDATE

@@ -124,20 +124,20 @@ local characterSlots = {
     [19] = {id = 19, side = "LEFT", name = "Tabard", canEnchant = false} -- using as an anchor for average ilvl
 }
 -- update these after each tier patch
-local minUpgaradeLevel = 597
-local maxUpgaradeLevel = 684
+local minUpgaradeLevel = 642
+local maxUpgaradeLevel = 723
 local maxUpgradeLevels = {
-    [619] = {11942, 11943, 11944, 11945, 11946, 11947, 11948, 11949}, -- Explorer
-    [632] = {11951, 11952, 11953, 11954, 11955, 11956, 11957, 11950}, -- Adventurer
-    [645] = {11969, 11970, 11971, 11972, 11973, 11974, 11975, 11976}, -- Veteran
-    [658] = {11977, 11978, 11979, 11980, 11981, 11982, 11983, 11984}, -- Champion
-    [671] = {11985, 11986, 11987, 11988, 11989, 11990, 12371, 12372}, -- Hero
+    [665] = {12265, 12266, 12267, 12268, 12269, 12270, 12271, 12272}, -- Explorer
+    [678] = {12274, 12275, 12276, 12277, 12278, 12279, 12280, 12281}, -- Adventurer
+    [691] = {12282, 12283, 12284, 12285, 12286, 12287, 12288, 12289}, -- Veteran
+    [704] = {12290, 12291, 12292, 12293, 12294, 12295, 12296, 12297}, -- Champion
+    [710] = {12350, 12351, 12352, 12353, 12354, 12355}, -- Hero
     [681] = {
-        12040, -- Fortune Crafted
+        12050, -- Starlight Crafted
         11142, -- Blue crafted weather rune
         10841, -- Rank 5 blue gear
         }, -- Crafted Gear
-    [684] = {11991, 11992, 11993, 11994, 11995, 11996, 12375, 12376}, -- Myth
+    [723] = {12356, 12357, 12358, 12359, 12360, 12361}, -- Myth
 }
 
 local specIndex = {
