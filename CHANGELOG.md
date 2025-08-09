@@ -1,3 +1,10 @@
+# **1.5.21**
+
+### UPDATE
+* Removed text for missing Head enchant 
+
+<hr>
+
 # **1.5.20**
 
 ### UPDATE

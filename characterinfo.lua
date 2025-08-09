@@ -103,7 +103,7 @@ local TWWEnchants = {
 local sumILVL = 0
 local weaponLevel = 0
 local characterSlots = {
-    [1] = {id = 1, side = "LEFT", name = "Head", canEnchant = true},
+    [1] = {id = 1, side = "LEFT", name = "Head", canEnchant = false},
     [2] = {id = 2, side = "LEFT", name = "Neck", canEnchant = false},
     [3] = {id = 3, side = "LEFT", name = "Shoulder", canEnchant = false},
     -- [4] = {id = 4, side = "LEFT", name = "Shirt", canEnchant = false},
