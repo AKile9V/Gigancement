@@ -1,3 +1,10 @@
+# **1.5.22**
+
+### UPDATE
+* Fixed crafted gear max ilvl
+
+<hr>
+
 # **1.5.21**
 
 ### UPDATE
