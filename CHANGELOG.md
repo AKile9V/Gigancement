@@ -1,3 +1,11 @@
+# **1.5.23**
+
+### UPDATE
+* Turbo-Boost ILVL update
+* ToC update for 11.1.7 patch
+
+<hr>
+
 # **1.5.22**
 
 ### UPDATE

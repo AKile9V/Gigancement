@@ -125,19 +125,19 @@ local characterSlots = {
 }
 -- update these after each tier patch
 local minUpgaradeLevel = 642
-local maxUpgaradeLevel = 723
+local maxUpgaradeLevel = 730
 local maxUpgradeLevels = {
     [665] = {12265, 12266, 12267, 12268, 12269, 12270, 12271, 12272}, -- Explorer
     [678] = {12274, 12275, 12276, 12277, 12278, 12279, 12280, 12281}, -- Adventurer
     [691] = {12282, 12283, 12284, 12285, 12286, 12287, 12288, 12289}, -- Veteran
     [704] = {12290, 12291, 12292, 12293, 12294, 12295, 12296, 12297}, -- Champion
-    [710] = {12350, 12351, 12352, 12353, 12354, 12355}, -- Hero
-    [720] = {
+    [717] = {12350, 12351, 12352, 12353, 12354, 12355, 13443, 13444}, -- Hero
+    [727] = {
         12050, -- Starlight Crafted
         11142, -- Blue crafted weather rune
         10841, -- Rank 5 blue gear
         }, -- Crafted Gear
-    [723] = {12356, 12357, 12358, 12359, 12360, 12361}, -- Myth
+    [730] = {12356, 12357, 12358, 12359, 12360, 12361, 13445, 13446}, -- Myth
 }
 
 local specIndex = {

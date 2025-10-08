@@ -1,11 +1,11 @@
-## Interface: 110200
+## Interface: 110205
 ## Title: Gigancement
 ## Notes: Lightweight enhancements and modifications to the Blizzard UI
 ## IconTexture: Interface\GroupFrame\UI-Group-LeaderIcon
 ## Category: Misc
 ## Author: AKile
 ## SavedVariables: settingsDB
-## Version: 1.5.22
+## Version: 1.5.23
 
 main.lua
 nameplates.lua
