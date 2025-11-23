@@ -1,3 +1,24 @@
+# **1.6.0-beta**
+### TODO:
+* Verifying active "working" features
+* Code tweaking
+* Disabled features awaiting fixes (or removal)
+* Potential bugs present, please report any bugs encountered
+
+### UPDATE
+* Refactored addon options logic
+* Reordered modules in addon options
+* Added open addon options on required reload
+* ToC update for 12.0.0 beta only! (DO NOT INSTALL ON RETAIL)
+
+### FIX
+* Fixed modules affected by Midnight changes
+* Fixed some hard coded addon options
+* Removed features implemented by Blizzard
+* Removed features that use secret values
+
+<hr>
+
 # **1.5.23**
 
 ### UPDATE

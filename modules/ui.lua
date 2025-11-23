@@ -1,5 +1,3 @@
-settingsDB = settingsDB or {}
--- Castbar Timer
 local function CastbarSetText(castingFrame)
   if not castingFrame.timer then return end
   if castingFrame.casting then
@@ -11,8 +9,8 @@ local function CastbarSetText(castingFrame)
   end
 end
 
-function UpgradeDefaultCastbar(position)
-  if not settingsDB.enableUpgradedCastbar then return end
+function GigaSettingsInterface:UpgradeDefaultCastbar(position)
+  if not GigaSettingsDB.upgradedCastbar then return end
   if not PlayerCastingBarFrame.timer then
     PlayerCastingBarFrame.timer = PlayerCastingBarFrame:CreateFontString(nil)
     PlayerCastingBarFrame.timer:SetFont(STANDARD_TEXT_FONT,10,"OUTLINE")
@@ -47,10 +45,8 @@ function UpgradeDefaultCastbar(position)
   FocusFrameSpellBar.timer:ClearAllPoints()
   FocusFrameSpellBar.timer:SetPoint(position, FocusFrameSpellBar, position, 0, 1)
 end
--- Castbar Timer // END
 
--- Class Frame colors
-function UnitFrameClassColor(unit, healthBar)
+function GigaSettingsInterface:UnitFrameClassColor(unit, healthBar)
   if UnitIsPlayer(unit) and UnitIsConnected(unit) then
 		local _, const_class = UnitClass(unit);
 		local r, g, b = GetClassColor(const_class)
@@ -67,15 +63,15 @@ function UnitFrameClassColor(unit, healthBar)
 		healthBar:SetStatusBarColor(1, 1, 1)
 	end
 end
--- Class Frame colors // END
 
--- Raid Markers and Leader icons on Raid Frames
 local icons = {}
 local function PrepTextureRaidMarker(frame)
   local frameName = frame:GetName()
   if not icons[frameName] then
     return
   end
+  icons[frameName].textureRM:SetTexture("Interface/TargetingFrame/UI-RaidTargetingIcons")
+  icons[frameName].textureRM:Hide()
   icons[frameName].textureRM:ClearAllPoints()
   icons[frameName].textureRM:SetPoint("LEFT", 1, 0)
   icons[frameName].textureRM:SetWidth(20)
@@ -93,35 +89,29 @@ end
 
 local function SetupRaidMarks(unit, frame)
   local frameName = frame:GetName()
-  local icon = GetRaidTargetIndex(unit)
+  local markId = GetRaidTargetIndex(unit)
 
-  if not settingsDB.enableUpgradedRaidFrames and icons[frameName] ~= nil then
+  if not GigaSettingsDB.upgradedRaidFrames and icons[frameName] ~= nil then
     icons[frameName].textureRM:Hide()
     return
   end
 
   if not icons[frameName] then
-    icons[frameName] = {}
+    icons[frameName] = frame
     icons[frameName].textureRM = frame:CreateTexture(nil, "OVERLAY")
     PrepTextureRaidMarker(frame)
   end
-  if icon ~= icons[frameName].icon then
-    icons[frameName].icon = icon
-    if icon == nil then
-      icons[frameName].textureRM:Hide()
-    else
-      icons[frameName].textureRM:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcon_"..icon)
-      icons[frameName].textureRM:Show()
-    end
-  elseif icon == nil then
-    icons[frameName].textureRM:Hide()
-  else
+
+  if type(markId) ~= "nil" then
+    SetRaidTargetIconTexture(icons[frameName].textureRM, markId)
     icons[frameName].textureRM:Show()
+  else
+    icons[frameName].textureRM:Hide()
   end
 end
 
 local function SetupLeaderIcons(unit, frame)
-  if not settingsDB.enableUpgradedRaidFrames and frame.textureLeader ~= nil then
+  if not GigaSettingsDB.upgradedRaidFrames and frame.textureLeader ~= nil then
     frame.textureLeader:Hide()
     return
   end
@@ -155,11 +145,10 @@ local function UpdateIcons(frame)
    SetupLeaderIcons(unit, frame)
 end
 
-function UpgradeRaidFrames()
+function GigaSettingsInterface:UpgradeRaidFrames()
   if (CompactRaidFrameContainer:IsShown() and not CompactRaidFrameContainer:IsForbidden()) or (CompactPartyFrame:IsShown() and not CompactPartyFrame:IsForbidden()) then
 		CompactRaidFrameContainer:ApplyToFrames("all", function(frame)
       C_Timer.After(0, function() UpdateIcons(frame) end)
     end)
 	end
 end
--- Raid Markers and Leader icons on Raid Frames // END

@@ -1,4 +1,3 @@
-settingsDB = settingsDB or {}
 local chatEvents = {
     CHAT_MSG_BN_CONVERSATION = 0, CHAT_MSG_BN_WHISPER = 0,
     CHAT_MSG_BN_WHISPER_INFORM = 0, 
@@ -31,7 +30,7 @@ SlashCmdList["CHATCLEAR"] = function()
         cF = _G[chatFrameName]
         cF:Clear()
     end
-    -- Any other Whisper ChatFrame (don't expect more then 15 whispers opened at the same time)
+    -- Other Whisper chatframes (up to 15)
     for i=11, 25 do
         chatFrameName = ("%s%d"):format("ChatFrame", i)
         cF = _G[chatFrameName]
@@ -46,20 +45,20 @@ SLASH_LEAVEGROUP1 = "/lg"
 SlashCmdList["LEAVEGROUP"] = function(arg1)
     if arg1~="" then
         if arg1 == "msg off" then
-            settingsDB.c_disableLGMessage = true
+            GigaSettingsDB.disableLGMessage = true
             print("|cffFF0000/lg FAREWELL MESSAGE DISABLED|r")
         elseif arg1 == "msg on" then
-            settingsDB.c_disableLGMessage = false
+            GigaSettingsDB.disableLGMessage = false
             print("|cff00FF00/lg FAREWELL MESSAGE ENABLED|r")
         end
         return
     end
-    SendChatMessage(settingsDB.c_disableLGMessage and "" or "Thanks for the group", "PARTY")
-    C_Timer.After(settingsDB.c_disableLGMessage and 0 or 1.7, function() C_PartyInfo.LeaveParty() end)
+    SendChatMessage(GigaSettingsDB.disableLGMessage and "" or "Thanks for the group", "PARTY")
+    C_Timer.After(GigaSettingsDB.disableLGMessage and 0 or 1.7, function() C_PartyInfo.LeaveParty() end)
 end
 
 --Secondary Stats Distribution
-local function ssdround(num, numDecimalPlaces)
+local function SSDround(num, numDecimalPlaces)
     local mult = 10^(numDecimalPlaces or 0)
     return math.floor(num * mult + 0.5) / mult
 end
@@ -73,10 +72,10 @@ local function GetStatsDistrib()
     
     print("---- Secondary Stats Distribution -----")
     print("## Total: ".. statTotal .. " → 100%")
-    print("|cff00FF00Crit:|r ".. critValue .." → " .. ssdround(((critValue / statTotal) * 100),2) .. "%")
-    print("|cffFFFF00Haste|r: ".. hasteValue .." → " .. ssdround(((hasteValue / statTotal) * 100),2) .. "%")
-    print("|cff0000FFMastery:|r ".. masteryValue .." → " .. ssdround(((masteryValue / statTotal) * 100),2) .. "%")
-    print("|cffFF0000Versatility:|r ".. verValue .." → " .. ssdround(((verValue / statTotal) * 100),2) .. "%")
+    print("|cff00FF00Crit:|r ".. critValue .." → " .. SSDround(((critValue / statTotal) * 100),2) .. "%")
+    print("|cffFFFF00Haste|r: ".. hasteValue .." → " .. SSDround(((hasteValue / statTotal) * 100),2) .. "%")
+    print("|cff0000FFMastery:|r ".. masteryValue .." → " .. SSDround(((masteryValue / statTotal) * 100),2) .. "%")
+    print("|cffFF0000Versatility:|r ".. verValue .." → " .. SSDround(((verValue / statTotal) * 100),2) .. "%")
     print("-------------------------------------------------")
 end
 SlashCmdList["SDP"] = GetStatsDistrib
@@ -102,39 +101,35 @@ SlashCmdList["QUICKKEYBINDMODE"] = function()
     if QuickKeybindFrame then ShowUIPanel(QuickKeybindFrame) end
 end
 
--- LinksInChat
-local function doColor(url)
-    local color = string.format("%02x%02x%02x", 
-                                math.floor(settingsDB.colorLinkRed*255),
-                                math.floor(settingsDB.colorLinkGreen*255),
-                                math.floor(settingsDB.colorLinkBlue*255))
-    url = "|cff"..color.."|Hurl:"..url.."|h{"..url.."|h}|r "
+local function DoColor(url)
+    local color = GigaSettingsDB.linksInChatColor
+    url = "|c"..color.."|Hurl:"..url.."|h{"..url.."|h}|r "
     return url
 end
 
-local function urlFilter(self, event, msg, author, ...)
-    if not settingsDB.enableLinksInChat then return end
+local function UrlFilter(self, event, msg, author, ...)
+    if not GigaSettingsDB.linksInChat then return end
     if strfind(msg, "(%a+)://(%S+)%s?") then
-        return false, string.gsub(msg, "(%a+)://(%S+)%s?", doColor("%1://%2")), author, ...
+        return false, string.gsub(msg, "(%a+)://(%S+)%s?", DoColor("%1://%2")), author, ...
     end
     if strfind(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?") then
-        return false, string.gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", doColor("www.%1.%2")), author, ...
+        return false, string.gsub(msg, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", DoColor("www.%1.%2")), author, ...
     end
     if strfind(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?") then
-        return false, string.gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", doColor("%1@%2%3%4")), author, ...
+        return false, string.gsub(msg, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", DoColor("%1@%2%3%4")), author, ...
     end
     if strfind(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?") then
-        return false, string.gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?", doColor("%1.%2.%3.%4:%5")), author, ...
+        return false, string.gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?):(%d%d?%d?%d?%d?)%s?", DoColor("%1.%2.%3.%4:%5")), author, ...
     end
     if strfind(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?") then
-        return false, string.gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", doColor("%1.%2.%3.%4")), author, ...
+        return false, string.gsub(msg, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", DoColor("%1.%2.%3.%4")), author, ...
     end
     if strfind(msg, "[wWhH][wWtT][wWtT][\46pP]%S+[^%p%s]") then
-        return false, string.gsub(msg, "[wWhH][wWtT][wWtT][\46pP]%S+[^%p%s]", doColor("%1")), author, ...
+        return false, string.gsub(msg, "[wWhH][wWtT][wWtT][\46pP]%S+[^%p%s]", DoColor("%1")), author, ...
     end
 end
 
-function LinksInChat()
+function GigaSettingsInterface:LinksInChat()
     StaticPopupDialogs["LINKWINDOW"] = {
         text = "Use \"CTRL+C\" to copy URL",
         button2 = CANCEL,
@@ -150,8 +145,7 @@ function LinksInChat()
 
     local SetHyperlink = _G.ItemRefTooltip.SetHyperlink
     function _G.ItemRefTooltip:SetHyperlink(link, ...)
-        if not settingsDB.enableLinksInChat then return end
-        if link and (strsub(link, 1, 3) == "url") then
+        if GigaSettingsDB.linksInChat and link and (strsub(link, 1, 3) == "url") then
             local url = strsub(link, 5)
             local dialog = StaticPopup_Show("LINKWINDOW")
             local editbox = _G[dialog:GetName().."EditBox"]
@@ -161,10 +155,10 @@ function LinksInChat()
             editbox:HighlightText()
             editbox:SetScript("OnKeyDown", function(self, key)
                 if IsControlKeyDown() and (key == "C" or key == "X") then
-                    -- Have to delay popup closing, because that operation can be faster then copying to clipboard
+                    -- Delay popup closing so copy operation completes
                     C_Timer.After(0, function()
                         self:GetParent():Hide()
-                        ActionStatus:DisplayMessage(doColor(url) .. " copied to clipboard.")
+                        ActionStatus:DisplayMessage(DoColor(url) .. " copied to clipboard.")
                     end)
                 end
             end)
@@ -181,17 +175,15 @@ function LinksInChat()
 
     for k,v in pairs(chatEvents) do
         if v == 0 or v == 1 then
-            ChatFrame_AddMessageEventFilter(k, urlFilter)
+            ChatFrame_AddMessageEventFilter(k, UrlFilter)
         end
     end
 end
--- LinksInChat // END
 
--- Roles in chat
-local GetColoredName_orig
-local function GetColoredName_hook(event, arg1, arg2, ...)
-    local ret = GetColoredName_orig(event, arg1, arg2, ...) 
-    if chatEvents[event] and settingsDB.enableRolesInChat then
+local ChatFrameUtil_GetDecoratedSenderName_orig
+local function ChatFrameUtil_GetDecoratedSenderName_hook(event, arg1, arg2, ...)
+    local ret = ChatFrameUtil_GetDecoratedSenderName_orig(event, arg1, arg2, ...) 
+    if chatEvents[event] and GigaSettingsDB.rolesInChat then
         local player, realm = strsplit( "-", arg2, 2 )
         local role = UnitGroupRolesAssigned(player)
         if not UnitInParty(player) and not UnitInRaid(player) then
@@ -199,17 +191,16 @@ local function GetColoredName_hook(event, arg1, arg2, ...)
             return ret
         end
         if role and role ~= "NONE" then
-            ret = getRoleTex(role.."CHAT", 18, 18) .. ret
+            ret = GigaSettingsInterface:GetRoleTex(role.."CHAT", 18, 18) .. ret
         end
     end
     return ret
 end
 
-if GetColoredName then
-    GetColoredName_orig = _G.GetColoredName
-    _G.GetColoredName = GetColoredName_hook
+if _G.ChatFrameUtil.GetDecoratedSenderName then
+    ChatFrameUtil_GetDecoratedSenderName_orig = _G.ChatFrameUtil.GetDecoratedSenderName
+    _G.ChatFrameUtil.GetDecoratedSenderName = ChatFrameUtil_GetDecoratedSenderName_hook
 end
--- Roles in chat // END
 
 local shortChnNames = {
     "[G", --General
@@ -259,11 +250,11 @@ local function ReplaceChannelNames(text)
 end
 
 local EditMessage = function(self)
-    if not settingsDB.enableShorterChannelNames then return end
+    if not GigaSettingsDB.shorterChannelNames then return end
 
-	local num = self.headIndex
+	local num = self.headIndex.value
 	if num == 0 then
-		num = self.maxElements
+		num = self.maxElements.value
 	end
 	local tbl = self.elements[num]
 	local text = tbl and tbl.message
@@ -274,7 +265,7 @@ local EditMessage = function(self)
 end
 
 local function ChatMouseoverItemTooltip(chatFrame, link, text)
-    if not settingsDB.enableChatMouseoverItemTooltip then return end
+    if not GigaSettingsDB.chatMouseoverItemTooltip then return end
 
     local linkType = LinkUtil.SplitLinkData(link)
     if linkType == "battlepet" then
@@ -292,18 +283,18 @@ local function ChatMouseoverItemTooltip(chatFrame, link, text)
 end
   
 local function ChatCloseMouseoverItemTooltip()
-    if not settingsDB.enableChatMouseoverItemTooltip then return end
+    if not GigaSettingsDB.chatMouseoverItemTooltip then return end
     
     BattlePetTooltip:Hide()
     GameTooltip:Hide()
 end
 
-function ChatWhispersMouseoverItemTooltip()
-    if not settingsDB.enableChatMouseoverItemTooltip then return end
+function GigaSettingsInterface:ChatWhispersMouseoverItemTooltip()
+    if not GigaSettingsDB.chatMouseoverItemTooltip then return end
     
     local chatFrameName
     local cF
-    -- 15 whisper chatframes
+    -- Up to 15 Whisper chatframes
     for i=11, 25 do
         chatFrameName = ("%s%d"):format("ChatFrame", i)
         cF = _G[chatFrameName]
@@ -314,7 +305,7 @@ function ChatWhispersMouseoverItemTooltip()
     end
 end
 
-function ChatFramesModifications()
+function GigaSettingsInterface:ChatFramesModifications()
     -- ChatFrame1
     local chatFrameName
     local cF = _G["ChatFrame1"]
@@ -333,6 +324,6 @@ function ChatFramesModifications()
         cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
         cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
     end
-    -- Any other Whisper ChatFrame (don't expect more then 15 whispers opened at the same time)
-    ChatWhispersMouseoverItemTooltip()
+    -- Other Whisper chatframes (up to 15)
+    GigaSettingsInterface:ChatWhispersMouseoverItemTooltip()
 end

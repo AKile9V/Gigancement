@@ -1,24 +1,19 @@
-settingsDB = settingsDB or {}
-
--- Decimal ilvl
 local function DecimalILVL(statFrame, unit)
-    if unit ~= "player" or (not settingsDB.enableDecimalILVL and not settingsDB.enableClassColorILVL) then
+    if unit ~= "player" or (not GigaSettingsDB.decimalILVL and not GigaSettingsDB.classColorILVL) then
         return
     end
     local maxiLvl, equippediLvl = GetAverageItemLevel()
     local ilvlText
-    if settingsDB.enableDecimalILVL then
+    if GigaSettingsDB.decimalILVL then
         ilvlText = (equippediLvl ~= maxiLvl and string.format("%.2f".."/%.2f", equippediLvl, maxiLvl)) or string.format("%.2f", equippediLvl)
     end
-    ilvlText = settingsDB.enableDecimalILVL and ilvlText or string.format("%d", equippediLvl)
+    ilvlText = GigaSettingsDB.decimalILVL and ilvlText or string.format("%d", equippediLvl)
     local classColor = (RAID_CLASS_COLORS[select(2, UnitClass(unit))]).colorStr or "ffa335ee"
-    ilvlText = (settingsDB.enableClassColorILVL and "|c"..classColor..ilvlText.."|r") or ilvlText
+    ilvlText = (GigaSettingsDB.classColorILVL and "|c"..classColor..ilvlText.."|r") or ilvlText
     PaperDollFrame_SetLabelAndText(statFrame, STAT_AVERAGE_ITEM_LEVEL, ilvlText, false, ilvlText)  
 end
 hooksecurefunc("PaperDollFrame_SetItemLevel", DecimalILVL)
--- Decimal ilvl // END
 
--- CharacterInfo and InspectCharacter ILVL
 local _G = _G
 local defaultFont = STANDARD_TEXT_FONT
 local defaultFontsize = 13
@@ -121,9 +116,9 @@ local characterSlots = {
     [16] = {id = 16, side = "RIGHT", name = "MainHand", canEnchant = true},
     [17] = {id = 17, side = "LEFT", name = "SecondaryHand", canEnchant = true},
     -- [18] = {id = 18, side = "LEFT", name = "Ranged", canEnchant = false},
-    [19] = {id = 19, side = "LEFT", name = "Tabard", canEnchant = false} -- using as an anchor for average ilvl
+    [19] = {id = 19, side = "LEFT", name = "Tabard", canEnchant = false} -- ilvl anchor
 }
--- update these after each tier patch
+-- Keep current with tier patches
 local minUpgaradeLevel = 642
 local maxUpgaradeLevel = 730
 local maxUpgradeLevels = {
@@ -233,7 +228,7 @@ local CreateSlotFrame = function(unitId, slot)
         parent.EquipmentSlotFrame.levelString:Hide()
     end
 
-    -- for average ilvl on inspect
+    -- For avg ilvl on inspect
     if slot.id == 19 then
         parent.EquipmentSlotFrame.levelString:SetPoint("CENTER", parent.EquipmentSlotFrame, "CENTER", 140, 0)
         parent.EquipmentSlotFrame.tex = parent.EquipmentSlotFrame:CreateTexture()
@@ -293,7 +288,7 @@ local function UpdateAverageItemLevel(unitId, positionBySlot)
         return
     end
 
-    if not settingsDB.enableCharacterILVLInfo then
+    if not GigaSettingsDB.characterILVLInfo then
         parent.EquipmentSlotFrame:Hide()
         return
     end
@@ -306,7 +301,7 @@ local function UpdateAverageItemLevel(unitId, positionBySlot)
 end
 
 local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityColorHex)
-    if not settingsDB.enableCharacterILVLInfo then
+    if not GigaSettingsDB.characterILVLInfo then
         parent.EquipmentSlotFrame.levelString:Hide()
         parent.EquipmentSlotFrame.maxLevelString:Hide()
         return
@@ -360,7 +355,7 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
 end
 
 local function GetItemInfoData(unitId, slotId, itemSockets)
-    if not settingsDB.enableCharacterEnchantsInfo and not settingsDB.enableCharacterGemsInfo then return end
+    if not GigaSettingsDB.characterEnchantsInfo and not GigaSettingsDB.characterGemsInfo then return end
     local itemEnchant = nil
     local itemEnchantAtlas = ""
     local itemSocketCount = 0
@@ -397,7 +392,7 @@ local function GetItemInfoData(unitId, slotId, itemSockets)
 end
 
 local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, itemEquipLoc, unitId)
-    if not settingsDB.enableCharacterEnchantsInfo then
+    if not GigaSettingsDB.characterEnchantsInfo then
         parent.EquipmentSlotFrame.enchantString:Hide()
         return
     end
@@ -464,7 +459,7 @@ local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, ite
 end
 
 local function SetupItemGems(parent, itemLink, itemSockets, itemSocketCount)
-    if not settingsDB.enableCharacterGemsInfo then
+    if not GigaSettingsDB.characterGemsInfo then
         parent.EquipmentSlotFrame.socketFrame[1]:Hide()
         parent.EquipmentSlotFrame.socketFrame[2]:Hide()
         parent.EquipmentSlotFrame.socketFrame[3]:Hide()
@@ -524,8 +519,8 @@ local function SetupItemGems(parent, itemLink, itemSockets, itemSocketCount)
     end
 end
 
-function UpdateEquipmentSlot(unitId, slotId)
-    if not settingsDB.characterInfoFlag or 
+function GigaSettingsInterface:UpdateEquipmentSlot(unitId, slotId)
+    if not GigaSettingsDB.characterInfoFlag or 
        unitId == nil or UnitGUID(unitId) == nil or slotId == nil or
        characterSlots[slotId] == nil or slotId == 19 then
 		return
@@ -572,14 +567,14 @@ function UpdateEquipmentSlot(unitId, slotId)
     return itemLevel
 end
 
-function UpdateAllEquipmentSlots(unitId)
-    if not settingsDB.characterInfoFlag then
+function GigaSettingsInterface:UpdateAllEquipmentSlots(unitId)
+    if not GigaSettingsDB.characterInfoFlag then
 		return
 	end
     sumILVL = 0
     weaponLevel = 0
     for slotId in pairs(characterSlots) do
-        sumILVL = sumILVL + (UpdateEquipmentSlot(unitId, slotId) or 0)
+        sumILVL = sumILVL + (GigaSettingsInterface:UpdateEquipmentSlot(unitId, slotId) or 0)
     end
     UpdateAverageItemLevel(unitId, 19)
 end

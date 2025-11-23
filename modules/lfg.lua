@@ -1,7 +1,4 @@
-settingsDB = settingsDB or {}
-
--- LFG Inspect Group Specializations
-local function sortRoles(resultID, numMembers)
+local function SortRoles(resultID, numMembers)
   local sortedMaps = {}
   for i = 1, numMembers do
     local role, class, classLocalized, specLocalized, isLeader = C_LFGList.GetSearchResultMemberInfo(resultID, i)
@@ -20,7 +17,7 @@ local function sortRoles(resultID, numMembers)
   return sortedMaps
 end
 
-function SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
+function GigaSettingsInterface.SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
   local searchResultInfo = C_LFGList.GetSearchResultInfo(resultID)
   local activityInfo = C_LFGList.GetActivityInfoTable(searchResultInfo.activityIDs[1], nil, searchResultInfo.isWarMode)
   if activityInfo.displayType ~= Enum.LFGListDisplayType.ClassEnumerate and activityInfo.displayType ~= Enum.LFGListDisplayType.RoleEnumerate then
@@ -28,12 +25,12 @@ function SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
       local line = _G[tooltip:GetName().."TextLeft"..i]
       local text = line:GetText()
       if text and text:match("Members:") then
-        local sortedMaps = sortRoles(resultID, searchResultInfo.numMembers)
+        local sortedMaps = SortRoles(resultID, searchResultInfo.numMembers)
         for i = 1, searchResultInfo.numMembers do
           local player = sortedMaps[i]
           local classColor = RAID_CLASS_COLORS[player.class] or NORMAL_FONT_COLOR:GenerateHexColor()
           local leaderArt = player.isLeader and "|A:groupfinder-icon-leader:9:14|a" or ""
-          text = text .. "\n" .. getRoleTex(player.role, 13, 13) .. " |c".. classColor.colorStr .. player.classLocalized .. " - " .. player.specLocalized .."|r " .. leaderArt
+          text = text .. "\n" .. GigaSettingsInterface:GetRoleTex(player.role, 13, 13) .. " |c".. classColor.colorStr .. player.classLocalized .. " - " .. player.specLocalized .."|r " .. leaderArt
         end
         line:SetText(text)
         line:SetSpacing(2)
@@ -44,12 +41,10 @@ function SetupLFGTooltip(tooltip, resultID, autoAcceptOption)
   end
   tooltip:Show()
 end
--- LFG Inspect Group Specializations // END
 
--- Double click to queue
 local function OnDoubleClick(button, buttonName)
   local resultExists = not LFGListFrame.SearchPanel.SignUpButton.tooltip 
-  if (settingsDB.enableDoubleClickLFG and resultExists and buttonName == "LeftButton" and (IsInGroup() ~= true or UnitIsGroupLeader("player") == true)) then
+  if (GigaSettingsDB.doubleClickLFG and resultExists and buttonName == "LeftButton" and (IsInGroup() ~= true or UnitIsGroupLeader("player") == true)) then
       LFGListSearchPanel_SignUp(button:GetParent():GetParent():GetParent())
   end
 end
@@ -63,36 +58,31 @@ local function AddDoubleClickHook(scrollTarget)
   end
 end
 
-function LFGDoubleClick()
+function GigaSettingsInterface:LFGDoubleClick()
   local scrollTarget = LFGListFrame.SearchPanel.ScrollBox:GetScrollTarget()
   AddDoubleClickHook(scrollTarget)
 end
--- Double click to queue // END
 
--- Auto role check
-LFGListApplicationDialog:HookScript("OnShow", function() 
-  if settingsDB.enableSkipRoleCheck and LFGListApplicationDialog.SignUpButton:IsEnabled() and not IsShiftKeyDown() then 
+-- TODO: Add auto current spec role select on empty role?
+LFGListApplicationDialog:HookScript("OnShow", function()
+  if GigaSettingsDB.skipRoleCheck and LFGListApplicationDialog.SignUpButton:IsEnabled() and not IsShiftKeyDown() then
     LFGListApplicationDialog.SignUpButton:Click()
   end
 end)
 LFDRoleCheckPopupAcceptButton:HookScript("OnShow", function()
-  if settingsDB.enableSkipRoleCheck then
+  if GigaSettingsDB.skipRoleCheck then
     LFDRoleCheckPopupAcceptButton:Click()
   end
 end)
--- Auto role check // END
 
--- Silence application sound
 local origEyeOnLoop = QueueStatusButton.EyeHighlightAnim:GetScript("OnLoop")
-function MuteApplicationSignupSound()
+function GigaSettingsInterface:MuteApplicationSignupSound()
   if QueueStatusButton and QueueStatusButton.EyeHighlightAnim and origEyeOnLoop then
-    QueueStatusButton.EyeHighlightAnim:SetScript("OnLoop", (not settingsDB.enableMuteApplicantSound and origEyeOnLoop) or (function() return end))
+    QueueStatusButton.EyeHighlightAnim:SetScript("OnLoop", (not GigaSettingsDB.muteApplicantSound and origEyeOnLoop) or (function() return end))
   end
 end
--- Silence application sound // END
 
--- Applicant Race in tooltip
-function AddApplicantRaceInTooltip(self)
+function GigaSettingsInterface.AddApplicantRaceInTooltip(self)
   local race = C_CreatureInfo.GetRaceInfo(select(15, C_LFGList.GetApplicantMemberInfo(self:GetParent().applicantID, self.memberIdx))).raceName
   for i=1, GameTooltip:NumLines() do 
     local line = _G["GameTooltipTextLeft"..i]
@@ -105,9 +95,7 @@ function AddApplicantRaceInTooltip(self)
     end
   end
 end
--- Applicant Race in tooltip // END
 
--- Sort Applicants by RIO score
 local function SortApplicantsCB(applicantID1, applicantID2)
   local applicantInfo1 = C_LFGList.GetApplicantInfo(applicantID1)
   local applicantInfo2 = C_LFGList.GetApplicantInfo(applicantID2)
@@ -126,7 +114,6 @@ local function SortApplicantsCB(applicantID1, applicantID2)
   return applicant1Score>applicant2Score
 end
 
-function SortApplicantsByRating(applicants)
+function GigaSettingsInterface.SortApplicantsByRating(applicants)
   table.sort(applicants, SortApplicantsCB)
 end
--- Sort Applicants by RIO score // END
