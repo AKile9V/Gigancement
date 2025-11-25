@@ -2,6 +2,7 @@
 
 ### UPDATE
 * Enabled silent application sound
+* Testing beta packaging update
 
 <hr>
 
