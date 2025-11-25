@@ -121,7 +121,6 @@ GigaAddon = {
                 GigaSettingsInterface:ToggleEventRegister("CHAT_MSG_WHISPER_INFORM", GigaSettingsDB.chatMouseoverItemTooltip)
                 GigaSettingsInterface:ToggleEventRegister("CHAT_MSG_BN_WHISPER", GigaSettingsDB.chatMouseoverItemTooltip)
                 GigaSettingsInterface:ToggleEventRegister("CHAT_MSG_BN_WHISPER_INFORM", GigaSettingsDB.chatMouseoverItemTooltip)
-                return
             end,
             name = "Chat Mouseover Tooltips",
             tooltip = "Hover over items/mounts/pets/achievements in chat to show tooltip.",
@@ -143,10 +142,7 @@ GigaAddon = {
             key = "doubleClickLFG",
             default = false,
             disable = false,
-            callback = function()
-                GigaSettingsInterface:ToggleEventRegister("LFG_LIST_SEARCH_RESULTS_RECEIVED", GigaSettingsDB.doubleClickLFG)
-                return
-            end,
+            callback = function() GigaSettingsInterface:ToggleEventRegister("LFG_LIST_SEARCH_RESULTS_RECEIVED", GigaSettingsDB.doubleClickLFG) end,
             name = "Double-click Sign Up",
             tooltip = "Double left click to sign up for a premade group.",
         },
@@ -160,7 +156,7 @@ GigaAddon = {
         checkbox_muteApplicantSound = {
             key = "muteApplicantSound",
             default = false,
-            disable = true,
+            disable = false,
             callback = function() GigaSettingsInterface:MuteApplicationSignupSound() end,
             name = "Silence Application Sound",
             tooltip = "Turn off sign-up alert sound when creating a group.",
