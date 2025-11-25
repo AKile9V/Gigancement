@@ -1,3 +1,10 @@
+# **1.6.1-beta**
+
+### UPDATE
+* Enabled silent application sound
+
+<hr>
+
 # **1.6.0-beta**
 ### TODO:
 * Verifying active "working" features
