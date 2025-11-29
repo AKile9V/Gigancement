@@ -66,11 +66,21 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         GigaSettingsInterface:ChatFramesModifications() -- ShortChannelNames & MouseoverItemTooltip
         GigaSettingsInterface:UpgradeDefaultCastbar(GigaSettingsDB.castTimePosition)
         GigaSettingsInterface:MuteApplicationSignupSound()
+        GigaSettingsInterface:CursorRing()
         HandleLFGHooks()
         UntriggerDisabledEvents()
         EventRegistry:RegisterCallback("CharacterFrame.Show", function()
             C_Timer.After(0, function() GigaSettingsInterface:UpdateAllEquipmentSlots("player") end)
         end)
+    elseif event == "PLAYER_ENTERING_WORLD" then
+        GigaSettingsInterface:PlayerMinimapCoords()
+        if GigaSettingsDB.classColorsUnitFrames then
+            GigaSettingsInterface:UnitFrameClassColor("player", PlayerFrame.PlayerFrameContent.PlayerFrameContentMain.HealthBarsContainer.HealthBar)
+            GigaSettingsInterface:UnitFrameClassColor("player", PetFrameHealthBar)
+        end
+        if arg1==true then
+            C_Timer.After(0, function() GigaSettingsInterface:UpdateAllEquipmentSlots("player") end)
+    end
     elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
         GigaSettingsInterface:LFGDoubleClick()
     elseif event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START" then
@@ -79,14 +89,6 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         GigaSettingsInterface:CastTimerNameplate(nameplate)
     elseif event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_WHISPER_INFORM" or event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
         GigaSettingsInterface:ChatWhispersMouseoverItemTooltip()
-    elseif event == "PLAYER_ENTERING_WORLD" then
-        if GigaSettingsDB.classColorsUnitFrames then
-            GigaSettingsInterface:UnitFrameClassColor("player", PlayerFrame.PlayerFrameContent.PlayerFrameContentMain.HealthBarsContainer.HealthBar)
-            GigaSettingsInterface:UnitFrameClassColor("player", PetFrameHealthBar)
-        end
-        if arg1==true then
-            C_Timer.After(0, function() GigaSettingsInterface:UpdateAllEquipmentSlots("player") end)
-        end
     elseif event == "PLAYER_EQUIPMENT_CHANGED" and arg1 ~= nil then
         GigaSettingsInterface:UpdateEquipmentSlot("player", arg1)
     elseif event == "UNIT_INVENTORY_CHANGED" and arg1 ~= nil then

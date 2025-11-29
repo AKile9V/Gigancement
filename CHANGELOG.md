@@ -1,3 +1,12 @@
+# **1.6.2-beta**
+
+### UPDATE
+* UI: Added player coords on minimap
+* UI: Added ring cursor
+* Options: Added a 'NEW' label to highlight newly implemented features
+
+<hr>
+
 # **1.6.1-beta**
 
 ### UPDATE

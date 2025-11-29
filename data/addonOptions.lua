@@ -137,13 +137,12 @@ local function CreateCheckbox(category, option)
     checkbox.HoverBackground:SetSize(640, 26)
     checkbox.HoverBackground:Hide()
 
-    -- TODO: attach it to the label?
-    -- if new == 1 then
-    --     local NewFeature = CreateFrame("Frame", nil, checkbox, "NewFeatureLabelTemplate")
-    --     NewFeature:SetScale(0.8)
-    --     NewFeature:SetPoint("RIGHT", checkbox, "LEFT", -265, 0)
-    --     NewFeature:Show()
-    -- end
+    if option.new then
+        checkbox.NewFeature = CreateFrame("Frame", nil, checkbox, "NewFeatureLabelTemplate")
+        checkbox.NewFeature:SetScale(0.8)
+        checkbox.NewFeature:SetPoint("BOTTOMRIGHT", checkbox.Label, "LEFT", 16, -10)
+        checkbox.NewFeature:Show()
+    end
 
     SetupCheckboxOnChangeScript({checkbox.Label, checkbox}, checkbox.checkboxControl, setting, option)
     SetupOptionTooltip({checkbox.checkboxControl, checkbox.Label, checkbox}, option, checkbox)
@@ -321,6 +320,9 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     RegisterDropdown("castTimePosition", category)
     RegisterCheckbox("upgradedRaidFrames", category)
     RegisterCheckbox("classColorsUnitFrames", category)
+    RegisterCheckbox("playerMinimapCoords", category)
+    RegisterCheckbox("cursorRing", category)
+    RegisterDropdown("cursorRingTexture", category)
     -- Chat module
     CreateHeader("chatModuleTitle")
     RegisterCheckboxWithColorSwatch("linksInChat", "linksInChatColor", category)

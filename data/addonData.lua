@@ -293,5 +293,50 @@ GigaAddon = {
             name = "Show Gems",
             tooltip = "Show gems for each equipment slot in Character and Inspect frames.",
         },
+        checkbox_playerMinimapCoords = {
+            key = "playerMinimapCoords",
+            default = false,
+            disable = false,
+            new = true,
+            callback = function() GigaSettingsInterface:PlayerMinimapCoords() end,
+            name = "Minimap X-Y coordinates",
+            tooltip = "Show the player's current coordinates on the Minimap frame. Automatically disabled inside instances.",
+        },
+        checkbox_cursorRing = {
+            key = "cursorRing",
+            default = false,
+            disable = false,
+            new = true,
+            callback = function()
+                GigaSettingsInterface:CursorRing()
+                GigaSettingsInterface["cursorRingTexture"].dropdownControl:SetEnabled(GigaSettingsDB["cursorRing"])
+                GigaSettingsInterface["cursorRingTexture"].Label:SetFontObject(GigaSettingsDB["cursorRing"] and "GameFontNormalSmall" or "GameFontDisableSmall")
+            end,
+            name = "Ring Cursor",
+            tooltip = "Highlight the mouse cursor with a ring.",
+        },
+        dropdown_cursorRingTexture = {
+            key = "cursorRingTexture",
+            default = "talents-animations-mask-heroclass-ring",
+            dependency = "cursorRing",
+            disable = false,
+            callback = function() GigaSettingsInterface:CursorRing() end,
+            data = {
+                [1] = {
+                    value = "talents-animations-mask-heroclass-ring",
+                    text = "Simple White",
+                },
+                [2] = {
+                    value = "Adventures-Buff-Heal-Ring",
+                    text = "Soft Neon White",
+                },
+                [3] = {
+                    value = "ItemUpgrade_FX_FrameDecor_Ring",
+                    text = "Bright Neon White",
+                },
+            },
+            name = "Ring Texture",
+            tooltip = "Select the ring appearance.",
+        },
     }
 }
