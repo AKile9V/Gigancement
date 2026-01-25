@@ -3,6 +3,7 @@ GigaSettingsDB = GigaSettingsDB or {}
 GigaAddon = {
     GigaData = {
         addonName = "Gigancement",
+        categoryID = nil,
         reopenOptions = {
             key = "reopenOptions",
             default = false,

@@ -81,7 +81,7 @@ end
 local function PrepTextureLeader(frame)
    frame.textureLeader = frame:CreateTexture(nil, "OVERLAY")
    frame.textureLeader:ClearAllPoints()
-   frame.textureLeader:SetPoint("TOPLEFT", -1, 12)
+   frame.textureLeader:SetPoint("BOTTOM", frame.roleIcon, "TOP", 0, -6)
    frame.textureLeader:SetWidth(20)
    frame.textureLeader:SetHeight(20)
    frame.textureLeader:SetVertexColor(0.95, 0.85, 0.1)

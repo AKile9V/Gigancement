@@ -14,7 +14,7 @@ local chatEvents = {
 -- Open addon settings
 SLASH_GSETTINGS1 = "/giga"
 SlashCmdList["GSETTINGS"] = function()
-    Settings.OpenToCategory("Gigancement")
+    Settings.OpenToCategory(GigaAddon.GigaData.categoryID)
 end
 
 -- Clear chat windows

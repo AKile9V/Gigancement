@@ -1,3 +1,31 @@
+# **1.7.0**
+
+### NEW
+* UI: Added player coords on minimap
+* UI: Added ring cursor
+
+### UPDATE
+* Refactored addon options logic
+* Reordered modules in addon options
+* Performance improvements
+* Added open addon options on required reload
+* ToC update for 12.0.0 patch
+
+### TODO:
+* Fix (or remove) disabled features
+* Edit ilvls for S1 Midnight gear
+* Potential bugs present, please report any bugs encountered
+
+### FIX
+* Fixed open addon settings (/giga) error
+* Fixed Leader/Co-Leader anchors
+* Fixed modules affected by Midnight changes
+* Fixed some hard coded addon options
+* Removed features implemented by Blizzard
+* Removed features that use secret values
+
+<hr>
+
 # **1.6.2-beta**
 
 ### UPDATE
@@ -16,6 +44,7 @@
 <hr>
 
 # **1.6.0-beta**
+
 ### TODO:
 * Verifying active "working" features
 * Code tweaking

@@ -125,8 +125,6 @@ local function CreateCheckbox(category, option)
     
     checkbox.checkboxControl = CreateFrame("CheckButton", nil, checkbox, "SettingsCheckboxTemplate")
     checkbox.checkboxControl:SetPoint("LEFT", checkbox, "RIGHT", 0, 0)
-    -- TODO: probably not needed anymore
-    -- checkbox:SetFrameLevel(checkbox.checkboxControl:GetFrameLevel()-1)
     checkbox.Label = checkbox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
     checkbox.Label:SetText(option.name)
     checkbox.Label:SetPoint("LEFT", checkbox, "LEFT", 30, 0)
@@ -254,8 +252,6 @@ local function CreateDropdown(category, option)
     dropdown.dropdownControl = CreateFrame("Frame", nil, dropdown, "SettingsDropdownWithButtonsTemplate")
     dropdown.dropdownControl:SetPoint("LEFT", dropdown, "RIGHT", 12, 0)
     dropdown.dropdownControl.Dropdown:SetWidth(220)
-    -- TODO: probably not needed anymore
-    -- dropdown:SetFrameLevel(dropdown.dropdownControl.Dropdown:GetFrameLevel()-1)
     dropdown.Label = dropdown:CreateFontString(nil, "ARTWORK", "GameFontNormal")
     dropdown.Label:SetText(option.name)
     dropdown.Label:SetPoint("LEFT", dropdown, "LEFT", 30, 0)
@@ -295,15 +291,15 @@ local function RegisterDropdown(dropdownName, category, firstEle)
 end
 
 function GigaSettingsInterface:BuildAddonOptionsMenu()
-    -- Register Gigancement in Addon options
-    local category = Settings.RegisterCanvasLayoutCategory(self, GigaAddon.GigaData.addonName)
-    category.ID = GigaAddon.GigaData.addonName
-    Settings.RegisterAddOnCategory(category)
-
     -- Populate DB if there are empty/missing values
     for _, key in pairs(GigaAddon.GigaData) do
         if key.default~=nil then InitDB(key) end
     end
+
+    -- Register Gigancement in Addon options
+    local category = Settings.RegisterCanvasLayoutCategory(self, GigaAddon.GigaData.addonName)
+    GigaAddon.GigaData.categoryID = category.ID
+    Settings.RegisterAddOnCategory(category)
 
     -- Build Addon Options menu
     CreateOptionsBody()
@@ -349,7 +345,7 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     -- Reopen addon options if a reload is required
     if GigaSettingsDB["reopenOptions"] == true then
         C_Timer.After(0, function()
-            Settings.OpenToCategory("Gigancement")
+            Settings.OpenToCategory(GigaAddon.GigaData.categoryID)
         end)
         GigaSettingsDB["reopenOptions"] = false
     end
