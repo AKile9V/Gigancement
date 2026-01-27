@@ -1,3 +1,11 @@
+# **1.7.1**
+
+### FIX
+* Fixed and enabled again Cast Time on Nameplates
+* Fixed Lua errors for Target and Focus castbars
+
+<hr>
+
 # **1.7.0**
 
 ### NEW

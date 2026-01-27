@@ -1,9 +1,9 @@
 local function CastbarSetText(castingFrame)
   if not castingFrame.timer then return end
   if castingFrame.casting then
-    castingFrame.timer:SetText(format("%2.1f/%1.1f", max(castingFrame.maxValue - castingFrame.value, 0), castingFrame.maxValue))
+    castingFrame.timer:SetText(format("%2.1f/%1.1f", castingFrame.CastTimeText and castingFrame.CastTimeText:GetText():match("[%d%.]+") or castingFrame.value, castingFrame.maxValue))
   elseif castingFrame.channeling then
-    castingFrame.timer:SetText(format("%.1f", max(castingFrame.value, 0)))
+    castingFrame.timer:SetText(format("%.1f", castingFrame.value))
   else
     castingFrame.timer:SetText("")
   end
