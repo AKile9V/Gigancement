@@ -20,21 +20,9 @@ end
 -- Clear chat windows
 SLASH_CHATCLEAR1 = "/clear"
 SlashCmdList["CHATCLEAR"] = function()
-    -- ChatFrame1
-    local chatFrameName
-    local cF = _G["ChatFrame1"]
-    cF:Clear()
-    -- ChatFrame3,4,5,6...10 skipping ChatFrame2(combatlog)
-    for i=3, NUM_CHAT_WINDOWS do
-        chatFrameName = ("%s%d"):format("ChatFrame", i)
-        cF = _G[chatFrameName]
-        cF:Clear()
-    end
-    -- Other Whisper chatframes (up to 15)
-    for i=11, 25 do
-        chatFrameName = ("%s%d"):format("ChatFrame", i)
-        cF = _G[chatFrameName]
-        if(cF) then
+    for _, frameName in pairs(CHAT_FRAMES) do
+		local cF = _G[frameName]
+        if cF and not IsCombatLog(cF) then
             cF:Clear()
         end
     end
@@ -109,6 +97,9 @@ end
 
 local function UrlFilter(self, event, msg, author, ...)
     if not GigaSettingsDB.linksInChat then return end
+
+    if type(msg)~="string" or (canaccessvalue and not canaccessvalue(msg)) then return false, msg, author, ... end
+
     if strfind(msg, "(%a+)://(%S+)%s?") then
         return false, string.gsub(msg, "(%a+)://(%S+)%s?", DoColor("%1://%2")), author, ...
     end
@@ -180,26 +171,27 @@ function GigaSettingsInterface:LinksInChat()
     end
 end
 
-local ChatFrameUtil_GetDecoratedSenderName_orig
-local function ChatFrameUtil_GetDecoratedSenderName_hook(event, arg1, arg2, ...)
-    local ret = ChatFrameUtil_GetDecoratedSenderName_orig(event, arg1, arg2, ...) 
-    if chatEvents[event] and GigaSettingsDB.rolesInChat then
-        local player, realm = strsplit( "-", arg2, 2 )
-        local role = UnitGroupRolesAssigned(player)
-        if not UnitInParty(player) and not UnitInRaid(player) then
-            role = "NONE"
-            return ret
-        end
-        if role and role ~= "NONE" then
-            ret = GigaSettingsInterface:GetRoleTex(role.."CHAT", 18, 18) .. ret
-        end
+local function RoleFilter(self, event, msg, author, ...)
+    if not GigaSettingsDB.rolesInChat then return end
+
+    local name = Ambiguate(author, "none")
+    local role = UnitGroupRolesAssigned(name)
+
+    if type(msg)~="string" or (canaccessvalue and not canaccessvalue(msg)) or (not UnitInParty(name) and not UnitInRaid(name)) then return false, msg, author, ... end
+    
+    if role and role ~= "NONE" then
+        local icon = GigaSettingsInterface:GetRoleTex(role.."CHAT", 18, 18)
+        return false, icon.."|| "..msg, author, ...
     end
-    return ret
+    return false, msg, author, ...
 end
 
-if _G.ChatFrameUtil.GetDecoratedSenderName then
-    ChatFrameUtil_GetDecoratedSenderName_orig = _G.ChatFrameUtil.GetDecoratedSenderName
-    _G.ChatFrameUtil.GetDecoratedSenderName = ChatFrameUtil_GetDecoratedSenderName_hook
+function GigaSettingsInterface:RolesInChat()
+    for k,v in pairs(chatEvents) do
+        if v == 0 or v == 1 then
+            ChatFrame_AddMessageEventFilter(k, RoleFilter)
+        end
+    end
 end
 
 local shortChnNames = {
@@ -242,6 +234,7 @@ local fullChnNames = {
 }
 
 local function ReplaceChannelNames(text)
+    if type(text)~="string" or (canaccessvalue and not canaccessvalue(text)) then return text end
     local size = #fullChnNames
     for i=1, size do
         text = string.gsub(text, fullChnNames[i], shortChnNames[i])
@@ -289,41 +282,13 @@ local function ChatCloseMouseoverItemTooltip()
     GameTooltip:Hide()
 end
 
-function GigaSettingsInterface:ChatWhispersMouseoverItemTooltip()
-    if not GigaSettingsDB.chatMouseoverItemTooltip then return end
-    
-    local chatFrameName
-    local cF
-    -- Up to 15 Whisper chatframes
-    for i=11, 25 do
-        chatFrameName = ("%s%d"):format("ChatFrame", i)
-        cF = _G[chatFrameName]
-        if(cF and cF:GetScript("OnHyperlinkEnter")==nil) then
+function GigaSettingsInterface:ChatFramesModifications()
+    for _, frameName in pairs(CHAT_FRAMES) do
+		local cF = _G[frameName]
+        if cF and not IsCombatLog(cF) then
+            hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
             cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
             cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
         end
     end
-end
-
-function GigaSettingsInterface:ChatFramesModifications()
-    -- ChatFrame1
-    local chatFrameName
-    local cF = _G["ChatFrame1"]
-
-    hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
-
-    cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
-    cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
-    -- ChatFrame3,4,5,6...10 skipping ChatFrame2(combatlog)
-    for i=3, NUM_CHAT_WINDOWS do
-        chatFrameName = ("%s%d"):format("ChatFrame", i)
-        cF = _G[chatFrameName]
-
-        hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
-        
-        cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
-        cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
-    end
-    -- Other Whisper chatframes (up to 15)
-    GigaSettingsInterface:ChatWhispersMouseoverItemTooltip()
 end

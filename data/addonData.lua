@@ -117,12 +117,6 @@ GigaAddon = {
             key = "chatMouseoverItemTooltip",
             default = false,
             disable = false,
-            callback = function()
-                GigaSettingsInterface:ToggleEventRegister("CHAT_MSG_WHISPER", GigaSettingsDB.chatMouseoverItemTooltip)
-                GigaSettingsInterface:ToggleEventRegister("CHAT_MSG_WHISPER_INFORM", GigaSettingsDB.chatMouseoverItemTooltip)
-                GigaSettingsInterface:ToggleEventRegister("CHAT_MSG_BN_WHISPER", GigaSettingsDB.chatMouseoverItemTooltip)
-                GigaSettingsInterface:ToggleEventRegister("CHAT_MSG_BN_WHISPER_INFORM", GigaSettingsDB.chatMouseoverItemTooltip)
-            end,
             name = "Chat Mouseover Tooltips",
             tooltip = "Hover over items/mounts/pets/achievements in chat to show tooltip.",
         },

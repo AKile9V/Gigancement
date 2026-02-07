@@ -366,7 +366,7 @@ local roleTex = {
     ["HEALER"]      = "|A:groupfinder-icon-role-micro-heal:",
     ["TANK"]        = "|A:groupfinder-icon-role-micro-tank:",
     ["DAMAGERCHAT"] = "|A:GM-icon-role-dps:",
-    ["HEALERCHAT"] = "|A:GM-icon-role-healer:",
+    ["HEALERCHAT"]  = "|A:GM-icon-role-healer:",
     ["TANKCHAT"]    = "|A:GM-icon-role-tank:",
     ["NONE"]        = ""
 }

@@ -45,10 +45,6 @@ GigaSettingsInterface:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 GigaSettingsInterface:RegisterEvent("PLAYER_ENTERING_WORLD")
 GigaSettingsInterface:RegisterEvent("UNIT_SPELLCAST_START")
 GigaSettingsInterface:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
-GigaSettingsInterface:RegisterEvent("CHAT_MSG_WHISPER")
-GigaSettingsInterface:RegisterEvent("CHAT_MSG_WHISPER_INFORM")
-GigaSettingsInterface:RegisterEvent("CHAT_MSG_BN_WHISPER")
-GigaSettingsInterface:RegisterEvent("CHAT_MSG_BN_WHISPER_INFORM")
 GigaSettingsInterface:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 GigaSettingsInterface:RegisterEvent("INSPECT_READY")
 GigaSettingsInterface:RegisterEvent("UNIT_INVENTORY_CHANGED")
@@ -87,8 +83,6 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         local nameplate = GetNameplateByID(arg1)
         if not nameplate then return end
         GigaSettingsInterface:CastTimerNameplate(nameplate)
-    elseif event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_WHISPER_INFORM" or event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
-        GigaSettingsInterface:ChatWhispersMouseoverItemTooltip()
     elseif event == "PLAYER_EQUIPMENT_CHANGED" and arg1 ~= nil then
         GigaSettingsInterface:UpdateEquipmentSlot("player", arg1)
     elseif event == "UNIT_INVENTORY_CHANGED" and arg1 ~= nil then
