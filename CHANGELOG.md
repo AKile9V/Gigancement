@@ -1,9 +1,13 @@
-# **1.7.2**
+# **1.7.3**
 
 ### UPDATE
 * Due to Blizzard API restrictions, Chat Module features are now disabled during boss encounters (features are still active during non-boss/encounter combat within instances). :))))))))))))))))))))))))))))))))))))))
 * Due to Blizzard API restrictions, Role icons have been moved in front of the chat message instead of being integrated into the player name. Hopefully this is a temporary soluton. /pray for Blizzard to lift the restrictions. :))))))))))))))))))))))))))))))))))))))
 * Due to Blizzard API restrictions, Mouseover interactions for Temporary (WHISPER) frames have been disabled.
+
+<hr>
+
+# **1.7.2**
 
 ### FIX
 * Fixed Lua errors triggered by the chat module upon entering boss encounters.
