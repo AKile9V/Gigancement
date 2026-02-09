@@ -60,6 +60,7 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         GigaSettingsInterface:ShouldHideActionbarButtonsText()
         GigaSettingsInterface:LinksInChat()
         GigaSettingsInterface:ChatFramesModifications() -- ShortChannelNames & MouseoverItemTooltip
+        GigaSettingsInterface:RolesInChat()
         GigaSettingsInterface:UpgradeDefaultCastbar(GigaSettingsDB.castTimePosition)
         GigaSettingsInterface:MuteApplicationSignupSound()
         GigaSettingsInterface:CursorRing()

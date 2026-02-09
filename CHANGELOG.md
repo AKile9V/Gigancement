@@ -1,3 +1,10 @@
+# **1.7.4**
+
+### UPDATE
+* Enabled Roles in Chat.
+
+<hr>
+
 # **1.7.3**
 
 ### UPDATE
