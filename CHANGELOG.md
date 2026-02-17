@@ -1,3 +1,13 @@
+# **1.7.5**
+
+### NEW
+* LFG: Added option to mouseover applicants when not the group leader.
+
+### UPDATE
+* ToC update for 12.0.1 patch
+
+<hr>
+
 # **1.7.4**
 
 ### UPDATE

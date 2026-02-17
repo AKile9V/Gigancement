@@ -338,6 +338,7 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     RegisterCheckbox("muteApplicantSound", category)
     RegisterCheckbox("applicantRaceTooltip", category)
     RegisterCheckbox("sortApplicants", category)
+    RegisterCheckbox("groupFormingText", category)
     -- Nameplate Module
     CreateHeader("nameplateModuleTitle")
     RegisterCheckbox("castTimerNameplate", category)

@@ -333,5 +333,17 @@ GigaAddon = {
             name = "Ring Texture",
             tooltip = "Select the ring appearance.",
         },
+        checkbox_groupFormingText = {
+            key = "groupFormingText",
+            default = false,
+            disable = false,
+            new = true,
+            callback = function()
+                GigaSettingsInterface:ToggleEventRegister("LFG_LIST_APPLICANT_UPDATED", GigaSettingsDB.groupFormingText)
+                GigaSettingsInterface:ToggleGroupFormingText()
+            end,
+            name = "Hide Group Forming Text",
+            tooltip = "Hide the \"Your group is currently forming.\" message so you can mouseover the applicants when you are not the group leader.",
+        },
     }
 }

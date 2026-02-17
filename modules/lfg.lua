@@ -117,3 +117,22 @@ end
 function GigaSettingsInterface.SortApplicantsByRating(applicants)
   table.sort(applicants, SortApplicantsCB)
 end
+
+function GigaSettingsInterface.ToggleGroupFormingText()
+  if not GigaSettingsDB.groupFormingText then
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Waitdot1:Show()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Waitdot2:Show()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Waitdot3:Show()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Background:Show()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Label:Show()
+  else
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Waitdot1:Hide()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Waitdot2:Hide()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Waitdot3:Hide()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Background:Hide()
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover.Label:Hide()
+  end
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover:EnableMouse(not GigaSettingsDB.groupFormingText)
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover:EnableMouseWheel(not GigaSettingsDB.groupFormingText)
+    _G.LFGListFrame.ApplicationViewer.UnempoweredCover:SetToplevel(not GigaSettingsDB.groupFormingText)
+end
