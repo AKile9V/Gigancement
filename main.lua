@@ -28,6 +28,9 @@ local function UntriggerDisabledEvents()
         GigaSettingsInterface:UnregisterEvent("ENCHANT_SPELL_COMPLETED")
         GigaSettingsInterface:UnregisterEvent("SOCKET_INFO_UPDATE")
     end
+    if not GigaSettingsDB.groupFormingText then
+        GigaSettingsInterface:UnregisterEvent("LFG_LIST_APPLICANT_UPDATED")
+    end
 end
 
 GigaSettingsInterface:RegisterEvent("ADDON_LOADED")
@@ -52,6 +55,7 @@ GigaSettingsInterface:RegisterEvent("PLAYER_TARGET_CHANGED")
 GigaSettingsInterface:RegisterEvent("PLAYER_FOCUS_CHANGED")
 GigaSettingsInterface:RegisterEvent("ENCHANT_SPELL_COMPLETED")
 GigaSettingsInterface:RegisterEvent("SOCKET_INFO_UPDATE")
+GigaSettingsInterface:RegisterEvent("LFG_LIST_APPLICANT_UPDATED")
 GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
     if event == "ADDON_LOADED" and arg1 == "Gigancement" then
         GigaSettingsInterface:BuildAddonOptionsMenu()
@@ -108,6 +112,8 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         GigaSettingsInterface:UnitFrameClassColor("target", TargetFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer.HealthBar)
     elseif event == "PLAYER_FOCUS_CHANGED" then
         GigaSettingsInterface:UnitFrameClassColor("focus", FocusFrame.TargetFrameContent.TargetFrameContentMain.HealthBarsContainer.HealthBar)
+    elseif event == "LFG_LIST_APPLICANT_UPDATED" then
+        GigaSettingsInterface:ToggleGroupFormingText()
     else
         GigaSettingsInterface:UpgradeRaidFrames()
     end
