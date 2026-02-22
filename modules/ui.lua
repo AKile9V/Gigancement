@@ -85,6 +85,7 @@ local function PrepTextureLeader(frame)
    frame.textureLeader:SetWidth(20)
    frame.textureLeader:SetHeight(20)
    frame.textureLeader:SetVertexColor(0.95, 0.85, 0.1)
+   frame:SetFrameStrata("HIGH")
 end
 
 local function SetupRaidMarks(unit, frame)

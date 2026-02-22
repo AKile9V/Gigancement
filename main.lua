@@ -56,6 +56,7 @@ GigaSettingsInterface:RegisterEvent("PLAYER_FOCUS_CHANGED")
 GigaSettingsInterface:RegisterEvent("ENCHANT_SPELL_COMPLETED")
 GigaSettingsInterface:RegisterEvent("SOCKET_INFO_UPDATE")
 GigaSettingsInterface:RegisterEvent("LFG_LIST_APPLICANT_UPDATED")
+GigaSettingsInterface:RegisterEvent("PLAYER_REGEN_ENABLED")
 GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
     if event == "ADDON_LOADED" and arg1 == "Gigancement" then
         GigaSettingsInterface:BuildAddonOptionsMenu()
@@ -81,7 +82,12 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         end
         if arg1==true then
             C_Timer.After(0, function() GigaSettingsInterface:UpdateAllEquipmentSlots("player") end)
-    end
+        end
+    elseif event == "PLAYER_REGEN_ENABLED" then
+        if GigaSettingsDB["reopenOptions"] == true then
+            Settings.OpenToCategory(GigaAddon.GigaData.categoryID)
+            GigaSettingsDB["reopenOptions"] = false
+        end
     elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
         GigaSettingsInterface:LFGDoubleClick()
     elseif event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START" then

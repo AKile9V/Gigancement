@@ -14,6 +14,10 @@ local chatEvents = {
 -- Open addon settings
 SLASH_GSETTINGS1 = "/giga"
 SlashCmdList["GSETTINGS"] = function()
+    if IsEncounterInProgress() then
+        GigaSettingsDB["reopenOptions"] = true
+        return
+    end
     Settings.OpenToCategory(GigaAddon.GigaData.categoryID)
 end
 
@@ -41,8 +45,11 @@ SlashCmdList["LEAVEGROUP"] = function(arg1)
         end
         return
     end
-    SendChatMessage(GigaSettingsDB.disableLGMessage and "" or "Thanks for the group", "PARTY")
-    C_Timer.After(GigaSettingsDB.disableLGMessage and 0 or 1.7, function() C_PartyInfo.LeaveParty() end)
+    if not C_InstanceEncounter.IsEncounterInProgress() and not GigaSettingsDB.disableLGMessage then
+        C_ChatInfo.SendChatMessage("Thanks for the group", "PARTY");
+    end
+    
+    -- C_Timer.After(GigaSettingsDB.disableLGMessage and 0 or 1.7, function() C_PartyInfo.LeaveParty() end)
 end
 
 --Secondary Stats Distribution

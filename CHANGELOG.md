@@ -1,3 +1,11 @@
+# **1.7.6**
+
+### FIX
+* Fixed deprecated /lg call function & in encounter lua errors
+* Fixed leader icon strata
+
+<hr>
+
 # **1.7.5**
 
 ### NEW
