@@ -1,3 +1,10 @@
+# **1.7.7**
+
+### FIX
+* Enabled /lg command again
+
+<hr>
+
 # **1.7.6**
 
 ### FIX

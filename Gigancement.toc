@@ -5,7 +5,7 @@
 ## Category: Misc
 ## Author: AKile
 ## SavedVariables: GigaSettingsDB
-## Version: 1.7.6
+## Version: 1.7.7
 
 data/addonData.lua
 modules/nameplates.lua
