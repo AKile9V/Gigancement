@@ -49,7 +49,7 @@ SlashCmdList["LEAVEGROUP"] = function(arg1)
         C_ChatInfo.SendChatMessage("Thanks for the group", "PARTY");
     end
     
-    -- C_Timer.After(GigaSettingsDB.disableLGMessage and 0 or 1.7, function() C_PartyInfo.LeaveParty() end)
+    C_Timer.After(GigaSettingsDB.disableLGMessage and 0 or 1.7, function() C_PartyInfo.LeaveParty() end)
 end
 
 --Secondary Stats Distribution
