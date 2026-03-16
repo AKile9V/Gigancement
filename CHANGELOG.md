@@ -1,3 +1,11 @@
+# **1.7.8**
+
+### Update
+* Disabled Wrist and Back enchant reminders
+* Enabled Head and Shoulder enchant reminders
+
+<hr>
+
 # **1.7.7**
 
 ### FIX
