@@ -108,8 +108,8 @@ local function SortApplicantsCB(applicantID1, applicantID2)
     return true
   end
   
-  local applicant1Score = select(12, C_LFGList.GetApplicantMemberInfo(applicantInfo1.applicantID, 1)) or 0
-  local applicant2Score = select(12, C_LFGList.GetApplicantMemberInfo(applicantInfo2.applicantID, 1)) or 0
+  local applicant1Score = select(12, C_LFGList.GetApplicantMemberInfo(applicantID1, 1)) or 0
+  local applicant2Score = select(12, C_LFGList.GetApplicantMemberInfo(applicantID2, 1)) or 0
   
   return applicant1Score>applicant2Score
 end

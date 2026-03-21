@@ -1,6 +1,17 @@
+# **1.7.9**
+
+### UPDATE
+* Updated Midnight S1 Character Info ilvl scaling
+* Updated new gear enchants
+
+### FIX
+* Added workaround for LFG lua error
+
+<hr>
+
 # **1.7.8**
 
-### Update
+### UPDATE
 * Disabled Wrist and Back enchant reminders
 * Enabled Head and Shoulder enchant reminders
 

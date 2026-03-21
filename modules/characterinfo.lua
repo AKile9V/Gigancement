@@ -49,51 +49,64 @@ local DKEnchants = {
     ["Unending\nThirst"] = 3163621,
 }
 local TWWEnchants = {
-    -- Rank3
-    ["Cursed VersatilityProfessions-ChatIcon-Quality-Tier3"] = "+390 Versatility\n|cFFa335ee-115 Mastery|r",
-    ["Cursed MasteryProfessions-ChatIcon-Quality-Tier3"] = "+390 Mastery\n|cFFa335ee-115 Critical Strike|r",
-    ["Cursed HasteProfessions-ChatIcon-Quality-Tier3"] = "+390 Haste\n|cFFa335ee-115 Versatility|r",
-    ["Cursed Critical StrikeProfessions-ChatIcon-Quality-Tier3"] = "+390 Critical Strike\n      |cFFa335ee-115 Haste|r",
-    ["Cavalry's MarchProfessions-ChatIcon-Quality-Tier3"] = "+10% Mount",
-    ["Scout's MarchProfessions-ChatIcon-Quality-Tier3"] = "+250 Speed",
-    ["Defender's MarchProfessions-ChatIcon-Quality-Tier3"] = "+895 Stamina",
-    ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier3"] = "+520 Agility\n+250 Speed",
-    ["Council's IntellectProfessions-ChatIcon-Quality-Tier3"] = "+520 Intellect\n+5% Mana",
-    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier3"] = "+745 Primary Stat",
-    ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier3"] = "+520 Strength\n+265 Stamina",
-    ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier3"] = "+545 Avoidance\n-20% Fall Damage",
-    ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier3"] = "+1020 Leech\nHeal OOC",
-    ["Chant of Burrowing RapidityProfessions-ChatIcon-Quality-Tier3"] = "+250 Speed     \nHearthstone CD",
-    -- Rank2
-    ["Cursed HasteProfessions-ChatIcon-Quality-Tier2"] = "+335 Haste\n|cFFa335ee-100 Versatility|r",
-    ["Cursed Critical StrikeProfessions-ChatIcon-Quality-Tier2"] = "+335 Critical Strike\n      |cFFa335ee-100 Haste|r",
-    ["Cursed VersatilityProfessions-ChatIcon-Quality-Tier2"] = "+335 Versatility\n|cFFa335ee-100 Mastery|r",
-    ["Cursed MasteryProfessions-ChatIcon-Quality-Tier2"] = "+335 Mastery\n|cFFa335ee-100 Critical Strike|r",
-    ["Cavalry's MarchProfessions-ChatIcon-Quality-Tier2"] = "+8% Mount",
-    ["Scout's MarchProfessions-ChatIcon-Quality-Tier2"] = "+215 Speed",
-    ["Defender's MarchProfessions-ChatIcon-Quality-Tier2"] = "+760 Stamina",
-    ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier2"] = "+440 Agility\n+215 Speed",
-    ["Council's IntellectProfessions-ChatIcon-Quality-Tier2"] = "+440 Intellect\n+4% Mana",
-    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier2"] = "+630 Primary Stat",
-    ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier2"] = "+440 Strength\n+225 Stamina",
-    ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier2"] = "+465 Avoidance\n-15% Fall Damage",
-    ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier2"] = "+865 Leech\nHeal OOC",
-    ["Chant of Burrowing RapidityProfessions-ChatIcon-Quality-Tier2"] = "+210 Speed     \nHearthstone CD",
+    -- Rank2 Professions-ChatIcon-Quality-12-Tier2
+    ["Enchant Helm - Blessing of SpeedProfessions-ChatIcon-Quality-12-Tier2"] = "+13 Speed",
+    ["Enchant Helm - Rune of AvoidanceProfessions-ChatIcon-Quality-12-Tier2"] = "+22 Avoidance",
+    ["Enchant Helm - Hex of LeechingProfessions-ChatIcon-Quality-12-Tier2"] = "+33 Leech",
+    ["Enchant Helm - Empowered Blessing of SpeedProfessions-ChatIcon-Quality-12-Tier2"] = "+22 Speed\n|cFF9d9d9d+1 Vigor|r",
+    ["Enchant Helm - Empowered Rune of AvoidanceProfessions-ChatIcon-Quality-12-Tier2"] = "+37 Avoidance\n|cFF9d9d9d+Burst MS|r",
+    ["Enchant Helm - Empowered Hex of LeechingProfessions-ChatIcon-Quality-12-Tier2"] = "+55 Leech\n|cFF9d9d9d+3% Heal|r",
+    ["Enchant Shoulders - Flight of the EagleProfessions-ChatIcon-Quality-12-Tier2"] = "+39 Speed",
+    ["Enchant Shoulders - Nature's GraceProfessions-ChatIcon-Quality-12-Tier2"] = "+67 Avoidance",
+    ["Enchant Shoulders - Thalassian RecoveryProfessions-ChatIcon-Quality-12-Tier2"] = "+99 Leech",
+    ["Enchant Shoulders - Akil'zon's SwiftnessProfessions-ChatIcon-Quality-12-Tier2"] = "+65 Speed",
+    ["Enchant Shoulders - Amirdrassil's GraceProfessions-ChatIcon-Quality-12-Tier2"] = "+111 Avoidance",
+    ["Enchant Shoulders - Silvermoon's MendingProfessions-ChatIcon-Quality-12-Tier2"] = "+166 Leech",
+    ["Enchant Chest - Mark of NalorakkProfessions-ChatIcon-Quality-12-Tier2"] = "+40 Strength\n+116 Stamina",
+    ["Enchant Chest - Mark of the MagisterProfessions-ChatIcon-Quality-12-Tier2"] = "+40 Intellect\n+5% Mana",
+    ["Enchant Chest - Mark of the RootwardenProfessions-ChatIcon-Quality-12-Tier2"] = "+40 Agility\n+15 Speed",
+    ["Enchant Chest - Mark of the WorldsoulProfessions-ChatIcon-Quality-12-Tier2"] = "+50 Primary Stat",
+    ["Enchant Boots - Lynx's DexterityProfessions-ChatIcon-Quality-12-Tier2"] = "+19 Avoidance\n+232 Stamina",
+    ["Enchant Boots - Farstrider's HuntProfessions-ChatIcon-Quality-12-Tier2"] = "+11 Speed\n+232 Stamina",
+    ["Enchant Boots - Shaladrassil's RootsProfessions-ChatIcon-Quality-12-Tier2"] = "+28 Leech\n+232 Stamina",
+    ["Enchant Ring - Amani MasteryProfessions-ChatIcon-Quality-12-Tier2"] = "+24 Mastery",
+    ["Enchant Ring - Nature's WrathProfessions-ChatIcon-Quality-12-Tier2"] = "+24 Critical Strike",
+    ["Enchant Ring - Thalassian HasteProfessions-ChatIcon-Quality-12-Tier2"] = "+24 Haste",
+    ["Enchant Ring - Thalassian VersatilityProfessions-ChatIcon-Quality-12-Tier2"] = "+24 Versatility",
+    ["Enchant Ring - Silvermoon's TenacityProfessions-ChatIcon-Quality-12-Tier2"] = "+29 Versatility",
+    ["Enchant Ring - Zul'jin's MasteryProfessions-ChatIcon-Quality-12-Tier2"] = "+29 Mastery",
+    ["Enchant Ring - Silvermoon's AlacrityProfessions-ChatIcon-Quality-12-Tier2"] = "+29 Haste",
+    ["Enchant Ring - Nature's FuryProfessions-ChatIcon-Quality-12-Tier2"] = "+29 Critical Strike",
+    ["Enchant Ring - Eyes of the EagleProfessions-ChatIcon-Quality-12-Tier2"] = "+1% Crit Effectiveness",
     -- Rank1
-    ["Cursed HasteProfessions-ChatIcon-Quality-Tier1"] = "+270 Haste\n|cFFa335ee-80 Versatility|r",
-    ["Cursed Critical StrikeProfessions-ChatIcon-Quality-Tier1"] = "+270 Critical Strike\n      |cFFa335ee-80 Haste|r",
-    ["Cursed VersatilityProfessions-ChatIcon-Quality-Tier1"] = "+270 Versatility\n|cFFa335ee-80 Mastery|r",
-    ["Cursed MasteryProfessions-ChatIcon-Quality-Tier1"] = "+270 Mastery\n|cFFa335ee-80 Critical Strike|r",
-    ["Cavalry's MarchProfessions-ChatIcon-Quality-Tier1"] = "+6% Mount",
-    ["Scout's MarchProfessions-ChatIcon-Quality-Tier1"] = "+175 Speed",
-    ["Defender's MarchProfessions-ChatIcon-Quality-Tier1"] = "+625 Stamina",
-    ["Stormrider's AgilityProfessions-ChatIcon-Quality-Tier1"] = "+360 Agility\n+180 Speed",
-    ["Council's IntellectProfessions-ChatIcon-Quality-Tier1"] = "+360 Intellect\n+3% Mana",
-    ["Crystalline RadianceProfessions-ChatIcon-Quality-Tier1"] = "+520 Primary Stat",
-    ["Oathsworn's StrengthProfessions-ChatIcon-Quality-Tier1"] = "+365 Strength\n+185 Stamina",
-    ["Chant of Winged GraceProfessions-ChatIcon-Quality-Tier1"] = "+380 Avoidance\n-10% Fall Damage",
-    ["Chant of Leeching FangsProfessions-ChatIcon-Quality-Tier1"] = "+715 Leech\nHeal OOC",
-    ["Chant of Burrowing RapidityProfessions-ChatIcon-Quality-Tier1"] = "+175 Speed     \nHearthstone CD",
+    ["Enchant Helm - Blessing of SpeedProfessions-ChatIcon-Quality-12-Tier1"] = "+9 Speed",
+    ["Enchant Helm - Rune of AvoidanceProfessions-ChatIcon-Quality-12-Tier1"] = "+15 Avoidance",
+    ["Enchant Helm - Hex of LeechingProfessions-ChatIcon-Quality-12-Tier1"] = "+22 Leech",
+    ["Enchant Helm - Empowered Blessing of SpeedProfessions-ChatIcon-Quality-12-Tier1"] = "+17 Speed\n|cFF9d9d9d+1 Vigor|r",
+    ["Enchant Helm - Empowered Rune of AvoidanceProfessions-ChatIcon-Quality-12-Tier1"] = "+30 Avoidance\n|cFF9d9d9d+Burst MS|r",
+    ["Enchant Helm - Empowered Hex of LeechingProfessions-ChatIcon-Quality-12-Tier1"] = "+44 Leech\n|cFF9d9d9d+2% Heal|r",
+    ["Enchant Shoulders - Flight of the EagleProfessions-ChatIcon-Quality-12-Tier1"] = "+26 Speed",
+    ["Enchant Shoulders - Nature's GraceProfessions-ChatIcon-Quality-12-Tier1"] = "+44 Avoidance",
+    ["Enchant Shoulders - Thalassian RecoveryProfessions-ChatIcon-Quality-12-Tier1"] = "+66 Leech",
+    ["Enchant Shoulders - Akil'zon's SwiftnessProfessions-ChatIcon-Quality-12-Tier1"] = "+52 Speed",
+    ["Enchant Shoulders - Amirdrassil's GraceProfessions-ChatIcon-Quality-12-Tier1"] = "+89 Avoidance",
+    ["Enchant Shoulders - Silvermoon's MendingProfessions-ChatIcon-Quality-12-Tier1"] = "+132 Leech",
+    ["Enchant Chest - Mark of NalorakkProfessions-ChatIcon-Quality-12-Tier1"] = "+32 Strength\n+93 Stamina",
+    ["Enchant Chest - Mark of the MagisterProfessions-ChatIcon-Quality-12-Tier1"] = "+32 Intellect\n+2% Mana",
+    ["Enchant Chest - Mark of the RootwardenProfessions-ChatIcon-Quality-12-Tier1"] = "+32 Agility\n+12 Speed",
+    ["Enchant Chest - Mark of the WorldsoulProfessions-ChatIcon-Quality-12-Tier1"] = "+36 Primary Stat",
+    ["Enchant Boots - Lynx's DexterityProfessions-ChatIcon-Quality-12-Tier1"] = "+15 Avoidance\n+186 Stamina",
+    ["Enchant Boots - Farstrider's HuntProfessions-ChatIcon-Quality-12-Tier1"] = "+9 Speed\n+186 Stamina",
+    ["Enchant Boots - Shaladrassil's RootsProfessions-ChatIcon-Quality-12-Tier1"] = "+22 Leech\n+186 Stamina",
+    ["Enchant Ring - Amani MasteryProfessions-ChatIcon-Quality-12-Tier1"] = "+22 Mastery",
+    ["Enchant Ring - Nature's WrathProfessions-ChatIcon-Quality-12-Tier1"] = "+22 Critical Strike",
+    ["Enchant Ring - Thalassian HasteProfessions-ChatIcon-Quality-12-Tier1"] = "+22 Haste",
+    ["Enchant Ring - Thalassian VersatilityProfessions-ChatIcon-Quality-12-Tier1"] = "+22 Versatility",
+    ["Enchant Ring - Silvermoon's TenacityProfessions-ChatIcon-Quality-12-Tier1"] = "+27 Versatility",
+    ["Enchant Ring - Zul'jin's MasteryProfessions-ChatIcon-Quality-12-Tier1"] = "+27 Mastery",
+    ["Enchant Ring - Silvermoon's AlacrityProfessions-ChatIcon-Quality-12-Tier1"] = "+27 Haste",
+    ["Enchant Ring - Nature's FuryProfessions-ChatIcon-Quality-12-Tier1"] = "+27 Critical Strike",
+    ["Enchant Ring - Eyes of the EagleProfessions-ChatIcon-Quality-12-Tier1"] = "+1% Crit Effectiveness",
 }
 local sumILVL = 0
 local weaponLevel = 0
@@ -119,20 +132,16 @@ local characterSlots = {
     [19] = {id = 19, side = "LEFT", name = "Tabard", canEnchant = false} -- ilvl anchor
 }
 -- Keep current with tier patches
-local minUpgaradeLevel = 642
-local maxUpgaradeLevel = 730
+local minUpgaradeLevel = 220
+local maxUpgaradeLevel = 289
 local maxUpgradeLevels = {
-    [665] = {12265, 12266, 12267, 12268, 12269, 12270, 12271, 12272}, -- Explorer
-    [678] = {12274, 12275, 12276, 12277, 12278, 12279, 12280, 12281}, -- Adventurer
-    [691] = {12282, 12283, 12284, 12285, 12286, 12287, 12288, 12289}, -- Veteran
-    [704] = {12290, 12291, 12292, 12293, 12294, 12295, 12296, 12297}, -- Champion
-    [717] = {12350, 12351, 12352, 12353, 12354, 12355, 13443, 13444}, -- Hero
-    [727] = {
-        12050, -- Starlight Crafted
-        11142, -- Blue crafted weather rune
-        10841, -- Rank 5 blue gear
-        }, -- Crafted Gear
-    [730] = {12356, 12357, 12358, 12359, 12360, 12361, 13445, 13446}, -- Myth
+    [237] = {12769, 12770, 12771, 12772, 12773, 12774}, -- Adventurer
+    [246] = {12247}, -- Crafted Adventurer/Veteran Gear
+    [250] = {12777, 12778, 12779, 12780, 12781, 12782}, -- Veteran
+    [263] = {12785, 12786, 12787, 12788, 12789, 12790}, -- Champion
+    [276] = {12793, 12794, 12795, 12796, 12797, 12798}, -- Hero
+    [285] = {12066}, -- Crafted Hero/Myth Gear
+    [289] = {12801, 12802, 12803, 12804, 12805, 12806}, -- Myth
 }
 
 local specIndex = {
@@ -211,7 +220,7 @@ local CreateSlotFrame = function(unitId, slot)
     
     local relativePoint = slot.side == "LEFT" and "RIGHT" or "LEFT"
     local offsetX = slot.side == "LEFT" and 13 or -13
-    local offsetEnchantY = ((slot.id == 16 or slot.id == 17) and -12) or 8
+    local offsetEnchantY = ((slot.id == 16 or slot.id == 17) and -12) or 5
     
     if parent.EquipmentSlotFrame == nil then
         parent.EquipmentSlotFrame = CreateFrame("Frame", parent:GetName() .. "EquipmentSlotFrame", parent)
@@ -415,20 +424,22 @@ local function SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, ite
         end
     else
         if slot.id == 16 or slot.id == 17 then
-            itemEnchant = itemEnchant:gsub("Authority", "")
-            itemEnchant = itemEnchant:gsub("the", "")
+            itemEnchant = itemEnchant:gsub("Enchant Weapon", "")
+            itemEnchant = itemEnchant:gsub("-", "")
             itemEnchant = itemEnchant:gsub("of", "")
+            itemEnchant = itemEnchant:gsub("the", "")
             itemEnchant = itemEnchant:gsub("Rune", "")
             itemEnchant = itemEnchant:gsub("^%s+", ""):gsub("%s+$", "")
             itemEnchant = itemEnchant:gsub("% ", "\n", 1)
             -- Range weapon
             itemEnchant = itemEnchant:gsub("High\nIntensity Thermal Scanner", "High Intensity\nThermal Scanner")
         elseif slot.id == 7 then
-            itemEnchant = itemEnchant:gsub(" & ", "\n       ")
+            itemEnchant = itemEnchant:gsub("&", "\n")
         end
         itemEnchant = itemEnchant:gsub("^%s+", ""):gsub("%s+$", "")
 
         parent.EquipmentSlotFrame.enchantString:SetTextColor(0.12, 1, 0, 1)
+        parent.EquipmentSlotFrame.enchantString:SetJustifyH("RIGHT")
         if slot.side == "RIGHT" then
             parent.EquipmentSlotFrame.enchantString:SetText((TWWEnchants[itemEnchant..(itemEnchantAtlas or "")] or itemEnchant) .. " " ..
                                                             ((itemEnchantAtlas and ("|A:"..itemEnchantAtlas..":15:15|a")) or
