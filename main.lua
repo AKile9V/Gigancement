@@ -91,9 +91,12 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
     elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then
         GigaSettingsInterface:LFGDoubleClick()
     elseif event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START" then
-        local nameplate = GetNameplateByID(arg1)
-        if not nameplate then return end
-        GigaSettingsInterface:CastTimerNameplate(nameplate)
+        local allNameplates = C_NamePlate.GetNamePlates()
+        for _, nameplate in pairs(allNameplates) do
+            if nameplate.UnitFrame and nameplate.UnitFrame.castBar and (nameplate.UnitFrame.castBar.casting or nameplate.UnitFrame.castBar.channeling) then
+                GigaSettingsInterface:CastTimerNameplate(nameplate)
+            end
+        end
     elseif event == "PLAYER_EQUIPMENT_CHANGED" and arg1 ~= nil then
         GigaSettingsInterface:UpdateEquipmentSlot("player", arg1)
     elseif event == "UNIT_INVENTORY_CHANGED" and arg1 ~= nil then

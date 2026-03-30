@@ -1,9 +1,8 @@
-local GetNameplateByID = C_NamePlate.GetNamePlateForUnit
-
 function GigaSettingsInterface:CastTimerNameplate(nameplate)
   if not nameplate:IsForbidden() and not nameplate.UnitFrame.castBar.timer then
-    nameplate.UnitFrame.castBar.timer = nameplate.UnitFrame.castBar:CreateFontString(nil, "OVERLAY")
-    nameplate.UnitFrame.castBar.timer:SetFont(STANDARD_TEXT_FONT,8,"OUTLINE")
+    nameplate.UnitFrame.castBar.timer = nameplate.UnitFrame.castBar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    local fontPath = nameplate.UnitFrame.castBar.timer:GetFont()
+    nameplate.UnitFrame.castBar.timer:SetFont(fontPath, 8, "OUTLINE")
     nameplate.UnitFrame.castBar.timer:SetPoint("LEFT", nameplate.UnitFrame.castBar, "RIGHT", -35, 0)
     nameplate.UnitFrame.castBar.timer:SetText("")
     nameplate.UnitFrame.castBar:HookScript("OnValueChanged", function(self)

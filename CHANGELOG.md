@@ -1,3 +1,10 @@
+# **1.7.10**
+
+### FIX
+* Fixed Lua errors caused by the nameplate castbar during encounters
+
+<hr>
+
 # **1.7.9**
 
 ### UPDATE
