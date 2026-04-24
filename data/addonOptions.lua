@@ -214,13 +214,13 @@ local function RegisterCheckboxWithColorSwatch(checkboxName, colorswatchName, ca
     end
 end
 
-local function SetupDropdownOnChangeScript(dropdown, setting, option)
+local function SetupRadioDropdownOnChangeScript(dropdown, setting, option)
     local function getOptionData()
         local container = Settings.CreateControlTextContainer()
         for _, data in ipairs(option.data) do
-            container:Add(data.value, data.name)
+            container:Add(index, data.value)
         end
-        return container:GetData();
+        return container:GetData()
     end
     dropdown.dropdownControl.Dropdown.SetTooltipFunc = function() end
     dropdown.dropdownControl.Dropdown.SetDefaultTooltipAnchors = function() end
@@ -233,7 +233,9 @@ local function SetupDropdownOnChangeScript(dropdown, setting, option)
 	end
     local function setSelected(value)
         GigaSettingsDB[option.key] = value
-        option.callback()
+        if option.callback then
+            option.callback()
+        end
         dropdown.dropdownControl.Dropdown:GenerateMenu()
 		return MenuResponse.Close
 	end
@@ -242,9 +244,10 @@ local function SetupDropdownOnChangeScript(dropdown, setting, option)
             local radioDescription = rootDescription:CreateHighlightRadio(option.text, isSelected, setSelected, option.value)
         end
 	end)
+    dropdown.dropdownControl.Dropdown:SetDefaultText("None")
 end
 
-local function CreateDropdown(category, option)
+local function CreateRadioDropdown(category, option)
     local setting = RegisterSetting(category, option)
     local dropdown = CreateFrame("Frame", nil, GigaSettingsInterface.scrollChild)
     dropdown:SetSize(250, 26)
@@ -262,23 +265,22 @@ local function CreateDropdown(category, option)
     dropdown.HoverBackground:SetSize(640, 26)
     dropdown.HoverBackground:Hide()
 
-    -- TODO: attach it to the label?
-    -- if new == 1 then
-    --     local NewFeature = CreateFrame("Frame", nil, dropdownControl, "NewFeatureLabelTemplate")
-    --     NewFeature:SetScale(0.8)
-    --     NewFeature:SetPoint("RIGHT", dropdownControl, "LEFT", -261, -3)
-    --     NewFeature:Show()
-    -- end
+    if option.new then
+        dropdown.NewFeature = CreateFrame("Frame", nil, dropdown, "NewFeatureLabelTemplate")
+        dropdown.NewFeature:SetScale(0.8)
+        dropdown.NewFeature:SetPoint("BOTTOMRIGHT", dropdown.Label, "LEFT", 16, -10)
+        dropdown.NewFeature:Show()
+    end
 
-    SetupDropdownOnChangeScript(dropdown, setting, option)
+    SetupRadioDropdownOnChangeScript(dropdown, setting, option)
     SetupOptionTooltip({dropdown.dropdownControl.Dropdown, dropdown.Label, dropdown}, option, dropdown)
 
     return dropdown
 end
 
-local function RegisterDropdown(dropdownName, category, firstEle)
+local function RegisterRadioDropdown(dropdownName, category, firstEle)
     local dropdownOption = GigaAddon.GigaData["dropdown_"..dropdownName]
-    GigaSettingsInterface[dropdownOption.key] = CreateDropdown(category, dropdownOption)
+    GigaSettingsInterface[dropdownOption.key] = CreateRadioDropdown(category, dropdownOption)
     GigaSettingsInterface[dropdownOption.key]:SetPoint("TOPLEFT",  GigaAddon.GigaData.lastBuiltElement, "BOTTOMLEFT", 0, dropdownOption.firstEle and -21 or -10)
 
     if dropdownOption.dependency ~= nil then
@@ -288,6 +290,88 @@ local function RegisterDropdown(dropdownName, category, firstEle)
     end
 
     GigaAddon.GigaData.lastBuiltElement = GigaSettingsInterface[dropdownOption.key]
+end
+
+local function SetupCheckboxDropdownOnChangeScript(dropdown, setting, option)
+    local function getOptionData()
+        local container = Settings.CreateControlTextContainer()
+        for index, data in ipairs(option.data) do
+            container:Add(index, data.value)
+        end
+        return container:GetData()
+    end
+    dropdown.dropdownControl.Dropdown.SetTooltipFunc = function() end
+    dropdown.dropdownControl.Dropdown.SetDefaultTooltipAnchors = function() end
+    local inserter = Settings.CreateDropdownOptionInserter(setting, getOptionData)
+    Settings.InitDropdown(dropdown.dropdownControl.Dropdown, setting, inserter)
+    -- SetupOptionTooltip({dropdown.dropdownControl.Dropdown, dropdown.Label, dropdown}, option, dropdown)
+
+    local function isSelected(value)
+		return GigaSettingsDB[value] or false
+	end
+    local function setSelected(value)
+        GigaSettingsDB[value] = not GigaSettingsDB[value]
+        if option.callback then
+            option.callback()
+        end
+        if option.needReload then
+            GigaSettingsInterface.reloadButton:Show()
+        end
+        dropdown.dropdownControl.Dropdown:GenerateMenu()
+	end
+    dropdown.dropdownControl.Dropdown:SetupMenu(function(dropdown, rootDescription)
+		for _, option in ipairs(option.data) do
+            local checkboxDescription = rootDescription:CreateCheckbox(option.text, isSelected, setSelected, option.value)
+        end
+	end)
+    dropdown.dropdownControl.Dropdown:SetDefaultText("None")
+    dropdown.dropdownControl.IncrementButton:Hide()
+    dropdown.dropdownControl.DecrementButton:Hide()
+end
+
+local function CreateCheckboxDropdown(category, option)
+    local setting = RegisterSetting(category, option)
+    local dropdown = CreateFrame("Frame", nil, GigaSettingsInterface.scrollChild)
+    dropdown:SetSize(250, 26)
+
+    dropdown.dropdownControl = CreateFrame("Frame", nil, dropdown, "SettingsDropdownWithButtonsTemplate")
+    dropdown.dropdownControl:SetPoint("LEFT", dropdown, "RIGHT", 12, 0)
+    dropdown.dropdownControl.Dropdown:SetWidth(220)
+    dropdown.Label = dropdown:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+    dropdown.Label:SetText(option.name)
+    dropdown.Label:SetPoint("LEFT", dropdown, "LEFT", 30, 0)
+
+    dropdown.HoverBackground = dropdown:CreateTexture(nil, "BACKGROUND")
+    dropdown.HoverBackground:SetColorTexture(1, 1, 1, 0.1)
+    dropdown.HoverBackground:SetPoint("TOPLEFT", dropdown, "TOPLEFT", -17, 0)
+    dropdown.HoverBackground:SetSize(640, 26)
+    dropdown.HoverBackground:Hide()
+
+    if option.new then
+        dropdown.NewFeature = CreateFrame("Frame", nil, dropdown, "NewFeatureLabelTemplate")
+        dropdown.NewFeature:SetScale(0.8)
+        dropdown.NewFeature:SetPoint("BOTTOMRIGHT", dropdown.Label, "LEFT", 16, -10)
+        dropdown.NewFeature:Show()
+    end
+
+    SetupCheckboxDropdownOnChangeScript(dropdown, setting, option)
+    SetupOptionTooltip({dropdown.dropdownControl.Dropdown, dropdown.Label, dropdown}, option, dropdown)
+
+    return dropdown
+end
+
+local function RegisterCheckboxDropdown(dropdownName, category, firstEle)
+    local dropdownOption = GigaAddon.GigaData["dropdown_"..dropdownName]
+    GigaSettingsInterface[dropdownName] = CreateCheckboxDropdown(category, dropdownOption)
+    GigaSettingsInterface[dropdownName]:SetPoint("TOPLEFT",  GigaAddon.GigaData.lastBuiltElement, "BOTTOMLEFT", 0, dropdownOption.firstEle and -21 or -10)
+
+    if dropdownOption.dependency ~= nil then
+        GigaSettingsInterface[dropdownName].dropdownControl:SetEnabled(GigaSettingsDB[dropdownOption.dependency])
+        GigaSettingsInterface[dropdownName].Label:SetFontObject(GigaSettingsDB[dropdownOption.dependency] and "GameFontNormalSmall" or "GameFontDisableSmall")
+        GigaSettingsInterface[dropdownName].Label:SetPoint("LEFT", 45, 0)
+    end
+
+    GigaAddon.GigaData.lastBuiltElement = GigaSettingsInterface[dropdownName]
 end
 
 function GigaSettingsInterface:BuildAddonOptionsMenu()
@@ -313,12 +397,12 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     -- UI module
     CreateHeader("uiModuleTitle")
     RegisterCheckbox("upgradedCastbar", category)
-    RegisterDropdown("castTimePosition", category)
-    RegisterCheckbox("upgradedRaidFrames", category)
+    RegisterRadioDropdown("castTimePosition", category)
+    RegisterCheckboxDropdown("upgradedRaidFrames", category)
     RegisterCheckbox("classColorsUnitFrames", category)
     RegisterCheckbox("playerMinimapCoords", category)
     RegisterCheckbox("cursorRing", category)
-    RegisterDropdown("cursorRingTexture", category)
+    RegisterRadioDropdown("cursorRingTexture", category)
     -- Chat module
     CreateHeader("chatModuleTitle")
     RegisterCheckboxWithColorSwatch("linksInChat", "linksInChatColor", category)

@@ -85,16 +85,77 @@ local function PrepTextureLeader(frame)
    frame.textureLeader:SetWidth(20)
    frame.textureLeader:SetHeight(20)
    frame.textureLeader:SetVertexColor(0.95, 0.85, 0.1)
-   frame:SetFrameStrata("HIGH")
+end
+
+local function PrepStatusIndicator(frame)
+   frame.statusIndicator = frame:CreateTexture(nil, "OVERLAY")
+   frame.statusIndicator:ClearAllPoints()
+   frame.statusIndicator:SetPoint("BOTTOM", frame.roleIcon, "BOTTOM", 0, -13)
+   frame.statusIndicator:SetWidth(15)
+   frame.statusIndicator:SetHeight(15)
+end
+
+local function SetupStatusIndicator(unit, frame)
+  if not GigaSettingsDB.statusIndicators and frame.statusIndicator ~= nil then
+    frame.statusIndicator:Hide()
+    return
+  end
+
+  if frame.statusIndicator ~= nil then
+    frame.statusIndicator:Hide()
+  end
+
+  local isAFK = UnitIsAFK(unit)
+  isAFK = issecretvalue and not issecretvalue(isAFK) and isAFK or false
+  local isDND = UnitIsDND(unit)
+  isDND = issecretvalue and not issecretvalue(isDND) and isDND or false
+  local isOffline = not UnitIsConnected(unit)
+  isOffline = issecretvalue and not issecretvalue(isOffline) and isOffline or false
+  local isDead = UnitIsDeadOrGhost(unit)
+  isDead = issecretvalue and not issecretvalue(isDead) and isDead or false
+  local isInCombat = UnitAffectingCombat(unit)
+  isInCombat = issecretvalue and not issecretvalue(isInCombat) and isInCombat or false
+  
+  if isAFK or isDND or isOffline or isDead or isInCombat then
+    if not frame.statusIndicator then
+      PrepStatusIndicator(frame)
+    end
+    frame.statusIndicator:SetAtlas(isAFK and "activities-clock-standard" or isDND and "activities-clock-ineligible" 
+    or isOffline and "activities-clock-disabled" or isDead and "poi-soulspiritghost" or isInCombat and "questlog-questtypeicon-pvp")
+    frame.statusIndicator:Show()
+  end
+end
+
+local function SetupLeaderIcons(unit, frame)
+  if not GigaSettingsDB.leaderIcons and frame.textureLeader ~= nil then
+    frame.textureLeader:Hide()
+    return
+  end
+
+  if frame.textureLeader ~= nil then
+    frame.textureLeader:Hide()
+  end
+
+  local isGroupLeader = UnitIsGroupLeader(unit)
+  local isGroupAssistant = UnitIsGroupAssistant(unit)
+  if isGroupLeader or (isGroupAssistant and CompactRaidFrameContainer:IsShown()) then
+    if not frame.textureLeader then
+      PrepTextureLeader(frame)
+    end
+    frame.textureLeader:SetAtlas(isGroupLeader and "GO-icon-Lead-Applied" or "GO-icon-Header-Assist-Applied")
+    frame.textureLeader:Show()
+  end
 end
 
 local function SetupRaidMarks(unit, frame)
   local frameName = frame:GetName()
   local markId = GetRaidTargetIndex(unit)
 
-  if not GigaSettingsDB.upgradedRaidFrames and icons[frameName] ~= nil then
+  if not GigaSettingsDB.raidMarks and icons[frameName] ~= nil then
     icons[frameName].textureRM:Hide()
     return
+  elseif icons[frameName] ~= nil then
+    icons[frameName].textureRM:Hide()
   end
 
   if not icons[frameName] then
@@ -106,44 +167,18 @@ local function SetupRaidMarks(unit, frame)
   if type(markId) ~= "nil" then
     SetRaidTargetIconTexture(icons[frameName].textureRM, markId)
     icons[frameName].textureRM:Show()
-  else
-    icons[frameName].textureRM:Hide()
-  end
-end
-
-local function SetupLeaderIcons(unit, frame)
-  if not GigaSettingsDB.upgradedRaidFrames and frame.textureLeader ~= nil then
-    frame.textureLeader:Hide()
-    return
-  end
-
-  if UnitIsGroupLeader(unit) then
-    if frame.textureLeader == nil then
-      PrepTextureLeader(frame)
-    end
-    frame.textureLeader:SetAtlas("GO-icon-Lead-Applied")
-    frame.textureLeader:Show()
-  elseif UnitIsGroupAssistant(unit) and CompactRaidFrameContainer:IsShown() then
-    if frame.textureLeader == nil then
-      PrepTextureLeader(frame)
-    end
-    frame.textureLeader:SetAtlas("GO-icon-Header-Assist-Applied")
-    frame.textureLeader:Show()
-  else
-    if frame.textureLeader ~= nil then
-      frame.textureLeader:Hide()
-    end
   end
 end
 
 local function UpdateIcons(frame)
    local unit = frame.unit
-   if not unit then
+   if not unit or not GigaSettingsDB.upgradedRaidFrames then
       return
    end
 
    SetupRaidMarks(unit, frame)
    SetupLeaderIcons(unit, frame)
+   SetupStatusIndicator(unit, frame)
 end
 
 function GigaSettingsInterface:UpgradeRaidFrames()

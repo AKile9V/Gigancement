@@ -1,3 +1,14 @@
+# **1.7.11**
+
+### NEW
+* UI: Status Indicator icons on Raid Frames (Away/DND/Offline/InCombat)
+
+### UPDATE
+* Rework options for "Upgrade Raid Frames"
+* ToC update for 12.0.5 patch
+
+<hr>
+
 # **1.7.10**
 
 ### FIX

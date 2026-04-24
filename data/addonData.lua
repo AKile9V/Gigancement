@@ -212,26 +212,6 @@ GigaAddon = {
             name = "Castbar Text Position",
             tooltip = "Set cast time text position.",
         },
-        checkbox_upgradedRaidFrames = {
-            key = "upgradedRaidFrames",
-            default = false,
-            disable = false,
-            callback = function()
-                GigaSettingsInterface:ToggleEventRegister("DISPLAY_SIZE_CHANGED", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("UI_SCALE_CHANGED", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("GROUP_ROSTER_UPDATE", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("UPDATE_ACTIVE_BATTLEFIELD", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("UNIT_FLAGS", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("PLAYER_FLAGS_CHANGED", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("PARTY_LEADER_CHANGED", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("RAID_TARGET_UPDATE", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("PLAYER_DIFFICULTY_CHANGED", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:ToggleEventRegister("PLAYER_ROLES_ASSIGNED", GigaSettingsDB.upgradedRaidFrames)
-                GigaSettingsInterface:UpgradeRaidFrames()
-            end,
-            name = "Upgrade Default Raid Frames",
-            tooltip = "Show leader, co-leader and raid marks on default Blizzard Raid Plates.",
-        },
         checkbox_classColorsUnitFrames = {
             key = "classColorsUnitFrames",
             default = false,
@@ -292,7 +272,6 @@ GigaAddon = {
             key = "playerMinimapCoords",
             default = false,
             disable = false,
-            new = true,
             callback = function() GigaSettingsInterface:PlayerMinimapCoords() end,
             name = "Minimap X-Y coordinates",
             tooltip = "Show the player's current coordinates on the Minimap frame. Automatically disabled inside instances.",
@@ -301,7 +280,6 @@ GigaAddon = {
             key = "cursorRing",
             default = false,
             disable = false,
-            new = true,
             callback = function()
                 GigaSettingsInterface:CursorRing()
                 GigaSettingsInterface["cursorRingTexture"].dropdownControl:SetEnabled(GigaSettingsDB["cursorRing"])
@@ -337,13 +315,57 @@ GigaAddon = {
             key = "groupFormingText",
             default = false,
             disable = false,
-            new = true,
             callback = function()
                 GigaSettingsInterface:ToggleEventRegister("LFG_LIST_APPLICANT_UPDATED", GigaSettingsDB.groupFormingText)
                 GigaSettingsInterface:ToggleGroupFormingText()
             end,
             name = "Hide Group Forming Text",
             tooltip = "Hide the \"Your group is currently forming.\" message so you can mouseover the applicants when you are not the group leader.",
+        },
+        dropdown_upgradedRaidFrames = {
+            key = "upgradedRaidFrames",
+            default = false,
+            disable = false,
+            needReload = false,
+            new = true,
+            callback = function()
+                local flag = GigaSettingsDB.leaderIcons or GigaSettingsDB.raidMarks or GigaSettingsDB.statusIndicators or false
+                GigaSettingsInterface:ToggleEventRegister("DISPLAY_SIZE_CHANGED", flag)
+                GigaSettingsInterface:ToggleEventRegister("UI_SCALE_CHANGED", flag)
+                GigaSettingsInterface:ToggleEventRegister("GROUP_ROSTER_UPDATE", flag)
+                GigaSettingsInterface:ToggleEventRegister("UPDATE_ACTIVE_BATTLEFIELD", flag)
+                GigaSettingsInterface:ToggleEventRegister("UNIT_FLAGS", flag)
+                GigaSettingsInterface:ToggleEventRegister("PLAYER_FLAGS_CHANGED", flag)
+                GigaSettingsInterface:ToggleEventRegister("PARTY_LEADER_CHANGED", flag)
+                GigaSettingsInterface:ToggleEventRegister("RAID_TARGET_UPDATE", flag)
+                GigaSettingsInterface:ToggleEventRegister("PLAYER_DIFFICULTY_CHANGED", flag)
+                GigaSettingsInterface:ToggleEventRegister("PLAYER_ROLES_ASSIGNED", flag)
+                GigaSettingsDB.upgradedRaidFrames = GigaSettingsDB.upgradedRaidFrames or flag
+                GigaSettingsInterface:UpgradeRaidFrames()
+                GigaSettingsDB.upgradedRaidFrames = flag
+                if not GigaSettingsDB.upgradedRaidFrames then
+                    GigaAddon.GigaData.dropdown_upgradedRaidFrames.needReload = true
+                end
+            end,
+            data = {
+                [1] = {
+                    value = "leaderIcons",
+                    text = "Leader & Co-Leader",
+                },
+                [2] = {
+                    value = "raidMarks",
+                    text = "Raid Marks",
+                },
+                [3] = {
+                    value = "statusIndicators",
+                    text = "Status Indicators",
+                },
+            },
+            name = "Upgrade Default Raid Frames",
+            tooltip = "Enhance default Blizzard Raid Frames with additional icon indicators to improve information visibility.\n\n"
+            ..HIGHLIGHT_FONT_COLOR:WrapTextInColorCode("Leader & Co-Leader:").." |A:GO-icon-Lead-Applied:20:20|a|A:GO-icon-Header-Assist-Applied:20:20|a\n\n"
+            ..HIGHLIGHT_FONT_COLOR:WrapTextInColorCode("Raid Marks:").." |A:GM-raidMarker1:20:20|a|A:GM-raidMarker2:20:20|a |A:GM-raidMarker3:20:20|a|A:GM-raidMarker4:20:20|a|A:GM-raidMarker5:20:20|a|A:GM-raidMarker6:20:20|a |A:GM-raidMarker7:20:20|a|A:GM-raidMarker8:20:20|a\n\n"
+            ..HIGHLIGHT_FONT_COLOR:WrapTextInColorCode("Status Indicators:").."\nAFK: |A:activities-clock-standard:15:15|a\nDND: |A:activities-clock-ineligible:15:15|a\nOffline: |A:activities-clock-disabled:15:15|a\nDead: |A:poi-soulspiritghost:15:15|a\nIn Combat: |A:questlog-questtypeicon-pvp:20:20|a",
         },
     }
 }
