@@ -1,10 +1,20 @@
+# **1.8**
+
+### NEW
+* UI: Cursor Ring Size slider
+
+### UPDATE
+* Reworked options for "Upgrade Character & Info"
+* Optimized Cursor Ring update
+* Changed /ssd colors
+
 # **1.7.11**
 
 ### NEW
 * UI: Status Indicator icons on Raid Frames (Away/DND/Offline/InCombat)
 
 ### UPDATE
-* Rework options for "Upgrade Raid Frames"
+* Reworked options for "Upgrade Raid Frames"
 * ToC update for 12.0.5 patch
 
 <hr>

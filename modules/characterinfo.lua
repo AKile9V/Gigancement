@@ -531,7 +531,7 @@ local function SetupItemGems(parent, itemLink, itemSockets, itemSocketCount)
 end
 
 function GigaSettingsInterface:UpdateEquipmentSlot(unitId, slotId)
-    if not GigaSettingsDB.characterInfoFlag or 
+    if not GigaSettingsDB.upgradedCharacterInfo and not (GigaSettingsDB.characterILVLInfo or GigaSettingsDB.characterEnchantsInfo or GigaSettingsDB.characterGemsInfo) or 
        unitId == nil or UnitGUID(unitId) == nil or slotId == nil or
        characterSlots[slotId] == nil or slotId == 19 then
 		return
@@ -579,7 +579,7 @@ function GigaSettingsInterface:UpdateEquipmentSlot(unitId, slotId)
 end
 
 function GigaSettingsInterface:UpdateAllEquipmentSlots(unitId)
-    if not GigaSettingsDB.characterInfoFlag then
+    if not GigaSettingsDB.upgradedCharacterInfo and not (GigaSettingsDB.characterILVLInfo or GigaSettingsDB.characterEnchantsInfo or GigaSettingsDB.characterGemsInfo) then
 		return
 	end
     sumILVL = 0

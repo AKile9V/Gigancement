@@ -21,7 +21,7 @@ local function UntriggerDisabledEvents()
         GigaSettingsInterface:UnregisterEvent("PLAYER_TARGET_CHANGED")
         GigaSettingsInterface:UnregisterEvent("PLAYER_FOCUS_CHANGED")
     end
-    if not GigaSettingsDB.characterInfoFlag then
+    if not GigaSettingsDB.upgradedCharacterInfo and not (GigaSettingsDB.characterILVLInfo or GigaSettingsDB.characterEnchantsInfo or GigaSettingsDB.characterGemsInfo) then
         GigaSettingsInterface:UnregisterEvent("INSPECT_READY")
         GigaSettingsInterface:UnregisterEvent("UNIT_INVENTORY_CHANGED")
         GigaSettingsInterface:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
@@ -85,7 +85,7 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
         if GigaSettingsDB["reopenOptions"] == true then
-            Settings.OpenToCategory(GigaAddon.GigaData.categoryID)
+            Settings.OpenToCategory(GigaAddonData.categoryID)
             GigaSettingsDB["reopenOptions"] = false
         end
     elseif event == "LFG_LIST_SEARCH_RESULTS_RECEIVED" then

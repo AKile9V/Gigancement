@@ -202,6 +202,7 @@ local function GetPlayerMapCoords()
     return format("%.2f, %.2f",x*100, y*100)
   end
 end
+
 local playerMinimapCoordsTicker = nil
 function GigaSettingsInterface:PlayerMinimapCoords()
   if not GigaSettingsDB.playerMinimapCoords or IsInInstance() then
@@ -219,36 +220,31 @@ function GigaSettingsInterface:PlayerMinimapCoords()
     end)
 end
 
-local cursorRingTicker = nil
+local cursorRingFrame = nil
 function GigaSettingsInterface:CursorRing()
   if not GigaSettingsDB.cursorRing then
-    if cursorRingTicker then cursorRingTicker:Cancel() UIParent.GigaCursorRing:Hide() end
-    cursorRingTicker = nil  
+    if cursorRingFrame then
+      cursorRingFrame:Hide()
+      cursorRingFrame:SetScript("OnUpdate", nil)
+    end
     return
   end
 
-  if not UIParent.GigaCursorRing then
-    UIParent.GigaCursorRing = UIParent:CreateTexture(nil, "ARTWORK")
-    UIParent.GigaCursorRing:EnableMouse(false)
-    UIParent.GigaCursorRing:SetPoint("CENTER")
-    UIParent.GigaCursorRing:SetAtlas(GigaSettingsDB.cursorRingTexture)
-    UIParent.GigaCursorRing:SetSize(100, 100)
-  end
-  UIParent.GigaCursorRing:Show()
-  local ringAtlas = UIParent.GigaCursorRing:GetAtlas()
-  if ringAtlas and ringAtlas ~= GigaSettingsDB.cursorRingTexture then
-    UIParent.GigaCursorRing:SetAtlas(GigaSettingsDB.cursorRingTexture)
-    return
+  if not cursorRingFrame then
+    cursorRingFrame = CreateFrame("Frame", nil, UIParent)
+    cursorRingFrame.texture = cursorRingFrame:CreateTexture(nil, "ARTWORK")
+    cursorRingFrame.texture:SetAllPoints()
   end
 
-  cursorRingTicker = C_Timer.NewTicker(0.01, function()
-      local x, y = GetCursorPosition()
-      local scale = UIParent:GetEffectiveScale()
-      UIParent.GigaCursorRing:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x / scale, y / scale)
-    end)
-  -- UIParent.GigaCursorRing:SetScript("OnUpdate", function(self)
-  --   local x, y = GetCursorPosition()
-  --   local scale = UIParent:GetEffectiveScale()
-  --   self:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x / scale, y / scale)
-  -- end)
+  local size = GigaSettingsDB.cursorRingSize * 100
+  cursorRingFrame:SetSize(size, size)
+  cursorRingFrame.texture:SetAtlas(GigaSettingsDB.cursorRingTexture)
+  cursorRingFrame:Show()
+  local scale = UIParent:GetEffectiveScale()
+    
+  cursorRingFrame:SetScript("OnUpdate", function(self, elapsed)
+    local x, y = GetCursorPosition()
+    local s = self:GetEffectiveScale() 
+    self:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x / s, y / s)
+  end)
 end

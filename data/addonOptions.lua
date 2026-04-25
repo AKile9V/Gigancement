@@ -16,7 +16,7 @@ local function CreateOptionsBody()
     -- Addon Header
     GigaSettingsInterface.bigTitle = GigaSettingsInterface:CreateFontString(nil, "ARTWORK", "GameFontHighlightHuge")
     GigaSettingsInterface.bigTitle:SetJustifyH("LEFT")
-    GigaSettingsInterface.bigTitle:SetText(GigaAddon.GigaData.addonName .. " v" .. C_AddOns.GetAddOnMetadata(GigaAddon.GigaData.addonName, "Version"))
+    GigaSettingsInterface.bigTitle:SetText(GigaAddonData.addonName .. " v" .. C_AddOns.GetAddOnMetadata(GigaAddonData.addonName, "Version"))
 	GigaSettingsInterface.bigTitle:SetPoint("TOPLEFT", 7, -22)
     GigaSettingsInterface.HorizontalDivider = GigaSettingsInterface:CreateTexture()
     GigaSettingsInterface.HorizontalDivider:SetAtlas("Options_HorizontalDivider", true)
@@ -60,16 +60,16 @@ local function CreateOptionsBody()
 	GigaSettingsInterface.scrollChild:SetWidth(635)
 	GigaSettingsInterface.scrollChild:SetHeight(1)
     -- Save the last element to position subsequent elements
-    GigaAddon.GigaData.lastBuiltElement = GigaSettingsInterface.scrollChild
+    GigaAddonData.lastBuiltElement = GigaSettingsInterface.scrollChild
 end
 
 local function CreateHeader(headerName)
-    local headerOption = GigaAddon.GigaData["header_"..headerName]
+    local headerOption = GigaAddonData["header_"..headerName]
     GigaSettingsInterface[headerOption.key] = GigaSettingsInterface.scrollChild:CreateFontString(nil, "ARTWORK", "GameFontHighlightLarge")
     GigaSettingsInterface[headerOption.key]:SetText(headerOption.name)
-    GigaSettingsInterface[headerOption.key]:SetPoint("TOPLEFT", GigaAddon.GigaData.lastBuiltElement, "BOTTOMLEFT", headerOption.firstEle and 20 or 0, headerOption.firstEle and -19 or -20)
+    GigaSettingsInterface[headerOption.key]:SetPoint("TOPLEFT", GigaAddonData.lastBuiltElement, "BOTTOMLEFT", headerOption.firstEle and 20 or 0, headerOption.firstEle and -19 or -20)
     
-    GigaAddon.GigaData.lastBuiltElement = GigaSettingsInterface[headerOption.key]
+    GigaAddonData.lastBuiltElement = GigaSettingsInterface[headerOption.key]
 end
 
 local function SetupOptionTooltip(elements, option, bg)
@@ -150,9 +150,9 @@ local function CreateCheckbox(category, option)
 end
 
 local function RegisterCheckbox(checkboxName, category, firstEle)
-    local checkboxOption = GigaAddon.GigaData["checkbox_"..checkboxName]
+    local checkboxOption = GigaAddonData["checkbox_"..checkboxName]
     GigaSettingsInterface[checkboxOption.key] = CreateCheckbox(category, checkboxOption)
-    GigaSettingsInterface[checkboxOption.key]:SetPoint("TOPLEFT",  GigaAddon.GigaData.lastBuiltElement, "BOTTOMLEFT", 0, checkboxOption.firstEle and -21 or -10)
+    GigaSettingsInterface[checkboxOption.key]:SetPoint("TOPLEFT",  GigaAddonData.lastBuiltElement, "BOTTOMLEFT", 0, checkboxOption.firstEle and -21 or -10)
 
     -- TODO: Probably not neccessary on the release, should remove option.disable from each element in addonData.lua
     if checkboxOption.disable then
@@ -166,7 +166,7 @@ local function RegisterCheckbox(checkboxName, category, firstEle)
         GigaSettingsInterface[checkboxOption.key].Label:SetPoint("LEFT", 45, 0)
     end
     -- Save the last element to position subsequent elements
-    GigaAddon.GigaData.lastBuiltElement = GigaSettingsInterface[checkboxOption.key]
+    GigaAddonData.lastBuiltElement = GigaSettingsInterface[checkboxOption.key]
 end
 
 local function CreateColorSwatch(parent, option)
@@ -205,7 +205,7 @@ end
 local function RegisterCheckboxWithColorSwatch(checkboxName, colorswatchName, category, firstEle)
     RegisterCheckbox(checkboxName, category, firstEle)
     local checkbox = GigaSettingsInterface[checkboxName].checkboxControl
-    local colorswatchOption = GigaAddon.GigaData["colorswatch_"..colorswatchName]
+    local colorswatchOption = GigaAddonData["colorswatch_"..colorswatchName]
     checkbox.colorswatch = CreateColorSwatch(checkbox, colorswatchOption)
     checkbox.colorswatch:SetPoint("LEFT", checkbox, "RIGHT", 12, -2)
 
@@ -279,9 +279,9 @@ local function CreateRadioDropdown(category, option)
 end
 
 local function RegisterRadioDropdown(dropdownName, category, firstEle)
-    local dropdownOption = GigaAddon.GigaData["dropdown_"..dropdownName]
+    local dropdownOption = GigaAddonData["dropdown_"..dropdownName]
     GigaSettingsInterface[dropdownOption.key] = CreateRadioDropdown(category, dropdownOption)
-    GigaSettingsInterface[dropdownOption.key]:SetPoint("TOPLEFT",  GigaAddon.GigaData.lastBuiltElement, "BOTTOMLEFT", 0, dropdownOption.firstEle and -21 or -10)
+    GigaSettingsInterface[dropdownOption.key]:SetPoint("TOPLEFT",  GigaAddonData.lastBuiltElement, "BOTTOMLEFT", 0, dropdownOption.firstEle and -21 or -10)
 
     if dropdownOption.dependency ~= nil then
         GigaSettingsInterface[dropdownOption.key].dropdownControl:SetEnabled(GigaSettingsDB[dropdownOption.dependency])
@@ -289,7 +289,7 @@ local function RegisterRadioDropdown(dropdownName, category, firstEle)
         GigaSettingsInterface[dropdownOption.key].Label:SetPoint("LEFT", 45, 0)
     end
 
-    GigaAddon.GigaData.lastBuiltElement = GigaSettingsInterface[dropdownOption.key]
+    GigaAddonData.lastBuiltElement = GigaSettingsInterface[dropdownOption.key]
 end
 
 local function SetupCheckboxDropdownOnChangeScript(dropdown, setting, option)
@@ -361,9 +361,9 @@ local function CreateCheckboxDropdown(category, option)
 end
 
 local function RegisterCheckboxDropdown(dropdownName, category, firstEle)
-    local dropdownOption = GigaAddon.GigaData["dropdown_"..dropdownName]
+    local dropdownOption = GigaAddonData["dropdown_"..dropdownName]
     GigaSettingsInterface[dropdownName] = CreateCheckboxDropdown(category, dropdownOption)
-    GigaSettingsInterface[dropdownName]:SetPoint("TOPLEFT",  GigaAddon.GigaData.lastBuiltElement, "BOTTOMLEFT", 0, dropdownOption.firstEle and -21 or -10)
+    GigaSettingsInterface[dropdownName]:SetPoint("TOPLEFT",  GigaAddonData.lastBuiltElement, "BOTTOMLEFT", 0, dropdownOption.firstEle and -21 or -10)
 
     if dropdownOption.dependency ~= nil then
         GigaSettingsInterface[dropdownName].dropdownControl:SetEnabled(GigaSettingsDB[dropdownOption.dependency])
@@ -371,18 +371,93 @@ local function RegisterCheckboxDropdown(dropdownName, category, firstEle)
         GigaSettingsInterface[dropdownName].Label:SetPoint("LEFT", 45, 0)
     end
 
-    GigaAddon.GigaData.lastBuiltElement = GigaSettingsInterface[dropdownName]
+    GigaAddonData.lastBuiltElement = GigaSettingsInterface[dropdownName]
+end
+
+local function SetupSlider(elements, slider, setting, option)
+    slider:Init(setting:GetValue(), option.minValue, option.maxValue, (option.maxValue-option.minValue)/option.stepValue, nil)
+    slider.label:SetText(100*setting:GetValue().."%")
+
+    slider.Slider:SetScript("OnValueChanged", function()
+        local currentValue = math.floor(slider.Slider:GetValue() * 100) / 100
+        if currentValue == setting:GetValue() then return end
+        setting:SetValue(currentValue)
+        slider.label:SetText(format("%d%%", currentValue*100))
+
+        if option.callback then
+            option.callback()
+        end
+        if option.needReload then
+            GigaSettingsInterface.reloadButton:Show()
+        end
+    end)
+end
+
+local function CreateSlider(category, option)
+    local setting = RegisterSetting(category, option)
+    local slider = CreateFrame("Frame", nil, GigaSettingsInterface.scrollChild)
+    slider:SetSize(230, 26)
+    
+    slider.sliderControl = CreateFrame("Frame", nil, slider, "MinimalSliderWithSteppersTemplate")
+    slider.sliderControl:SetWidth(250)
+    slider.sliderControl:SetPoint("LEFT", slider, "RIGHT", 0, 0)
+    Mixin(slider.sliderControl.Slider, DefaultTooltipMixin)
+    slider.sliderControl.label = slider.sliderControl:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+    slider.sliderControl.label:SetPoint("LEFT", slider.sliderControl, "RIGHT", 0, 0)
+
+    slider.Label = slider:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+    slider.Label:SetText(option.name)
+    slider.Label:SetPoint("LEFT", slider, "LEFT", 30, 0)
+
+    slider.HoverBackground = slider:CreateTexture(nil, "BACKGROUND")
+    slider.HoverBackground:SetColorTexture(1, 1, 1, 0.1)
+    slider.HoverBackground:SetPoint("TOPLEFT", slider, "TOPLEFT", -17, 0)
+    slider.HoverBackground:SetSize(640, 26)
+    slider.HoverBackground:Hide()
+
+    if option.new then
+        slider.NewFeature = CreateFrame("Frame", nil, slider, "NewFeatureLabelTemplate")
+        slider.NewFeature:SetScale(0.8)
+        slider.NewFeature:SetPoint("BOTTOMRIGHT", slider.Label, "LEFT", 16, -10)
+        slider.NewFeature:Show()
+    end
+
+    SetupSlider({slider.Label, slider}, slider.sliderControl, setting, option)
+    SetupOptionTooltip({slider.sliderControl.Slider, slider.Label, slider}, option, slider)
+
+    return slider
+end
+
+local function RegisterSlider(sliderName, category, firstEle)
+    local sliderOption = GigaAddonData["slider_"..sliderName]
+    GigaSettingsInterface[sliderOption.key] = CreateSlider(category, sliderOption)
+    GigaSettingsInterface[sliderOption.key]:SetPoint("TOPLEFT",  GigaAddonData.lastBuiltElement, "BOTTOMLEFT", 0, sliderOption.firstEle and -21 or -10)
+
+    -- TODO: Probably not neccessary on the release, should remove option.disable from each element in addonData.lua
+    if sliderOption.disable then
+        GigaSettingsInterface[sliderOption.key].sliderControl:Disable()
+        GigaSettingsInterface[sliderOption.key].Label:SetFontObject("GameFontDisable")
+    end
+
+    if sliderOption.dependency~=nil then
+        GigaSettingsInterface[sliderOption.key].sliderControl:SetEnabled(GigaSettingsDB[sliderOption.dependency])
+        GigaSettingsInterface[sliderOption.key].Label:SetFontObject(GigaSettingsDB[sliderOption.dependency] and "GameFontNormalSmall" or "GameFontDisableSmall")
+        GigaSettingsInterface[sliderOption.key].Label:SetPoint("LEFT", 45, 0)
+        GigaSettingsInterface[sliderOption.key].sliderControl.label:SetFontObject(GigaSettingsDB[sliderOption.dependency] and "GameFontNormal" or "GameFontDisable")
+    end
+    -- Save the last element to position subsequent elements
+    GigaAddonData.lastBuiltElement = GigaSettingsInterface[sliderOption.key]
 end
 
 function GigaSettingsInterface:BuildAddonOptionsMenu()
     -- Populate DB if there are empty/missing values
-    for _, key in pairs(GigaAddon.GigaData) do
+    for _, key in pairs(GigaAddonData) do
         if key.default~=nil then InitDB(key) end
     end
 
     -- Register Gigancement in Addon options
-    local category = Settings.RegisterCanvasLayoutCategory(self, GigaAddon.GigaData.addonName)
-    GigaAddon.GigaData.categoryID = category.ID
+    local category = Settings.RegisterCanvasLayoutCategory(self, GigaAddonData.addonName)
+    GigaAddonData.categoryID = category.ID
     Settings.RegisterAddOnCategory(category)
 
     -- Build Addon Options menu
@@ -391,9 +466,7 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     CreateHeader("characterInfoTitle")
     RegisterCheckbox("decimalILVL", category)
     RegisterCheckbox("classColorILVL", category)
-    RegisterCheckbox("characterILVLInfo", category)
-    RegisterCheckbox("characterEnchantsInfo", category)
-    RegisterCheckbox("characterGemsInfo", category)
+    RegisterCheckboxDropdown("upgradedCharacterInfo", category)
     -- UI module
     CreateHeader("uiModuleTitle")
     RegisterCheckbox("upgradedCastbar", category)
@@ -403,6 +476,7 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     RegisterCheckbox("playerMinimapCoords", category)
     RegisterCheckbox("cursorRing", category)
     RegisterRadioDropdown("cursorRingTexture", category)
+    RegisterSlider("cursorRingSize", category)
     -- Chat module
     CreateHeader("chatModuleTitle")
     RegisterCheckboxWithColorSwatch("linksInChat", "linksInChatColor", category)
@@ -430,7 +504,7 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     -- Reopen addon options if a reload is required
     if GigaSettingsDB["reopenOptions"] == true then
         C_Timer.After(0, function()
-            Settings.OpenToCategory(GigaAddon.GigaData.categoryID)
+            Settings.OpenToCategory(GigaAddonData.categoryID)
         end)
         GigaSettingsDB["reopenOptions"] = false
     end

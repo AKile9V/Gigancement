@@ -18,7 +18,7 @@ SlashCmdList["GSETTINGS"] = function()
         GigaSettingsDB["reopenOptions"] = true
         return
     end
-    Settings.OpenToCategory(GigaAddon.GigaData.categoryID)
+    Settings.OpenToCategory(GigaAddonData.categoryID)
 end
 
 -- Clear chat windows
@@ -67,10 +67,10 @@ local function GetStatsDistrib()
     
     print("---- Secondary Stats Distribution -----")
     print("## Total: ".. statTotal .. " → 100%")
-    print("|cff00FF00Crit:|r ".. critValue .." → " .. SSDround(((critValue / statTotal) * 100),2) .. "%")
-    print("|cffFFFF00Haste|r: ".. hasteValue .." → " .. SSDround(((hasteValue / statTotal) * 100),2) .. "%")
-    print("|cff0000FFMastery:|r ".. masteryValue .." → " .. SSDround(((masteryValue / statTotal) * 100),2) .. "%")
-    print("|cffFF0000Versatility:|r ".. verValue .." → " .. SSDround(((verValue / statTotal) * 100),2) .. "%")
+    print("|cffF05151Critical Strike:|r ".. critValue .." → " .. SSDround(((critValue / statTotal) * 100),2) .. "%")
+    print("|cff49E629Haste|r: ".. hasteValue .." → " .. SSDround(((hasteValue / statTotal) * 100),2) .. "%")
+    print("|cffBC28CCMastery:|r ".. masteryValue .." → " .. SSDround(((masteryValue / statTotal) * 100),2) .. "%")
+    print("|cff29B1E6Versatility:|r ".. verValue .." → " .. SSDround(((verValue / statTotal) * 100),2) .. "%")
     print("-------------------------------------------------")
 end
 SlashCmdList["SDP"] = GetStatsDistrib
