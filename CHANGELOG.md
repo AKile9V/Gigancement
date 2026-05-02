@@ -1,3 +1,9 @@
+# **1.8.1**
+
+### UPDATE
+* Updated Eagle Rank2 enchant text
+* Added a reload indicator for options that require it
+
 # **1.8**
 
 ### NEW

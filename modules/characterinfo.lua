@@ -49,7 +49,7 @@ local DKEnchants = {
     ["Unending\nThirst"] = 3163621,
 }
 local TWWEnchants = {
-    -- Rank2 Professions-ChatIcon-Quality-12-Tier2
+    -- Rank2
     ["Enchant Helm - Blessing of SpeedProfessions-ChatIcon-Quality-12-Tier2"] = "+13 Speed",
     ["Enchant Helm - Rune of AvoidanceProfessions-ChatIcon-Quality-12-Tier2"] = "+22 Avoidance",
     ["Enchant Helm - Hex of LeechingProfessions-ChatIcon-Quality-12-Tier2"] = "+33 Leech",
@@ -77,7 +77,7 @@ local TWWEnchants = {
     ["Enchant Ring - Zul'jin's MasteryProfessions-ChatIcon-Quality-12-Tier2"] = "+29 Mastery",
     ["Enchant Ring - Silvermoon's AlacrityProfessions-ChatIcon-Quality-12-Tier2"] = "+29 Haste",
     ["Enchant Ring - Nature's FuryProfessions-ChatIcon-Quality-12-Tier2"] = "+29 Critical Strike",
-    ["Enchant Ring - Eyes of the EagleProfessions-ChatIcon-Quality-12-Tier2"] = "+1% Crit Effectiveness",
+    ["Enchant Ring - Eyes of the EagleProfessions-ChatIcon-Quality-12-Tier2"] = "+2% Crit\nEffectiveness",
     -- Rank1
     ["Enchant Helm - Blessing of SpeedProfessions-ChatIcon-Quality-12-Tier1"] = "+9 Speed",
     ["Enchant Helm - Rune of AvoidanceProfessions-ChatIcon-Quality-12-Tier1"] = "+15 Avoidance",
@@ -106,7 +106,7 @@ local TWWEnchants = {
     ["Enchant Ring - Zul'jin's MasteryProfessions-ChatIcon-Quality-12-Tier1"] = "+27 Mastery",
     ["Enchant Ring - Silvermoon's AlacrityProfessions-ChatIcon-Quality-12-Tier1"] = "+27 Haste",
     ["Enchant Ring - Nature's FuryProfessions-ChatIcon-Quality-12-Tier1"] = "+27 Critical Strike",
-    ["Enchant Ring - Eyes of the EagleProfessions-ChatIcon-Quality-12-Tier1"] = "+1% Crit Effectiveness",
+    ["Enchant Ring - Eyes of the EagleProfessions-ChatIcon-Quality-12-Tier1"] = "+1% Crit\nEffectiveness",
 }
 local sumILVL = 0
 local weaponLevel = 0

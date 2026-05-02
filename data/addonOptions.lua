@@ -126,7 +126,7 @@ local function CreateCheckbox(category, option)
     checkbox.checkboxControl = CreateFrame("CheckButton", nil, checkbox, "SettingsCheckboxTemplate")
     checkbox.checkboxControl:SetPoint("LEFT", checkbox, "RIGHT", 0, 0)
     checkbox.Label = checkbox:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-    checkbox.Label:SetText(option.name)
+    checkbox.Label:SetText(option.name .. (option.needReload and "|cffFF0000*|r" or ""))
     checkbox.Label:SetPoint("LEFT", checkbox, "LEFT", 30, 0)
 
     checkbox.HoverBackground = checkbox:CreateTexture(nil, "BACKGROUND")
