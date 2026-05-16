@@ -374,4 +374,14 @@ GigaAddonData = {
         ..HIGHLIGHT_FONT_COLOR:WrapTextInColorCode("Raid Marks:").." |A:GM-raidMarker1:20:20|a|A:GM-raidMarker2:20:20|a |A:GM-raidMarker3:20:20|a|A:GM-raidMarker4:20:20|a|A:GM-raidMarker5:20:20|a|A:GM-raidMarker6:20:20|a |A:GM-raidMarker7:20:20|a|A:GM-raidMarker8:20:20|a\n\n"
         ..HIGHLIGHT_FONT_COLOR:WrapTextInColorCode("Status Indicators:").."\n|A:activities-clock-standard:15:15|a = AFK\n|A:activities-clock-ineligible:15:15|a = DND\n|A:activities-clock-disabled:15:15|a = Offline\n|A:poi-soulspiritghost:15:15|a = Dead\n|A:questlog-questtypeicon-pvp:15:15|a = In Combat",
     },
+    checkbox_upgradedFriendlyNameplates = {
+        key = "upgradedFriendlyNameplates",
+        default = false,
+        disable = false,
+        needReload = true,
+        new = true,
+        callback = function() GigaSettingsInterface:UpgradeFriendlyNameplates(true) end,
+        name = "Upgrade Friendly Nameplates",
+        tooltip = "Show class-colored friendly nameplates in Raid/M+ instances and enhance the default nameplate font.\n|cffFF0000Reload|r required.",
+    },
 }

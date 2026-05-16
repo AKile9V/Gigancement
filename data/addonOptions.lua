@@ -500,6 +500,7 @@ function GigaSettingsInterface:BuildAddonOptionsMenu()
     -- Nameplate Module
     CreateHeader("nameplateModuleTitle")
     RegisterCheckbox("castTimerNameplate", category)
+    RegisterCheckbox("upgradedFriendlyNameplates", category)
 
     -- Reopen addon options if a reload is required
     if GigaSettingsDB["reopenOptions"] == true then

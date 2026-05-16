@@ -133,7 +133,7 @@ local characterSlots = {
 }
 -- Keep current with tier patches
 local minUpgaradeLevel = 220
-local maxUpgaradeLevel = 289
+local maxUpgaradeLevel = 298
 local maxUpgradeLevels = {
     [237] = {12769, 12770, 12771, 12772, 12773, 12774}, -- Adventurer
     [246] = {12247}, -- Crafted Adventurer/Veteran Gear
@@ -309,7 +309,7 @@ local function UpdateAverageItemLevel(unitId, positionBySlot)
     parent.EquipmentSlotFrame:Show()
 end
 
-local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityColorHex)
+local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityColorHex, slotId)
     if not GigaSettingsDB.characterILVLInfo then
         parent.EquipmentSlotFrame.levelString:Hide()
         parent.EquipmentSlotFrame.maxLevelString:Hide()
@@ -341,6 +341,14 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
                     maxLevel = maxLevelUpgrade
                 end
             end
+        end
+    end
+
+    if slotId == 16 or slotId == 17 or slotId == 13 or slotId == 14 then
+        if maxLevel == 276 then
+            maxLevel = 285
+        elseif maxLevel == 285 or maxLevel == 289 then
+            maxLevel = 298
         end
     end
     
@@ -564,7 +572,7 @@ function GigaSettingsInterface:UpdateEquipmentSlot(unitId, slotId)
     local itemEquipLoc =select(9,C_Item.GetItemInfo(itemLink))
     local itemLevel = select(1,C_Item.GetDetailedItemLevelInfo(itemLink))
 
-    SetupItemLevel(parent, itemLevel, itemPayloadSplit, string.sub(itemLink, 1, 7))
+    SetupItemLevel(parent, itemLevel, itemPayloadSplit, string.sub(itemLink, 1, 7), slotId)
     itemEnchant, itemEnchantAtlas, itemSocketCount = GetItemInfoData(unitId, slotId, itemSockets)
     SetupItemEnchant(parent, slot, itemEnchant, itemEnchantAtlas, itemEquipLoc, unitId)
     SetupItemGems(parent, itemLink, itemSockets, itemSocketCount)

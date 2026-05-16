@@ -1,3 +1,11 @@
+# **1.8.2**
+
+### NEW
+* Nameplates: Class-colored Friendly names in M+/Raid instances
+
+### UPDATE
+* Updated the Character Info screen to show the correct maximum levels for weapons and trinkets: 285 for Hero tier and 298 for Mythic tier
+
 # **1.8.1**
 
 ### UPDATE
