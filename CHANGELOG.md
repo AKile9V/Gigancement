@@ -1,3 +1,10 @@
+# **1.8.3**
+
+### UPDATE
+* Updated max ilvl for crafted weapons and trinkets
+
+<hr>
+
 # **1.8.2**
 
 ### NEW
@@ -6,11 +13,15 @@
 ### UPDATE
 * Updated the Character Info screen to show the correct maximum levels for weapons and trinkets: 285 for Hero tier and 298 for Mythic tier
 
+<hr>
+
 # **1.8.1**
 
 ### UPDATE
 * Updated Eagle Rank2 enchant text
 * Added a reload indicator for options that require it
+
+<hr>
 
 # **1.8**
 
@@ -21,6 +32,8 @@
 * Reworked options for "Upgrade Character & Info"
 * Optimized Cursor Ring update
 * Changed /ssd colors
+
+<hr>
 
 # **1.7.11**
 

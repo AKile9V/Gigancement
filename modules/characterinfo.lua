@@ -347,7 +347,9 @@ local function SetupItemLevel(parent, itemLevel, itemPayloadSplit, itemRarityCol
     if slotId == 16 or slotId == 17 or slotId == 13 or slotId == 14 then
         if maxLevel == 276 then
             maxLevel = 285
-        elseif maxLevel == 285 or maxLevel == 289 then
+        elseif maxLevel == 285 then
+            maxLevel = 295
+        elseif maxLevel == 289 then
             maxLevel = 298
         end
     end
