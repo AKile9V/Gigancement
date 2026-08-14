@@ -380,8 +380,8 @@ GigaAddonData = {
         disable = false,
         needReload = true,
         new = true,
-        callback = function() GigaSettingsInterface:UpgradeFriendlyNameplates(true) end,
+        callback = function() GigaSettingsInterface:UpgradeFriendlyNameplates() end,
         name = "Upgrade Friendly Nameplates",
-        tooltip = "Show class-colored friendly nameplates in Raid/M+ instances and enhance the default nameplate font.\n|cffFF0000Reload|r required.",
+        tooltip = "Improve the default nameplate font for better name visibility in the world.\n|cffFF0000Reload|r required.",
     },
 }

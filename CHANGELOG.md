@@ -1,3 +1,13 @@
+# **1.8.5**
+
+### UPDATE
+* Updated Midnight S2 Character Info ilvl scaling
+* Removed the Class-colored Friendly names (implemented by Blizzard), but kept the font visibility enhancement
+* Fixed Lua errors
+* ToC update for 12.1.0 patch
+
+<hr>
+
 # **1.8.4**
 
 ### UPDATE

@@ -17,19 +17,12 @@ function GigaSettingsInterface:CastTimerNameplate(nameplate)
   end
 end
 
-function GigaSettingsInterface:UpgradeFriendlyNameplates(flag)
+function GigaSettingsInterface:UpgradeFriendlyNameplates()
   if GigaSettingsDB.upgradedFriendlyNameplates then 
     local font, size, flags = SystemFont_NamePlate_Outlined:GetFont()
     SystemFont_NamePlate:SetFont(font, size, flags)
     SystemFont_NamePlateFixed:SetFont(font, size, flags)
     SystemFont_LargeNamePlate:SetFont(font, size, flags)
     SystemFont_LargeNamePlateFixed:SetFont(font, size, flags)
-    NamePlateFriendlyFrameOptions["updateNameUsesGetUnitName"] = nil
-  end
-
-  if GigaSettingsDB.upgradedFriendlyNameplates or flag then
-    SetCVar("nameplateShowFriendlyPlayers", GigaSettingsDB.upgradedFriendlyNameplates and 1 or 0)
-    SetCVar("nameplateUseClassColorForFriendlyPlayerUnitNames", GigaSettingsDB.upgradedFriendlyNameplates and 1 or 0)
-    SetCVar("nameplateShowOnlyNameForFriendlyPlayerUnits", GigaSettingsDB.upgradedFriendlyNameplates and 1 or 0)
   end
 end

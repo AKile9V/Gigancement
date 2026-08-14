@@ -132,16 +132,16 @@ local characterSlots = {
     [19] = {id = 19, side = "LEFT", name = "Tabard", canEnchant = false} -- ilvl anchor
 }
 -- Keep current with tier patches
-local minUpgaradeLevel = 220
-local maxUpgaradeLevel = 298
+local minUpgaradeLevel = 266
+local maxUpgaradeLevel = 334
 local maxUpgradeLevels = {
-    [237] = {12769, 12770, 12771, 12772, 12773, 12774}, -- Adventurer
-    [246] = {12247}, -- Crafted Adventurer/Veteran Gear
-    [250] = {12777, 12778, 12779, 12780, 12781, 12782}, -- Veteran
-    [263] = {12785, 12786, 12787, 12788, 12789, 12790}, -- Champion
-    [276] = {12793, 12794, 12795, 12796, 12797, 12798}, -- Hero
-    [285] = {12066}, -- Crafted Hero/Myth Gear
-    [289] = {12801, 12802, 12803, 12804, 12805, 12806}, -- Myth
+    [282] = {12817, 12818, 12819, 12820, 12821, 12822}, -- Adventurer
+    [292] = {12247}, -- Crafted Adventurer/Veteran Gear
+    [295] = {12825, 12826, 12827, 12828, 12829, 12830}, -- Veteran
+    [308] = {12833, 12834, 12835, 12836, 12837, 12838}, -- Champion
+    [321] = {12841, 12842, 12843, 12844, 12845, 12846}, -- Hero
+    [331] = {13751}, -- Crafted Hero/Myth Gear
+    [334] = {12849, 12850, 12851, 12852, 12853, 12854}, -- Myth
 }
 
 local specIndex = {

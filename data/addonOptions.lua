@@ -225,8 +225,6 @@ local function SetupRadioDropdownOnChangeScript(dropdown, setting, option)
     dropdown.dropdownControl.Dropdown.SetTooltipFunc = function() end
     dropdown.dropdownControl.Dropdown.SetDefaultTooltipAnchors = function() end
     local inserter = Settings.CreateDropdownOptionInserter(setting, getOptionData)
-    Settings.InitDropdown(dropdown.dropdownControl.Dropdown, setting, inserter)
-    -- SetupOptionTooltip({dropdown.dropdownControl.Dropdown, dropdown.Label, dropdown}, option, dropdown)
 
     local function isSelected(value)
 		return GigaSettingsDB[option.key] == value
@@ -303,8 +301,6 @@ local function SetupCheckboxDropdownOnChangeScript(dropdown, setting, option)
     dropdown.dropdownControl.Dropdown.SetTooltipFunc = function() end
     dropdown.dropdownControl.Dropdown.SetDefaultTooltipAnchors = function() end
     local inserter = Settings.CreateDropdownOptionInserter(setting, getOptionData)
-    Settings.InitDropdown(dropdown.dropdownControl.Dropdown, setting, inserter)
-    -- SetupOptionTooltip({dropdown.dropdownControl.Dropdown, dropdown.Label, dropdown}, option, dropdown)
 
     local function isSelected(value)
 		return GigaSettingsDB[value] or false
