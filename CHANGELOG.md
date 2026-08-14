@@ -1,3 +1,10 @@
+# **1.8.6**
+
+### UPDATE
+* ToC update for 12.1.0 patch
+
+<hr>
+
 # **1.8.5**
 
 ### UPDATE
