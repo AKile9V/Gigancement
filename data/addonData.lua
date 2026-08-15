@@ -20,7 +20,6 @@ GigaAddonData = {
         default = false,
         disable = false,
         needReload = false,
-        new = true,
         callback = function()
             local flag = GigaSettingsDB.characterILVLInfo or GigaSettingsDB.characterEnchantsInfo or GigaSettingsDB.characterGemsInfo
             GigaSettingsInterface:ToggleEventRegister("INSPECT_READY", flag)
@@ -310,7 +309,6 @@ GigaAddonData = {
         default = 1,
         dependency = "cursorRing",
         disable = false,
-        new = true,
         callback = function() GigaSettingsInterface:CursorRing() end,
         minValue = 0.1,
         maxValue = 2.0,
@@ -334,7 +332,6 @@ GigaAddonData = {
         default = false,
         disable = false,
         needReload = false,
-        new = true,
         callback = function()
             local flag = GigaSettingsDB.leaderIcons or GigaSettingsDB.raidMarks or GigaSettingsDB.statusIndicators or false
             GigaSettingsInterface:ToggleEventRegister("DISPLAY_SIZE_CHANGED", flag)
@@ -382,6 +379,6 @@ GigaAddonData = {
         new = true,
         callback = function() GigaSettingsInterface:UpgradeFriendlyNameplates() end,
         name = "Upgrade Friendly Nameplates",
-        tooltip = "Improve the default nameplate font for better name visibility in the world.\n|cffFF0000Reload|r required.",
+        tooltip = "Improve the default nameplate fontstyle for better name visibility in the world.\n|cffFF0000Reload|r required.",
     },
 }
