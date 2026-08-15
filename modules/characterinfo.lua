@@ -16,7 +16,7 @@ hooksecurefunc("PaperDollFrame_SetItemLevel", DecimalILVL)
 
 local _G = _G
 local defaultFont = STANDARD_TEXT_FONT
-local defaultFontsize = 13
+local defaultFontsize = 14
 local defaultFontOutline = "OUTLINE"
 local defaultGemSize = 14
 local TwoHanders = {
@@ -233,7 +233,7 @@ local CreateSlotFrame = function(unitId, slot)
     if parent.EquipmentSlotFrame.levelString == nil then
         parent.EquipmentSlotFrame.levelString = parent.EquipmentSlotFrame:CreateFontString(parent.EquipmentSlotFrame:GetName() .. "Level", "OVERLAY")
         parent.EquipmentSlotFrame.levelString:SetPoint("CENTER", parent.EquipmentSlotFrame, "CENTER", 0, 0)
-        parent.EquipmentSlotFrame.levelString:SetFont(defaultFont, defaultFontsize, "OUTLINE")
+        parent.EquipmentSlotFrame.levelString:SetFont(defaultFont, defaultFontsize, "OUTLINE, SLUG")
         parent.EquipmentSlotFrame.levelString:Hide()
     end
 
@@ -251,7 +251,7 @@ local CreateSlotFrame = function(unitId, slot)
     if parent.EquipmentSlotFrame.maxLevelString == nil then
         parent.EquipmentSlotFrame.maxLevelString = parent.EquipmentSlotFrame:CreateFontString(parent.EquipmentSlotFrame:GetName() .. "MaxLevel", "OVERLAY")
         parent.EquipmentSlotFrame.maxLevelString:SetPoint("CENTER", parent.EquipmentSlotFrame, "CENTER", 0, -8)
-        parent.EquipmentSlotFrame.maxLevelString:SetFont(defaultFont, defaultFontsize - 3, "OUTLINE")
+        parent.EquipmentSlotFrame.maxLevelString:SetFont(defaultFont, defaultFontsize - 3, "OUTLINE, SLUG")
         parent.EquipmentSlotFrame.maxLevelString:Hide()
     end
     
@@ -260,7 +260,7 @@ local CreateSlotFrame = function(unitId, slot)
         parent.EquipmentSlotFrame.enchantString:SetPoint(slot.side, parent.EquipmentSlotFrame, relativePoint,
         (slot.id == 17 and unitId~="player" and 3) or offsetX,
         (slot.id == 17 and unitId~="player" and 8) or offsetEnchantY)
-        parent.EquipmentSlotFrame.enchantString:SetFont(defaultFont, defaultFontsize - 3, "OUTLINE")
+        parent.EquipmentSlotFrame.enchantString:SetFont(defaultFont, defaultFontsize - 3, "OUTLINE, SLUG")
         parent.EquipmentSlotFrame.enchantString:Hide()
     end
     

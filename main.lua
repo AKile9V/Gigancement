@@ -94,7 +94,7 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
     elseif event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START" then
         local allNameplates = C_NamePlate.GetNamePlates()
         for _, nameplate in pairs(allNameplates) do
-            if nameplate.UnitFrame and nameplate.UnitFrame.castBar and (nameplate.UnitFrame.castBar.casting or nameplate.UnitFrame.castBar.channeling) then
+            if nameplate.UnitFrame and nameplate.UnitFrame.CastBarsContainer.castBar and (nameplate.UnitFrame.CastBarsContainer.castBar.casting or nameplate.UnitFrame.CastBarsContainer.castBar.channeling) then
                 GigaSettingsInterface:CastTimerNameplate(nameplate)
             end
         end

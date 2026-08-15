@@ -1,3 +1,11 @@
+# **1.8.7**
+
+### UPDATE
+* Updated FontStyle flags
+* Fixed nameplate castbar API calls
+
+<hr>
+
 # **1.8.6**
 
 ### UPDATE
