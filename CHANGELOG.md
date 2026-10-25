@@ -1,3 +1,14 @@
+# **1.8.8**
+
+## FIX
+* Fixed role icons display in chat next to character name with a more stable implementation. Some Lua errors may still occur when whispers are opened in a new tab
+
+### UPDATE
+* Removed minimap player coordinates (implemented by Blizzard)
+* ToC update for 12.1.5 patch
+
+<hr>
+
 # **1.8.7**
 
 ### UPDATE

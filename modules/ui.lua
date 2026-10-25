@@ -192,37 +192,6 @@ function GigaSettingsInterface:UpgradeRaidFrames()
 	end
 end
 
-local function GetPlayerMapCoords()
-  local uiMapId = C_Map.GetBestMapForUnit("player")
-  if (uiMapId == nil) then
-    return ""
-  end
-  local xy = C_Map.GetPlayerMapPosition(uiMapId, "player")
-  if (xy == nil) then
-    return ""
-  else
-    local x, y = xy:GetXY()
-    return format("%.2f, %.2f",x*100, y*100)
-  end
-end
-
-local playerMinimapCoordsTicker = nil
-function GigaSettingsInterface:PlayerMinimapCoords()
-  if not GigaSettingsDB.playerMinimapCoords or IsInInstance() then
-    if playerMinimapCoordsTicker then playerMinimapCoordsTicker:Cancel() Minimap.GigaPlayerCoords:SetText("") end
-    playerMinimapCoordsTicker = nil  
-    return
-  end
-
-  if not Minimap.GigaPlayerCoords then
-    Minimap.GigaPlayerCoords = Minimap:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    Minimap.GigaPlayerCoords:SetPoint("TOP", Minimap, "TOP", 0, -12)
-  end
-  playerMinimapCoordsTicker = C_Timer.NewTicker(0.3, function()
-      Minimap.GigaPlayerCoords:SetText(GetPlayerMapCoords())
-    end)
-end
-
 local cursorRingFrame = nil
 function GigaSettingsInterface:CursorRing()
   if not GigaSettingsDB.cursorRing then

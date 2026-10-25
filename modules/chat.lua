@@ -178,29 +178,6 @@ function GigaSettingsInterface:LinksInChat()
     end
 end
 
-local function RoleFilter(self, event, msg, author, ...)
-    if not GigaSettingsDB.rolesInChat then return end
-
-    local name = Ambiguate(author, "none")
-    local role = UnitGroupRolesAssigned(name)
-
-    if type(msg)~="string" or (canaccessvalue and not canaccessvalue(msg)) or (not UnitInParty(name) and not UnitInRaid(name)) then return false, msg, author, ... end
-    
-    if role and role ~= "NONE" then
-        local icon = GigaSettingsInterface:GetRoleTex(role.."CHAT", 18, 18)
-        return false, icon.."|| "..msg, author, ...
-    end
-    return false, msg, author, ...
-end
-
-function GigaSettingsInterface:RolesInChat()
-    for k,v in pairs(chatEvents) do
-        if v == 0 or v == 1 then
-            ChatFrame_AddMessageEventFilter(k, RoleFilter)
-        end
-    end
-end
-
 local shortChnNames = {
     "[G", --General
     "[T(S)]", --Trade (Services)
@@ -241,27 +218,127 @@ local fullChnNames = {
 }
 
 local function ReplaceChannelNames(text)
-    if type(text)~="string" or (canaccessvalue and not canaccessvalue(text)) then return text end
-    local size = #fullChnNames
-    for i=1, size do
+    if type(text) ~= "string" or (canaccessvalue and not canaccessvalue(text)) then
+        return text
+    end
+
+    for i = 1, #fullChnNames do
         text = string.gsub(text, fullChnNames[i], shortChnNames[i])
     end
+
     return text
 end
 
-local EditMessage = function(self)
-    if not GigaSettingsDB.shorterChannelNames then return end
+local function AddRoleIconToMessage(text)
+    if type(text) ~= "string" or (canaccessvalue and not canaccessvalue(text)) then
+        return text
+    end
 
-	local num = self.headIndex.value
-	if num == 0 then
-		num = self.maxElements.value
-	end
-	local tbl = self.elements[num]
-	local text = tbl and tbl.message
-	if text then
-		text = ReplaceChannelNames(text)
-		self.elements[num].message = text
-	end
+    if text:find("|A:GM-icon-role-", 1, true) then
+        return text
+    end
+
+    local author = text:match("|Hplayer:([^:|]+)")
+    if not author then
+        return text
+    end
+
+    local name = Ambiguate(author, "none")
+    if not UnitInParty(name) and not UnitInRaid(name) then
+        return text
+    end
+
+    local role = UnitGroupRolesAssigned(name)
+    if not role or role == "NONE" then
+        return text
+    end
+
+    local icon = GigaSettingsInterface:GetRoleTex(role .. "CHAT", 18, 18)
+
+    return text:gsub("(|Hplayer:.-|h)%[(.-)%](|h)",
+                     function(linkStart, playerName, linkEnd)
+                        return linkStart .. "[" .. icon .. playerName .. "]" .. linkEnd end,
+                     1)
+end
+
+local function TransformChatMessage(message, ...)
+    if GigaSettingsDB.shorterChannelNames then
+        message = ReplaceChannelNames(message)
+    end
+
+    if GigaSettingsDB.rolesInChat then
+        message = AddRoleIconToMessage(message)
+    end
+
+    return message, ...
+end
+
+local function MatchChatLine(message, r, g, b, infoID, accessID, typeID, storedEvent, eventArgs, MessageFormatter, targetEvent, targetLineID)
+    if storedEvent ~= targetEvent or not eventArgs then
+        return false
+    end
+
+    local storedLineID = eventArgs[11]
+
+    if canaccessvalue and (not canaccessvalue(storedLineID) or not canaccessvalue(targetLineID)) then
+        return false
+    end
+
+    return storedLineID == targetLineID
+end
+
+local function TransformChatLine(event, lineID)
+    if not lineID then
+        return
+    end
+
+    if canaccessvalue and not canaccessvalue(lineID) then
+        return
+    end
+
+    C_Timer.After(0, function()
+        if not GigaSettingsDB.rolesInChat and not GigaSettingsDB.shorterChannelNames then
+            return
+        end
+
+        for _, frameName in pairs(CHAT_FRAMES) do
+            local chatFrame = _G[frameName]
+            if chatFrame and chatFrame.TransformMessages then
+                chatFrame:TransformMessages(
+                    function(
+                        message, r, g, b, infoID, accessID,
+                        typeID, storedEvent, eventArgs,
+                        MessageFormatter)
+                        return MatchChatLine(
+                            message, r, g, b, infoID,
+                            accessID, typeID, storedEvent,
+                            eventArgs, MessageFormatter,
+                            event, lineID)
+                    end,
+                    TransformChatMessage
+                )
+            end
+        end
+    end)
+end
+
+local function CaptureChatLine(self, event, msg, author, ...)
+    if not GigaSettingsDB.rolesInChat and not GigaSettingsDB.shorterChannelNames then
+        return false, msg, author, ...
+    end
+
+    TransformChatLine(event, select(9, ...))
+
+    return false, msg, author, ...
+end
+
+local function ChatRolesAndChannels()
+    for event, enabled in pairs(chatEvents) do
+        if enabled == 0 or enabled == 1 then
+            ChatFrame_RemoveMessageEventFilter(event, CaptureChatLine)
+            ChatFrame_AddMessageEventFilter(event, CaptureChatLine)
+        end
+    end
 end
 
 local function ChatMouseoverItemTooltip(chatFrame, link, text)
@@ -290,10 +367,10 @@ local function ChatCloseMouseoverItemTooltip()
 end
 
 function GigaSettingsInterface:ChatFramesModifications()
+    ChatRolesAndChannels()
     for _, frameName in pairs(CHAT_FRAMES) do
 		local cF = _G[frameName]
         if cF and not IsCombatLog(cF) then
-            hooksecurefunc(cF.historyBuffer, "PushFront", EditMessage)
             cF:SetScript("OnHyperlinkEnter", ChatMouseoverItemTooltip)
             cF:SetScript("OnHyperlinkLeave", ChatCloseMouseoverItemTooltip)
         end

@@ -258,14 +258,6 @@ GigaAddonData = {
         name = "Class Color Equipped Item Level",
         tooltip = "Show |c"..RAID_CLASS_COLORS[select(2, UnitClass("player"))].colorStr.."ilvl|r in class color.",
     },
-    checkbox_playerMinimapCoords = {
-        key = "playerMinimapCoords",
-        default = false,
-        disable = false,
-        callback = function() GigaSettingsInterface:PlayerMinimapCoords() end,
-        name = "Minimap X-Y coordinates",
-        tooltip = "Show the player's current coordinates on the Minimap frame. Automatically disabled inside instances.",
-    },
     checkbox_cursorRing = {
         key = "cursorRing",
         default = false,
