@@ -65,7 +65,6 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
         GigaSettingsInterface:ShouldHideActionbarButtonsText()
         GigaSettingsInterface:LinksInChat()
         GigaSettingsInterface:ChatFramesModifications() -- ShortChannelNames & MouseoverItemTooltip
-        GigaSettingsInterface:RolesInChat()
         GigaSettingsInterface:UpgradeFriendlyNameplates()
         GigaSettingsInterface:UpgradeDefaultCastbar(GigaSettingsDB.castTimePosition)
         GigaSettingsInterface:MuteApplicationSignupSound()
@@ -76,7 +75,6 @@ GigaSettingsInterface:SetScript("OnEvent", function(self, event, arg1, arg2)
             C_Timer.After(0, function() GigaSettingsInterface:UpdateAllEquipmentSlots("player") end)
         end)
     elseif event == "PLAYER_ENTERING_WORLD" then
-        GigaSettingsInterface:PlayerMinimapCoords()
         if GigaSettingsDB.classColorsUnitFrames then
             GigaSettingsInterface:UnitFrameClassColor("player", PlayerFrame.PlayerFrameContent.PlayerFrameContentMain.HealthBarsContainer.HealthBar)
             GigaSettingsInterface:UnitFrameClassColor("player", PetFrameHealthBar)

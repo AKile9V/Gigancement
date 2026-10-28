@@ -1,3 +1,10 @@
+# **1.8.9**
+
+## FIX
+* Lua errors hotfix
+
+<hr>
+
 # **1.8.8**
 
 ## FIX
